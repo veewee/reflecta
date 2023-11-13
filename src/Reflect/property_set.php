@@ -2,7 +2,7 @@
 
 namespace VeeWee\Reflecta\Reflect;
 
-use VeeWee\Reflecta\Exception\UnreflectableException;
+use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
 
 /**
  * @throws UnreflectableException
@@ -12,15 +12,11 @@ use VeeWee\Reflecta\Exception\UnreflectableException;
  * @return T
  */
 function property_set(object $object, string $name, mixed $value): object {
-    try {
-        $classInfo = new \ReflectionObject($object);
-        $propInfo = $classInfo->getProperty($name);
-    } catch (\ReflectionException $e) {
-        throw UnreflectableException::unknownProperty(get_debug_type($object), $name);
-    }
+
+    $propertyInfo = reflect_property($object, $name);
 
     $new = clone $object;
-    $propInfo->setValue($new, $value);
+    $propertyInfo->setValue($new, $value);
 
     return $new;
 }

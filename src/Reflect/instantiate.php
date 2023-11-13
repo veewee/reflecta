@@ -2,15 +2,17 @@
 
 namespace VeeWee\Reflecta\Reflect;
 
-use VeeWee\Reflecta\Exception\UnreflectableException;
+use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
 
 /**
- * @template T
- * @param class-string<T> $object
+ * @template T of object
+ * @param class-string<T> $className
  * @return T
+ *
+ * @throws UnreflectableException
  */
 function instantiate(string $className): mixed {
-    $classInfo = new \ReflectionClass($className);
+    $classInfo = reflect_class($className);
 
     return $classInfo->newInstanceWithoutConstructor();
 }

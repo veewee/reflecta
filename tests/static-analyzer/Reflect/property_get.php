@@ -22,6 +22,6 @@ function curried(string $path): \Closure {
 
 
 //$y = property_get($x, $z);
-$y = \VeeWee\Reflecta\curried($z)($x);
+$y = curried($z)($x);
 
 /** @psalm-trace $y */

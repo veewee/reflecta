@@ -11,7 +11,10 @@
           "src/Lens/property.php",
           "src/Reflect/instantiate.php",
           "src/Reflect/property_get.php",
-          "src/Reflect/property_set.php"
+          "src/Reflect/property_set.php",
+          "src/Reflect/Internal/reflect_class.php",
+          "src/Reflect/Internal/reflect_object.php",
+          "src/Reflect/Internal/reflect_property.php"
         ]
     },
     "authors": [

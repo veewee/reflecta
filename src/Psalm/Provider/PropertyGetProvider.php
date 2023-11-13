@@ -14,6 +14,8 @@ use Psalm\Type\Atomic\TLiteralString;
 use Psalm\Type\Atomic\TNamedObject;
 use Psalm\Type\Atomic\TTemplateParam;
 use Psalm\Type\Union;
+use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
+use function VeeWee\Reflecta\Reflect\reflect_property;
 
 class PropertyGetProvider implements DynamicFunctionStorageProviderInterface
 {
@@ -41,9 +43,8 @@ class PropertyGetProvider implements DynamicFunctionStorageProviderInterface
         }
 
         try {
-            $rc = new \ReflectionObject($objectType->value);
-            $prop = $rc->getProperty($propertyNameType->value);
-        } catch (\ReflectionException) {
+            $prop = reflect_property($objectType->value, $propertyNameType->value);
+        } catch (UnreflectableException) {
             return null;
         }
 

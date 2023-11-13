@@ -13,7 +13,18 @@ use VeeWee\Reflecta\Lens\Lens;
  */
 function property(string $propertyName): Lens {
     return new Lens(
+        /**
+         * @param U $object
+         * @return C
+         *
+         * @psalm-suppress MixedInferredReturnType, MixedReturnStatement
+         */
         static fn (object $object): mixed => property_get($object, $propertyName),
+        /**
+         * @param U $object
+         * @param C $value
+         * @return U
+         */
         static fn (object $object, mixed $value): object => property_set($object, $propertyName, $value),
     );
 }

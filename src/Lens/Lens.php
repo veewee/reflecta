@@ -4,12 +4,13 @@ declare(strict_types=1);
 namespace VeeWee\Reflecta\Lens;
 
 /**
- * @template A
- * @template B
  * @template S
  * @template T
+ * @template A
+ * @template B
  *
  * @psalm-immutable
+ * @psalm-suppress ImpureFunctionCall
  */
 final class Lens
 {
