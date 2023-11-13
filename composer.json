@@ -10,6 +10,7 @@
         "files": [
           "src/Optic/property.php",
           "src/Optic/optional.php",
+          "src/Optic/path.php",
           "src/Optic/some.php",
           "src/Reflect/instantiate.php",
           "src/Reflect/property_get.php",

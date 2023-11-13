@@ -33,6 +33,28 @@ final class Lens
     }
 
     /**
+     * @pure
+     * @template I
+     * @return Lens<I, I>
+     */
+    public static function id(): self
+    {
+        return new self(
+            /**
+             * @param I $s
+             * @returns I
+             */
+            static fn ($s) => $s,
+            /**
+             * @param I $s
+             * @param mixed $_
+             * @returns I
+             */
+            static fn ($s, $_) => $s
+        );
+    }
+
+    /**
      * @param S $s
      * @return A
      */

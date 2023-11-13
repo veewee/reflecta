@@ -2,6 +2,7 @@
 
 use VeeWee\Reflecta\Optic\Iso;
 use function VeeWee\Reflecta\Reflect\optional;
+use function VeeWee\Reflecta\Reflect\path;
 use function VeeWee\Reflecta\Reflect\property;
 
 require_once __DIR__.'/vendor/autoload.php';
@@ -75,10 +76,14 @@ exit;
 */
 
 
+
+
 $fooBar = property('foo');
 $barBaz = property('bar');
-
 $fooBaz = $barBaz->compose($fooBar);
+
+$fooBaz = path(property('bar'), property('foo'));
+
 
 $foo = new Foo();
 $bar = new Bar($foo);
