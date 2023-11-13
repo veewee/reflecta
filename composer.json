@@ -1,0 +1,26 @@
+{
+    "name": "veewee/reflecta",
+    "description": "Type-safe runtime reflections",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "VeeWee\\Reflecta\\": "src/"
+        },
+        "files": [
+          "src/Reflect/property_get.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Toon Verwerft",
+            "email": "toonverwerft@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "~8.1.0 || ~8.1.0 || ~8.2.0 "
+    },
+    "require-dev": {
+        "vimeo/psalm": "^5.15"
+    }
+}
