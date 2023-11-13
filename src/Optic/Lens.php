@@ -65,12 +65,12 @@ final class Lens
 
     /**
      * @param S $s
-     * @param A $b
+     * @param A $a
      * @return S
      */
-    public function set($s, $b)
+    public function set($s, $a)
     {
-        return ($this->set)($s, $b);
+        return ($this->set)($s, $a);
     }
 
     /**

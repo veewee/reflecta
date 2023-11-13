@@ -29,6 +29,27 @@ final class Iso
     }
 
     /**
+     * @pure
+     * @template I
+     * @return Iso<I, I>
+     */
+    public static function id(): self
+    {
+        return new self(
+            /**
+             * @param I $s
+             * @returns I
+             */
+            static fn ($s) => $s,
+            /**
+             * @param I $s
+             * @returns I
+             */
+            static fn ($s) => $s
+        );
+    }
+
+    /**
      * @param S $s
      * @return A
      */
@@ -38,12 +59,12 @@ final class Iso
     }
 
     /**
-     * @param A $b
+     * @param A $a
      * @return S
      */
-    public function from($b)
+    public function from($a)
     {
-        return ($this->from)($b);
+        return ($this->from)($a);
     }
 
     /**
@@ -55,10 +76,10 @@ final class Iso
             $this->to,
             /**
              * @param S $_
-             * @param A $b
+             * @param A $a
              * @return S
              */
-            fn($_, $b) => $this->from($b)
+            fn($_, $a) => $this->from($a)
         );
     }
 
@@ -78,10 +99,10 @@ final class Iso
              */
             fn($s) => $that->to($this->to($s)),
             /**
-             * @param A2 $d
+             * @param A2 $a2
              * @return S
              */
-            fn($d) => $this->from($that->from($d))
+            fn($a2) => $this->from($that->from($a2))
         );
     }
 }

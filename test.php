@@ -1,6 +1,7 @@
 <?php
 
 use VeeWee\Reflecta\Optic\Iso;
+use VeeWee\Reflecta\Optic\Prism;
 use function VeeWee\Reflecta\Reflect\optional;
 use function VeeWee\Reflecta\Reflect\path;
 use function VeeWee\Reflecta\Reflect\property;
