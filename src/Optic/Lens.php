@@ -1,13 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace VeeWee\Reflecta\Lens;
+namespace VeeWee\Reflecta\Optic;
 
 /**
  * @template S
- * @template T
  * @template A
- * @template B
  *
  * @psalm-immutable
  * @psalm-suppress ImpureFunctionCall
@@ -20,13 +18,13 @@ final class Lens
     private $get;
 
     /**
-     * @var callable(S, B): T
+     * @var callable(S, A): S
      */
     private $set;
 
     /**
      * @param callable(S): A $get
-     * @param callable(S, B): T $set
+     * @param callable(S, A): S $set
      */
     public function __construct(callable $get, callable $set)
     {
@@ -45,8 +43,8 @@ final class Lens
 
     /**
      * @param S $s
-     * @param B $b
-     * @return T
+     * @param A $b
+     * @return S
      */
     public function set($s, $b)
     {
@@ -54,9 +52,9 @@ final class Lens
     }
 
     /**
-     * @param callable(A): B $f
+     * @param callable(A): A $f
      * @param S $s
-     * @return T
+     * @return S
      */
     public function update(callable $f, $s)
     {
@@ -64,26 +62,26 @@ final class Lens
     }
 
     /**
-     * @template C
-     * @template D
-     * @param Lens<A, B, C, D> $that
-     * @return Lens<S, T, C, D>
+     * @template S2
+     * @template A2
+     * @param Lens<S2, A2> $that
+     * @return Lens<S, A2>
      */
     public function compose(Lens $that): Lens
     {
         /** @psalm-suppress InvalidArgument */
         return new self(
-            (/**
+            /**
              * @param S $s
-             * @return C
+             * @return A2
              */
-            fn($s) => $that->get(($this->get)($s))),
-            (/**
+            fn($s) => $that->get(($this->get)($s)),
+            /**
              * @param S $s
-             * @param D $d
-             * @return T
+             * @param A2 $a2
+             * @return S
              */
-            fn($s, $d) => $this->set($s, $that->set($this->get($s), $d)))
+            fn($s, $a2) => $this->set($s, $that->set($this->get($s), $a2))
         );
     }
 }
