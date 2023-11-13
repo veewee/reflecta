@@ -23,7 +23,7 @@ var_dump(
     $lens->set(null, ['to' => 2])
 );
 //var_dump();
-exit;
+//exit;
 
 
 
@@ -55,7 +55,7 @@ class Baz
         $this->bar = $bar;
     }
 }
-
+/*
 $barBaz = optional(property('bar'));
 var_dump($barBaz->get(new Baz(null)));
 var_dump($barBaz->get($set = new Baz(new Bar(new Foo()))));
@@ -72,7 +72,7 @@ exit;
 
 var_dump($set, $barBaz->get($set));
 exit;
-
+*/
 
 
 $fooBar = property('foo');
@@ -82,7 +82,8 @@ $fooBaz = $barBaz->compose($fooBar);
 
 $foo = new Foo();
 $bar = new Bar($foo);
-$baz = new Baz(null);
+$baz = new Baz($bar);
 
 var_dump($fooBaz->get($baz));
+var_dump($fooBaz->set($baz, new Foo()));
 

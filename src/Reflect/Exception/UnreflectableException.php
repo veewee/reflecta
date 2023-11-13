@@ -16,4 +16,9 @@ class UnreflectableException extends RuntimeException
     {
         return new self(sprintf('Unable to locate class %s', $className));
     }
+
+    public static function readonlyProperty(string $className, string $property): self
+    {
+        return new self(sprintf('Unable to write to readonly property %s::$%s', $className, $property));
+    }
 }
