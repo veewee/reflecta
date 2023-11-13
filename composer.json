@@ -8,7 +8,10 @@
             "VeeWee\\Reflecta\\": "src/"
         },
         "files": [
-          "src/Reflect/property_get.php"
+          "src/Lens/property.php",
+          "src/Reflect/instantiate.php",
+          "src/Reflect/property_get.php",
+          "src/Reflect/property_set.php"
         ]
     },
     "authors": [
