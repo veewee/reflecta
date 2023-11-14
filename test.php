@@ -4,10 +4,10 @@ use VeeWee\Reflecta\Iso\Iso;
 use VeeWee\Xml\Dom\Document;
 use function Psl\Type\string;
 use function VeeWee\Reflecta\Reflect\instantiate;
-use function VeeWee\Reflecta\Reflect\nullable;
-use function VeeWee\Reflecta\Reflect\optional;
-use function VeeWee\Reflecta\Reflect\path;
-use function VeeWee\Reflecta\Reflect\property;
+use function VeeWee\Reflecta\Lens\optional;
+use function VeeWee\Reflecta\Lens\path;
+use function VeeWee\Reflecta\Lens\properties;
+use function VeeWee\Reflecta\Lens\property;
 use function VeeWee\Xml\Dom\Locator\Node\value;
 
 require_once __DIR__.'/vendor/autoload.php';
@@ -59,6 +59,11 @@ print_r($itemIso->from($xml));
 // > (
 // >   [value] => hello
 // > )
+
+
+var_dump(properties()->get($item));
+var_dump(properties()->set($item, ['value' => 'world']));
+exit;
 
 
 /*

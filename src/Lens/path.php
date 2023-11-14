@@ -1,8 +1,7 @@
 <?php
 
-namespace VeeWee\Reflecta\Reflect;
+namespace VeeWee\Reflecta\Lens;
 
-use VeeWee\Reflecta\Lens\Lens;
 use function Psl\Iter\reduce;
 
 /**

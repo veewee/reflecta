@@ -1,9 +1,6 @@
 <?php
 
-namespace VeeWee\Reflecta\Reflect;
-
-use VeeWee\Reflecta\Lens\Lens;
-use function Psl\Result\wrap;
+namespace VeeWee\Reflecta\Lens;
 
 /**
  * @template S

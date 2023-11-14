@@ -1,8 +1,9 @@
 <?php
 
-namespace VeeWee\Reflecta\Reflect;
+namespace VeeWee\Reflecta\Lens;
 
-use VeeWee\Reflecta\Lens\Lens;
+use function VeeWee\Reflecta\Reflect\property_get;
+use function VeeWee\Reflecta\Reflect\property_set;
 
 /**
  * @template S of object
