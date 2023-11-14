@@ -3,6 +3,7 @@
 use VeeWee\Reflecta\Iso\Iso;
 use VeeWee\Xml\Dom\Document;
 use function Psl\Type\string;
+use function VeeWee\Reflecta\Lens\index;
 use function VeeWee\Reflecta\Reflect\instantiate;
 use function VeeWee\Reflecta\Lens\optional;
 use function VeeWee\Reflecta\Lens\path;
@@ -11,6 +12,10 @@ use function VeeWee\Reflecta\Lens\property;
 use function VeeWee\Xml\Dom\Locator\Node\value;
 
 require_once __DIR__.'/vendor/autoload.php';
+
+$arr = ['a' => 1, 'b' => 2, 'c' => 3];
+var_dump(index('c')->set($arr, 4));exit;
+
 
 
 
@@ -138,9 +143,9 @@ exit;
 
 
 
-$fooBar = property('foo');
+/*$fooBar = property('foo');
 $barBaz = property('bar');
-$fooBaz = $barBaz->compose($fooBar);
+$fooBaz = $barBaz->compose($fooBar);*/
 
 $fooBaz = path(property('bar'), optional(property('foo')));
 

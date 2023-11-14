@@ -8,7 +8,10 @@
             "VeeWee\\Reflecta\\": "src/"
         },
         "files": [
+          "src/ArrayAccess/index_get.php",
+          "src/ArrayAccess/index_set.php",
           "src/Lens/optional.php",
+          "src/Lens/index.php",
           "src/Lens/path.php",
           "src/Lens/property.php",
           "src/Lens/properties.php",
