@@ -2,7 +2,7 @@
 
 namespace VeeWee\Reflecta\Reflect;
 
-use VeeWee\Reflecta\Optic\Lens;
+use VeeWee\Reflecta\Lens\Lens;
 
 /**
  * @template S of object

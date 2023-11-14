@@ -1,6 +1,6 @@
 <?php
 
-use VeeWee\Reflecta\Optic\Iso;
+use VeeWee\Reflecta\Iso\Iso;
 use VeeWee\Xml\Dom\Document;
 use function Psl\Type\string;
 use function VeeWee\Reflecta\Reflect\instantiate;
@@ -8,8 +8,6 @@ use function VeeWee\Reflecta\Reflect\nullable;
 use function VeeWee\Reflecta\Reflect\optional;
 use function VeeWee\Reflecta\Reflect\path;
 use function VeeWee\Reflecta\Reflect\property;
-use function VeeWee\Xml\Dom\Locator\Attribute\attributes_list;
-use function VeeWee\Xml\Dom\Locator\document_element;
 use function VeeWee\Xml\Dom\Locator\Node\value;
 
 require_once __DIR__.'/vendor/autoload.php';

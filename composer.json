@@ -8,9 +8,9 @@
             "VeeWee\\Reflecta\\": "src/"
         },
         "files": [
-          "src/Optic/property.php",
-          "src/Optic/optional.php",
-          "src/Optic/path.php",
+          "src/Lens/property.php",
+          "src/Lens/optional.php",
+          "src/Lens/path.php",
           "src/Reflect/instantiate.php",
           "src/Reflect/property_get.php",
           "src/Reflect/property_set.php",

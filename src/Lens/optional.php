@@ -2,7 +2,7 @@
 
 namespace VeeWee\Reflecta\Reflect;
 
-use VeeWee\Reflecta\Optic\Lens;
+use VeeWee\Reflecta\Lens\Lens;
 use function Psl\Result\wrap;
 
 /**

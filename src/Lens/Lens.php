@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace VeeWee\Reflecta\Optic;
+namespace VeeWee\Reflecta\Lens;
 
 use Psl\Result\ResultInterface;
 use function Psl\Result\wrap;
