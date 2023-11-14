@@ -4,6 +4,8 @@ use VeeWee\Reflecta\Optic\Iso;
 use VeeWee\Xml\Dom\Document;
 use function Psl\Type\string;
 use function VeeWee\Reflecta\Reflect\instantiate;
+use function VeeWee\Reflecta\Reflect\nullable;
+use function VeeWee\Reflecta\Reflect\optional;
 use function VeeWee\Reflecta\Reflect\path;
 use function VeeWee\Reflecta\Reflect\property;
 use function VeeWee\Xml\Dom\Locator\Attribute\attributes_list;
@@ -61,22 +63,7 @@ print_r($itemIso->from($xml));
 // > )
 
 
-
-exit;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
 
 $iso = new Iso(
     fn(array $s) => ['from' => $s['from']],
@@ -97,7 +84,7 @@ var_dump(
 //exit;
 
 
-
+*/
 
 
 
@@ -152,12 +139,12 @@ $fooBar = property('foo');
 $barBaz = property('bar');
 $fooBaz = $barBaz->compose($fooBar);
 
-$fooBaz = path(property('bar'), property('foo'));
+$fooBaz = path(property('bar'), optional(property('foo')));
 
 
 $foo = new Foo();
 $bar = new Bar($foo);
-$baz = new Baz($bar);
+$baz = new Baz(null);
 
 var_dump($fooBaz->get($baz));
 var_dump($fooBaz->set($baz, new Foo()));

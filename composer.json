@@ -11,7 +11,6 @@
           "src/Optic/property.php",
           "src/Optic/optional.php",
           "src/Optic/path.php",
-          "src/Optic/some.php",
           "src/Reflect/instantiate.php",
           "src/Reflect/property_get.php",
           "src/Reflect/property_set.php",
@@ -27,7 +26,7 @@
         }
     ],
     "require": {
-        "php": "~8.1.0 || ~8.1.0 || ~8.2.0 ",
+        "php": "~8.1.0 || ~8.2.0 || ~8.3.0 ",
         "azjezz/psl": "^2.7"
     },
     "require-dev": {
