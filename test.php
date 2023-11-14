@@ -1,12 +1,81 @@
 <?php
 
 use VeeWee\Reflecta\Optic\Iso;
-use VeeWee\Reflecta\Optic\Prism;
-use function VeeWee\Reflecta\Reflect\optional;
+use VeeWee\Xml\Dom\Document;
+use function Psl\Type\string;
+use function VeeWee\Reflecta\Reflect\instantiate;
 use function VeeWee\Reflecta\Reflect\path;
 use function VeeWee\Reflecta\Reflect\property;
+use function VeeWee\Xml\Dom\Locator\Attribute\attributes_list;
+use function VeeWee\Xml\Dom\Locator\document_element;
+use function VeeWee\Xml\Dom\Locator\Node\value;
 
 require_once __DIR__.'/vendor/autoload.php';
+
+
+
+$base64Iso = new Iso(
+    base64_encode(...),
+    base64_decode(...)
+);
+$itemNodeIso = new Iso(
+    fn (string $data): string => '<item>'.$data.'</item>',
+    fn (string $xml): string => Document::fromXmlString($xml)->locate(
+        static fn (DOMDocument $document) => value($document->documentElement, string())
+    )
+);
+$base64ItemNodeIso = $base64Iso->compose($itemNodeIso);
+
+
+echo $to = $base64ItemNodeIso->to('hello').PHP_EOL;
+// > <item>aGVsbG8=</item>
+echo $base64ItemNodeIso->from($to).PHP_EOL;
+// > hello
+
+
+
+class Item {
+    public string $value;
+}
+
+$itemValueLens = property('value');
+
+$itemIso = new Iso(
+    static fn (Item $item): string => '<item value="'.$item->value.'" />',
+    static fn (string $xml): Item => $itemValueLens->set(
+        instantiate(Item::class),
+        Document::fromXmlString($xml)->locate(
+            static fn (DOMDocument $doc) => $doc->documentElement->getAttribute('value')
+        )
+    )
+);
+
+$item = new Item();
+$item->value = 'hello';
+echo $xml = $itemIso->to($item).PHP_EOL;
+// > <item value="hello" />
+print_r($itemIso->from($xml));
+// > Item Object
+// > (
+// >   [value] => hello
+// > )
+
+
+
+exit;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 $iso = new Iso(

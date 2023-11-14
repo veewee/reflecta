@@ -17,10 +17,11 @@ function reflect_property(mixed $objectOrClassName, string $property): \Reflecti
 
     try {
         return $reflection->getProperty($property);
-    } catch (\ReflectionException) {
+    } catch (\Throwable $previous) {
         throw UnreflectableException::unknownProperty(
             is_string($objectOrClassName) ? $objectOrClassName : get_debug_type($objectOrClassName),
-            $property
+            $property,
+            $previous
         );
     }
 }

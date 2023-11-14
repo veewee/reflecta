@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace VeeWee\Reflecta\Optic;
 
+use Psl\Result\ResultInterface;
+use function Psl\Result\wrap;
+
 /**
  * @template S
  * @template A
@@ -59,12 +62,30 @@ final class Iso
     }
 
     /**
+     * @param S $s
+     * @return ResultInterface<A>
+     */
+    public function tryTo($s): ResultInterface
+    {
+        return wrap(fn() => ($this->to)($s));
+    }
+
+    /**
      * @param A $a
      * @return S
      */
     public function from($a)
     {
         return ($this->from)($a);
+    }
+
+    /**
+     * @param A $a
+     * @return ResultInterface<S>
+     */
+    public function tryFrom($a): ResultInterface
+    {
+        return wrap(fn() => ($this->from)($a));
     }
 
     /**

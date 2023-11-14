@@ -15,8 +15,8 @@ function reflect_object(object $object): \ReflectionObject
 {
     try {
         return new \ReflectionObject($object);
-    } catch (\ReflectionException) {
-        throw UnreflectableException::unknownClass(get_debug_type($object));
+    } catch (\Throwable $previous) {
+        throw UnreflectableException::unknownClass(get_debug_type($object), $previous);
     }
 }
 

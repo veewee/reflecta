@@ -16,8 +16,8 @@ function reflect_class(string $className): \ReflectionClass
 {
     try {
         return new \ReflectionClass($className);
-    } catch (\ReflectionException) {
-        throw UnreflectableException::unknownClass($className);
+    } catch (\Throwable $previous) {
+        throw UnreflectableException::unknownClass($className, $previous);
     }
 }
 

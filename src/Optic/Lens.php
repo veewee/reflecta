@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace VeeWee\Reflecta\Optic;
 
+use Psl\Result\ResultInterface;
+use function Psl\Result\wrap;
+
 /**
  * @template S
  * @template A
@@ -65,12 +68,31 @@ final class Lens
 
     /**
      * @param S $s
+     * @return ResultInterface<A>
+     */
+    public function tryGet($s): ResultInterface
+    {
+        return wrap(fn() => ($this->get)($s));
+    }
+
+    /**
+     * @param S $s
      * @param A $a
      * @return S
      */
     public function set($s, $a)
     {
         return ($this->set)($s, $a);
+    }
+
+    /**
+     * @param S $s
+     * @param A $a
+     * @return ResultInterface<S>
+     */
+    public function trySet($s, $a): ResultInterface
+    {
+        return wrap(fn() => ($this->set)($s, $a));
     }
 
     /**
@@ -81,6 +103,16 @@ final class Lens
     public function update(callable $f, $s)
     {
         return $this->set($s, $f(($this->get)($s)));
+    }
+
+    /**
+     * @param callable(A): A $f
+     * @param S $s
+     * @return ResultInterface<S>
+     */
+    public function tryUpdate(callable $f, $s): ResultInterface
+    {
+        return wrap(fn() => $this->set($s, $f(($this->get)($s))));
     }
 
     /**

@@ -14,5 +14,9 @@ use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
 function instantiate(string $className): mixed {
     $classInfo = reflect_class($className);
 
-    return $classInfo->newInstanceWithoutConstructor();
+    try {
+        return $classInfo->newInstanceWithoutConstructor();
+    } catch (\Throwable $previous) {
+        throw UnreflectableException::nonInstantiatable($className, $previous);
+    }
 }
