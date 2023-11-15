@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VeeWee\Reflecta\Lens;
 
@@ -8,11 +8,11 @@ use function VeeWee\Reflecta\Reflect\property_set;
 /**
  * @template S of object
  * @template A
- * @param string $propertyName
  * @return Lens<S, A>
  * @psalm-pure
  */
-function property(string $propertyName): Lens {
+function property(string $propertyName): Lens
+{
     return new Lens(
         /**
          * @param S $subject

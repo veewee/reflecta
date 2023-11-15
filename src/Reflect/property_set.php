@@ -1,7 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VeeWee\Reflecta\Reflect;
 
+use Throwable;
 use VeeWee\Reflecta\Exception\CloneException;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
 
@@ -13,19 +14,20 @@ use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
  * @param T $object
  * @return T
  */
-function property_set(object $object, string $name, mixed $value): object {
+function property_set(object $object, string $name, mixed $value): object
+{
 
     $propertyInfo = reflect_property($object, $name);
 
     try {
         $new = clone $object;
-    } catch (\Throwable $previous) {
+    } catch (Throwable $previous) {
         throw CloneException::impossibleToClone($object, $previous);
     }
 
     try {
         $propertyInfo->setValue($new, $value);
-    } catch (\Throwable $previous) {
+    } catch (Throwable $previous) {
         throw UnreflectableException::unwritableProperty(get_debug_type($object), $name, $value, $previous);
     }
 

@@ -3,13 +3,11 @@ declare(strict_types=1);
 
 namespace VeeWee\Reflecta\Psalm\Iso\Provider;
 
-use Closure;
 use Psalm\Plugin\DynamicFunctionStorage;
 use Psalm\Plugin\DynamicTemplateProvider;
 use Psalm\Plugin\EventHandler\DynamicFunctionStorageProviderInterface;
 use Psalm\Plugin\EventHandler\Event\DynamicFunctionStorageProviderEvent;
 use Psalm\Storage\FunctionLikeParameter;
-use Psalm\Type\Atomic\TClosure;
 use Psalm\Type\Atomic\TGenericObject;
 use Psalm\Type\Atomic\TTemplateParam;
 use Psalm\Type\Union;
@@ -36,7 +34,7 @@ final class ComposeProvider implements DynamicFunctionStorageProviderInterface
 
         // Create S->A iso pairs
         $composedIsos = array_map(
-            static fn(int $callable_offset) => self::createABIso(
+            static fn (int $callable_offset) => self::createABIso(
                 self::createTemplateFromOffset($templateProvider, $callable_offset),
                 self::createTemplateFromOffset($templateProvider, $callable_offset + 1),
             ),
@@ -46,7 +44,7 @@ final class ComposeProvider implements DynamicFunctionStorageProviderInterface
         $composeStorage = new DynamicFunctionStorage();
         $composeStorage->params = [
             ...array_map(
-                static fn(TGenericObject $iso, int $offset) => self::createParam(
+                static fn (TGenericObject $iso, int $offset) => self::createParam(
                     "iso_{$offset}",
                     new Union([$iso]),
                 ),
@@ -57,7 +55,7 @@ final class ComposeProvider implements DynamicFunctionStorageProviderInterface
 
         // Add compose template list for each intermediate Iso
         $composeStorage->templates = array_map(
-            static fn($offset) => self::createTemplateFromOffset($templateProvider, $offset),
+            static fn ($offset) => self::createTemplateFromOffset($templateProvider, $offset),
             range(1, $argsCount + 1),
         );
 

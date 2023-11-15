@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VeeWee\Reflecta\Reflect;
 
@@ -23,7 +23,7 @@ function properties_set(object $object, array $values): object
          * @param T $object
          * @return T
          */
-        static fn(object $object, string $name, mixed $value): object => property_set($object, $name, $value),
+        static fn (object $object, string $name, mixed $value): object => property_set($object, $name, $value),
         $object
     );
 }

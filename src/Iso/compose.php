@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VeeWee\Reflecta\Iso;
 
@@ -10,18 +10,19 @@ use function Psl\Iter\reduce;
  * @template S
  * @template A
  *
- * @param non-empty-array<int, Iso<mixed, mixed>> $other
+ * @param non-empty-array<int, Iso<mixed, mixed>> $isos
  *
  * @return Iso<S, A>
  *
  * @psalm-pure
  * @psalm-suppress ImpureFunctionCall
  */
-function compose(Iso ... $isos): Iso {
+function compose(Iso ... $isos): Iso
+{
     /** @Iso<S, A> */
     return reduce(
         $isos,
-        fn (Iso $current, Iso $next) => $current->compose($next),
+        static fn (Iso $current, Iso $next) => $current->compose($next),
         Iso::identity()
     );
 }

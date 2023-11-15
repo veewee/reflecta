@@ -9,13 +9,13 @@ use VeeWee\Reflecta\TestFixtures\Boom;
 use VeeWee\Reflecta\TestFixtures\X;
 use function VeeWee\Reflecta\Reflect\instantiate;
 
-class InstantiateTest extends TestCase
+final class InstantiateTest extends TestCase
 {
 
-    /** @test */
-    public function it_errors(): void
+    
+    public function test_it_errors(): void
     {
-        $this->markTestIncomplete('TODO : find final internal class');
+        static::markTestIncomplete('TODO : find final internal class');
         $this->expectException(UnreflectableException::class);
         instantiate('internalfinalclass');
     }
@@ -24,13 +24,13 @@ class InstantiateTest extends TestCase
     {
         $x = instantiate(X::class);
 
-        self::assertInstanceOf(X::class, $x);
+        static::assertInstanceOf(X::class, $x);
     }
 
     public function it_skips_constructor()
     {
         $boom = instantiate(Boom::class);
 
-        self::assertInstanceOf(Boom::class, $boom);
+        static::assertInstanceOf(Boom::class, $boom);
     }
 }

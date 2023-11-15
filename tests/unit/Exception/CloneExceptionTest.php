@@ -3,20 +3,22 @@ declare(strict_types=1);
 
 namespace VeeWee\Reflecta\UnitTests\Exception;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
+use StdClass;
 use VeeWee\Reflecta\Exception\CloneException;
 use VeeWee\Reflecta\Exception\RuntimeException;
 
-class CloneExceptionTest extends TestCase
+final class CloneExceptionTest extends TestCase
 {
-    /** @test */
-    public function it_can_throw_clone_error(): void
+    
+    public function test_it_can_throw_clone_error(): void
     {
-        $previous = new \Exception('hey');
-        $exception = CloneException::impossibleToClone(new \StdClass(), $previous);
+        $previous = new Exception('hey');
+        $exception = CloneException::impossibleToClone(new StdClass(), $previous);
 
-        self::assertSame($previous, $exception->getPrevious());
-        self::assertSame(0, $exception->getCode());
+        static::assertSame($previous, $exception->getPrevious());
+        static::assertSame(0, $exception->getCode());
         $this->expectExceptionObject($exception);
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Impossible to clone type');

@@ -1,7 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VeeWee\Reflecta\ArrayAccess;
-
 
 use VeeWee\Reflecta\ArrayAccess\Exception\ArrayAccessException;
 

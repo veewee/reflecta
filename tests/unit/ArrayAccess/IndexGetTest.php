@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 use VeeWee\Reflecta\ArrayAccess\Exception\ArrayAccessException;
 use function VeeWee\Reflecta\ArrayAccess\index_get;
 
-class IndexGetTest extends TestCase
+final class IndexGetTest extends TestCase
 {
     public static function provideGetCases()
     {
@@ -24,20 +24,20 @@ class IndexGetTest extends TestCase
     }
 
     /**
-     * @test
+     *
      * @dataProvider provideGetCases
      */
-    public function it_can_get_from_array(
+    public function test_it_can_get_from_array(
         array $data,
         string|int $index,
         mixed $expected
     ): void {
         $actual = index_get($data, $index);
-        self::assertSame($expected, $actual);
+        static::assertSame($expected, $actual);
     }
 
-    /** @test */
-    public function it_can_not_get_from_array(): void
+    
+    public function test_it_can_not_get_from_array(): void
     {
         $this->expectException(ArrayAccessException::class);
         index_get([], 'invalid');

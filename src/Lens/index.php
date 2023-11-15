@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VeeWee\Reflecta\Lens;
 
@@ -12,7 +12,8 @@ use function VeeWee\Reflecta\ArrayAccess\index_set;
  * @return Lens<S, A>
  * @psalm-pure
  */
-function index($index): Lens {
+function index($index): Lens
+{
     /** @return Lens<S, A> */
     return new Lens(
         /**

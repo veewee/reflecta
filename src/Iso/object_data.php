@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VeeWee\Reflecta\Iso;
 
@@ -13,7 +13,8 @@ use function VeeWee\Reflecta\Reflect\instantiate;
  * @return Iso<S, A>
  * @psalm-pure
  */
-function object_data(string $className): Iso {
+function object_data(string $className): Iso
+{
     /** @var Lens<S, A> $propertiesLens */
     $propertiesLens = properties();
 

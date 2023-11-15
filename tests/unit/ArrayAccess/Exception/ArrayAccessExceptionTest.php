@@ -7,10 +7,10 @@ use PHPUnit\Framework\TestCase;
 use VeeWee\Reflecta\ArrayAccess\Exception\ArrayAccessException;
 use VeeWee\Reflecta\Exception\RuntimeException;
 
-class ArrayAccessExceptionTest extends TestCase
+final class ArrayAccessExceptionTest extends TestCase
 {
-    /** @test */
-    public function it_can_throw_invalid_array_access(): void
+    
+    public function test_it_can_throw_invalid_array_access(): void
     {
         $exception = ArrayAccessException::cannotAccessIndex('x');
         $this->expectExceptionObject($exception);

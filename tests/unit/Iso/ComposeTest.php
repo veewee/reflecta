@@ -7,10 +7,10 @@ use PHPUnit\Framework\TestCase;
 use VeeWee\Reflecta\Iso\Iso;
 use function VeeWee\Reflecta\Iso\compose;
 
-class ComposeTest extends TestCase
+final class ComposeTest extends TestCase
 {
-    /** @test */
-    public function it_can_be_composed(): void
+    
+    public function test_it_can_be_composed(): void
     {
         $base64 = new Iso(
             base64_encode(...),
@@ -28,7 +28,7 @@ class ComposeTest extends TestCase
         $joined = $commaSeparatedBase64->to($data);
         $exploded = $commaSeparatedBase64->from($joined);
 
-        self::assertSame(base64_encode('hello,world'), $joined);
-        self::assertSame($data, $exploded);
+        static::assertSame(base64_encode('hello,world'), $joined);
+        static::assertSame($data, $exploded);
     }
 }

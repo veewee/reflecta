@@ -1,11 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VeeWee\Reflecta\SaTests\Reflect;
 
+use Closure;
 use VeeWee\Reflecta\TestFixtures\X;
 use function VeeWee\Reflecta\Reflect\property_set;
 
-function test_set_valid_prop_value_type(): X {
+function test_set_valid_prop_value_type(): X
+{
     $z = 'z';
     $x = new X();
     $x->z = 123;
@@ -16,7 +18,8 @@ function test_set_valid_prop_value_type(): X {
 /**
  * @psalm-suppress InvalidScalarArgument
  */
-function test_set_invalid_prop_value_type(): X {
+function test_set_invalid_prop_value_type(): X
+{
     $z = 'z';
     $x = new X();
     $x->z = 123;
@@ -24,8 +27,9 @@ function test_set_invalid_prop_value_type(): X {
     return property_set($x, $z, 'nope');
 }
 
-function test_return_type_on_templated_object(): object {
-    $curried = fn(string $path): \Closure => static fn (object $object, mixed $value): mixed => property_set($object, $path, $value);
+function test_return_type_on_templated_object(): object
+{
+    $curried = static fn (string $path): Closure => static fn (object $object, mixed $value): mixed => property_set($object, $path, $value);
     $z = 'z';
     $x = new X();
 

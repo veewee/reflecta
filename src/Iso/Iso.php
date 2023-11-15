@@ -68,7 +68,7 @@ final class Iso
      */
     public function tryTo($s): ResultInterface
     {
-        return wrap(fn() => ($this->to)($s));
+        return wrap(fn () => ($this->to)($s));
     }
 
     /**
@@ -86,7 +86,7 @@ final class Iso
      */
     public function tryFrom($a): ResultInterface
     {
-        return wrap(fn() => ($this->from)($a));
+        return wrap(fn () => ($this->from)($a));
     }
 
     /**
@@ -101,7 +101,7 @@ final class Iso
              * @param A $a
              * @return S
              */
-            fn($_, $a) => $this->from($a)
+            fn ($_, $a) => $this->from($a)
         );
     }
 
@@ -127,12 +127,12 @@ final class Iso
              * @param S $s
              * @return A2
              */
-            fn($s) => $that->to($this->to($s)),
+            fn ($s) => $that->to($this->to($s)),
             /**
              * @param A2 $a2
              * @return S
              */
-            fn($a2) => $this->from($that->from($a2))
+            fn ($a2) => $this->from($that->from($a2))
         );
     }
 }

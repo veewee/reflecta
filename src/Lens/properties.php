@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VeeWee\Reflecta\Lens;
 
@@ -12,7 +12,8 @@ use function VeeWee\Reflecta\Reflect\properties_set;
  * @return Lens<S, A>
  * @psalm-pure
  */
-function properties(): Lens {
+function properties(): Lens
+{
     /** @var Lens<S, A> */
     return new Lens(
         /**

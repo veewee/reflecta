@@ -46,6 +46,7 @@
     },
     "require-dev": {
         "vimeo/psalm": "^5.15",
-        "phpunit/phpunit": "^10.4"
+        "phpunit/phpunit": "^10.4",
+        "friendsofphp/php-cs-fixer": "^3.38"
     }
 }

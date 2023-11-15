@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VeeWee\Reflecta\Lens;
 
@@ -12,7 +12,8 @@ namespace VeeWee\Reflecta\Lens;
  *
  * @psalm-pure
  */
-function optional(Lens $that): Lens {
+function optional(Lens $that): Lens
+{
     return new Lens(
         /**
          * @param S|null $subject
@@ -23,11 +24,11 @@ function optional(Lens $that): Lens {
              * @param A $a
              * @return A
              */
-            fn ($a) => $a,
+            static fn ($a) => $a,
             /**
              * @return null
              */
-            fn () => null
+            static fn () => null
         ),
         /**
          * @param S|null $subject
@@ -39,11 +40,11 @@ function optional(Lens $that): Lens {
              * @param S $s
              * @return S
              */
-            fn ($s) => $s,
+            static fn ($s) => $s,
             /**
              * @return null
              */
-            fn () => null
+            static fn () => null
         ),
     );
 }

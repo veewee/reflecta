@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VeeWee\Reflecta\SaTests\Lens;
 
@@ -38,4 +38,3 @@ function it_knows_broken_composition(Lens $lens1, Lens $lens2, Lens $lens3): Len
 {
     return compose($lens1, $lens2, $lens3);
 }
-

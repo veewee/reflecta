@@ -4,13 +4,14 @@ declare(strict_types=1);
 namespace VeeWee\Reflecta\UnitTests\Reflect\Internal;
 
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
 use function VeeWee\Reflecta\Reflect\reflect_class;
 
-class ReflectClassTest extends TestCase
+final class ReflectClassTest extends TestCase
 {
-    /** @test */
-    public function it_errors(): void
+    
+    public function test_it_errors(): void
     {
         $this->expectException(UnreflectableException::class);
         reflect_class('UnkownClass');
@@ -20,7 +21,7 @@ class ReflectClassTest extends TestCase
     {
         $rc = reflect_class(X::class);
 
-        self::assertInstanceOf(\ReflectionClass::class, $rc);
-        self::assertSame(X::class, $rc->getName());
+        static::assertInstanceOf(ReflectionClass::class, $rc);
+        static::assertSame(X::class, $rc->getName());
     }
 }

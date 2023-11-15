@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace VeeWee\Reflecta\TestFixtures;
 
-class Boom
+use RuntimeException;
+
+final class Boom
 {
     public function __construct()
     {
-        throw new \RuntimeException('boom');
+        throw new RuntimeException('boom');
     }
 }

@@ -7,16 +7,16 @@ use PHPUnit\Framework\TestCase;
 use VeeWee\Reflecta\TestFixtures\X;
 use function VeeWee\Reflecta\Reflect\property_get;
 
-class PropertyGetTest extends TestCase
+final class PropertyGetTest extends TestCase
 {
-    /** @test */
-    public function it_can_get_property(): void
+    
+    public function test_it_can_get_property(): void
     {
         $x = new X();
         $x->z = 123;
 
         $actual = property_get($x, 'z');
 
-        self::assertSame(123, $actual);
+        static::assertSame(123, $actual);
     }
 }

@@ -7,10 +7,10 @@ use PHPUnit\Framework\TestCase;
 use function VeeWee\Reflecta\Lens\compose;
 use function VeeWee\Reflecta\Lens\index;
 
-class ComposeTest extends TestCase
+final class ComposeTest extends TestCase
 {
-    /** @test */
-    public function it_can_compose_lenses(): void
+    
+    public function test_it_can_compose_lenses(): void
     {
         $greetLens = index('greet');
         $messageLens = index('message');
@@ -18,7 +18,7 @@ class ComposeTest extends TestCase
 
         $data = ['greet' => ['message' => 'hello']];
 
-        self::assertSame('hello', $composed->get($data));
-        self::assertSame(['greet' => ['message' => 'goodbye']], $composed->set($data, 'goodbye'));
+        static::assertSame('hello', $composed->get($data));
+        static::assertSame(['greet' => ['message' => 'goodbye']], $composed->set($data, 'goodbye'));
     }
 }

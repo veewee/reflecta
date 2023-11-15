@@ -12,7 +12,7 @@ use VeeWee\Reflecta\Psalm\Reflect\Infer\ObjectType;
 use VeeWee\Reflecta\Psalm\Reflect\Infer\PropertyNameType;
 use VeeWee\Reflecta\Psalm\Reflect\Infer\PropertyValueType;
 
-class PropertyGetProvider implements DynamicFunctionStorageProviderInterface
+final class PropertyGetProvider implements DynamicFunctionStorageProviderInterface
 {
     /**
      * @return array<lowercase-string>

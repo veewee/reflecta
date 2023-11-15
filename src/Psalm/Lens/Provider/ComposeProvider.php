@@ -3,13 +3,11 @@ declare(strict_types=1);
 
 namespace VeeWee\Reflecta\Psalm\Lens\Provider;
 
-use Closure;
 use Psalm\Plugin\DynamicFunctionStorage;
 use Psalm\Plugin\DynamicTemplateProvider;
 use Psalm\Plugin\EventHandler\DynamicFunctionStorageProviderInterface;
 use Psalm\Plugin\EventHandler\Event\DynamicFunctionStorageProviderEvent;
 use Psalm\Storage\FunctionLikeParameter;
-use Psalm\Type\Atomic\TClosure;
 use Psalm\Type\Atomic\TGenericObject;
 use Psalm\Type\Atomic\TTemplateParam;
 use Psalm\Type\Union;
@@ -36,7 +34,7 @@ final class ComposeProvider implements DynamicFunctionStorageProviderInterface
 
         // Create S->A lens pairs
         $composedLenses = array_map(
-            static fn(int $callable_offset) => self::createABLens(
+            static fn (int $callable_offset) => self::createABLens(
                 self::createTemplateFromOffset($templateProvider, $callable_offset),
                 self::createTemplateFromOffset($templateProvider, $callable_offset + 1),
             ),
@@ -46,7 +44,7 @@ final class ComposeProvider implements DynamicFunctionStorageProviderInterface
         $composeStorage = new DynamicFunctionStorage();
         $composeStorage->params = [
             ...array_map(
-                static fn(TGenericObject $lens, int $offset) => self::createParam(
+                static fn (TGenericObject $lens, int $offset) => self::createParam(
                     "lens_{$offset}",
                     new Union([$lens]),
                 ),
@@ -57,7 +55,7 @@ final class ComposeProvider implements DynamicFunctionStorageProviderInterface
 
         // Add compose template list for each intermediate Lens
         $composeStorage->templates = array_map(
-            static fn($offset) => self::createTemplateFromOffset($templateProvider, $offset),
+            static fn ($offset) => self::createTemplateFromOffset($templateProvider, $offset),
             range(1, $argsCount + 1),
         );
 

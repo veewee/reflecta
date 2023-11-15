@@ -11,23 +11,23 @@ use VeeWee\Reflecta\TestFixtures\X;
 use function VeeWee\Reflecta\Reflect\instantiate;
 use function VeeWee\Reflecta\Reflect\property_set;
 
-class PropertySetTest extends TestCase
+final class PropertySetTest extends TestCase
 {
-    /** @test */
-    public function it_can_set_property(): void
+    
+    public function test_it_can_set_property(): void
     {
         $x = new X();
         $x->z = 123;
 
         $actual = property_set($x, 'z', 345);
 
-        self::assertNotSame($x, $actual);
-        self::assertInstanceOf(X::class, $actual);
-        self::assertSame(345, $actual->z);
+        static::assertNotSame($x, $actual);
+        static::assertInstanceOf(X::class, $actual);
+        static::assertSame(345, $actual->z);
     }
 
-    /** @test */
-    public function it_errors_on_unclonable(): void
+    
+    public function test_it_errors_on_unclonable(): void
     {
         $this->expectException(Unclonable::class);
 
@@ -35,8 +35,8 @@ class PropertySetTest extends TestCase
         property_set($x, 'z', 345);
     }
 
-    /** @test */
-    public function it_errors_on_initialized_readonly(): void
+    
+    public function test_it_errors_on_initialized_readonly(): void
     {
         $this->expectException(UnreflectableException::class);
 
@@ -44,14 +44,14 @@ class PropertySetTest extends TestCase
         property_set($x, 'z', 345);
     }
 
-    /** @test */
-    public function it_can_deal_with_uninitialized_readonly(): void
+    
+    public function test_it_can_deal_with_uninitialized_readonly(): void
     {
         $x = instantiate(ReadonlyX::class);
         $actual = property_set($x, 'z', 345);
 
-        self::assertNotSame($x, $actual);
-        self::assertInstanceOf(ReadonlyX::class, $actual);
-        self::assertSame(345, $actual->z);
+        static::assertNotSame($x, $actual);
+        static::assertInstanceOf(ReadonlyX::class, $actual);
+        static::assertSame(345, $actual->z);
     }
 }

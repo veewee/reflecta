@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VeeWee\Reflecta\SaTests\Iso;
 
@@ -38,4 +38,3 @@ function it_knows_broken_composition(Iso $iso1, Iso $iso2, Iso $iso3): Iso
 {
     return compose($iso1, $iso2, $iso3);
 }
-

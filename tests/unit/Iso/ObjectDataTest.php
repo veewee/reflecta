@@ -7,11 +7,11 @@ use PHPUnit\Framework\TestCase;
 use VeeWee\Reflecta\TestFixtures\X;
 use function VeeWee\Reflecta\Iso\object_data;
 
-class ObjectDataTest extends TestCase
+final class ObjectDataTest extends TestCase
 {
 
-    /** @test */
-    public function it_can_work_with_object_data(): void
+    
+    public function test_it_can_work_with_object_data(): void
     {
         $iso = object_data(X::class);
 
@@ -22,7 +22,7 @@ class ObjectDataTest extends TestCase
         $instance = $iso->from($expectedData);
         $actualData = $iso->to($instance);
 
-        self::assertEquals($expectedInstance, $instance);
-        self::assertSame($expectedData, $actualData);
+        static::assertEquals($expectedInstance, $instance);
+        static::assertSame($expectedData, $actualData);
     }
 }

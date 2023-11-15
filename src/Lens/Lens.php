@@ -72,7 +72,7 @@ final class Lens
      */
     public function tryGet($s): ResultInterface
     {
-        return wrap(fn() => ($this->get)($s));
+        return wrap(fn () => ($this->get)($s));
     }
 
     /**
@@ -92,7 +92,7 @@ final class Lens
      */
     public function trySet($s, $a): ResultInterface
     {
-        return wrap(fn() => ($this->set)($s, $a));
+        return wrap(fn () => ($this->set)($s, $a));
     }
 
     /**
@@ -112,7 +112,7 @@ final class Lens
      */
     public function tryUpdate($s, callable $f): ResultInterface
     {
-        return wrap(fn() => $this->set($s, $f(($this->get)($s))));
+        return wrap(fn () => $this->set($s, $f(($this->get)($s))));
     }
 
     /**
@@ -137,13 +137,13 @@ final class Lens
              * @param S $s
              * @return A2
              */
-            fn($s) => $that->get(($this->get)($s)),
+            fn ($s) => $that->get(($this->get)($s)),
             /**
              * @param S $s
              * @param A2 $a2
              * @return S
              */
-            fn($s, $a2) => $this->set($s, $that->set($this->get($s), $a2))
+            fn ($s, $a2) => $this->set($s, $that->set($this->get($s), $a2))
         );
     }
 }
