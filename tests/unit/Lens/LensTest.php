@@ -6,7 +6,6 @@ namespace VeeWee\Reflecta\UnitTests\Lens;
 use PHPUnit\Framework\TestCase;
 use VeeWee\Reflecta\Lens\Lens;
 use function VeeWee\Reflecta\Lens\index;
-use function VeeWee\Reflecta\Lens\optional;
 
 class LensTest extends TestCase
 {
