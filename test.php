@@ -3,6 +3,7 @@
 use VeeWee\Reflecta\Iso\Iso;
 use VeeWee\Xml\Dom\Document;
 use function Psl\Type\string;
+use function VeeWee\Reflecta\Iso\object_data;
 use function VeeWee\Reflecta\Lens\index;
 use function VeeWee\Reflecta\Reflect\instantiate;
 use function VeeWee\Reflecta\Lens\optional;
@@ -13,8 +14,8 @@ use function VeeWee\Xml\Dom\Locator\Node\value;
 
 require_once __DIR__.'/vendor/autoload.php';
 
-$arr = ['a' => 1, 'b' => 2, 'c' => 3];
-var_dump(index('c')->set($arr, 4));exit;
+/*$arr = ['a' => 1, 'b' => 2, 'c' => 3];
+var_dump(index('c')->set($arr, 4));exit;*/
 
 
 
@@ -39,9 +40,23 @@ echo $base64ItemNodeIso->from($to).PHP_EOL;
 
 
 
-class Item {
-    public string $value;
-}
+class Item { public string $value; }
+
+$itemData = object_data(Item::class);
+$data = ['value' => 'hello'];
+$item = $itemData->from($data);
+$actual = $itemData->to($item);
+
+assert($data === $actual);
+
+
+
+
+
+var_dump($item, $itemData->to($item));exit;
+
+
+
 
 $itemValueLens = property('value');
 

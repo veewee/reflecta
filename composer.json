@@ -15,6 +15,7 @@
           "src/Lens/index.php",
           "src/Lens/property.php",
           "src/Lens/properties.php",
+          "src/Iso/object_data.php",
           "src/Reflect/instantiate.php",
           "src/Reflect/properties_get.php",
           "src/Reflect/properties_set.php",
