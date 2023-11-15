@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 namespace VeeWee\Reflecta\Exception;
-final class CloneException extends \RuntimeException
+final class CloneException extends RuntimeException
 {
     public static function impossibleToClone(mixed $object, ?\Throwable $previous = null): self
     {

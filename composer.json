@@ -29,7 +29,8 @@
     },
     "autoload-dev": {
       "psr-4": {
-        "VeeWee\\Reflecta\\SaTests\\": "tests/static-analyzer/"
+        "VeeWee\\Reflecta\\SaTests\\": "tests/static-analyzer/",
+        "VeeWee\\Reflecta\\UnitTests\\": "tests/unit/"
       }
     },
     "authors": [
@@ -44,6 +45,6 @@
     },
     "require-dev": {
         "vimeo/psalm": "^5.15",
-        "veewee/xml": "^2.11"
+        "phpunit/phpunit": "^10.4"
     }
 }

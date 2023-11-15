@@ -14,7 +14,7 @@ class ArrayAccessException extends RuntimeException
     public static function cannotAccessIndex($index): self
     {
         return new self(
-            sprintf('Impossible to access array at index %s,', $index)
+            sprintf('Impossible to access array at index %s.', $index)
         );
     }
 }
