@@ -40,7 +40,7 @@ final class Lens
      * @template I
      * @return Lens<I, I>
      */
-    public static function id(): self
+    public static function identity(): self
     {
         return new self(
             /**
@@ -113,6 +113,14 @@ final class Lens
     public function tryUpdate(callable $f, $s): ResultInterface
     {
         return wrap(fn() => $this->set($s, $f(($this->get)($s))));
+    }
+
+    /**
+     * @return Lens<S, A|null>
+     */
+    public function optional(): Lens
+    {
+        return optional($this);
     }
 
     /**

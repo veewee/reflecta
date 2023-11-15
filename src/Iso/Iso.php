@@ -37,7 +37,7 @@ final class Iso
      * @template I
      * @return Iso<I, I>
      */
-    public static function id(): self
+    public static function identity(): self
     {
         return new self(
             /**
@@ -103,6 +103,14 @@ final class Iso
              */
             fn($_, $a) => $this->from($a)
         );
+    }
+
+    /**
+     * @return Iso<A, S>
+     */
+    public function inverse(): self
+    {
+        return new self($this->from, $this->to);
     }
 
     /**

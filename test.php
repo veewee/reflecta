@@ -6,7 +6,7 @@ use function Psl\Type\string;
 use function VeeWee\Reflecta\Lens\index;
 use function VeeWee\Reflecta\Reflect\instantiate;
 use function VeeWee\Reflecta\Lens\optional;
-use function VeeWee\Reflecta\Lens\path;
+use function VeeWee\Reflecta\Lens\compose;
 use function VeeWee\Reflecta\Lens\properties;
 use function VeeWee\Reflecta\Lens\property;
 use function VeeWee\Xml\Dom\Locator\Node\value;
@@ -147,7 +147,7 @@ exit;
 $barBaz = property('bar');
 $fooBaz = $barBaz->compose($fooBar);*/
 
-$fooBaz = path(property('bar'), optional(property('foo')));
+$fooBaz = compose(property('bar'), optional(property('foo')));
 
 
 $foo = new Foo();

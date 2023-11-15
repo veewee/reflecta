@@ -17,11 +17,11 @@ use function Psl\Iter\reduce;
  * @psalm-pure
  * @psalm-suppress ImpureFunctionCall
  */
-function path(Lens ... $lenses): Lens {
+function compose(Lens ... $lenses): Lens {
     /** @Lens<S, A> */
     return reduce(
         $lenses,
         fn (Lens $current, Lens $next) => $current->compose($next),
-        Lens::id()
+        Lens::identity()
     );
 }
