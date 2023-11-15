@@ -1,27 +1,22 @@
 <?php
 
-namespace VeeWee\ReflectaTests\StaticAnalyzer;
+namespace VeeWee\Reflecta\SaTests\Reflect;
 
+use VeeWee\Reflecta\SaTests\Fixtures\X;
 use function VeeWee\Reflecta\Reflect\property_get;
 
-class X {
-    public ?int $z = 0;
-}
-$z = 'z';
-$x = new \stdClass();
-$x->z = 123;
+function test_get_prop_return_type(): ?int {
+    $z = 'z';
+    $x = new X();
+    $x->z = 123;
 
-/**
- * @template T of object
- * @param string $path
- * @return \Closure(T): mixed
- */
-function curried(string $path): \Closure {
-    return static fn (object $object): mixed => property_get($object, $path);
+    return property_get($x, $z);
 }
 
+function test_get_mixed_return_type_on_templated_object(): mixed {
+    $curried = fn(string $path): \Closure => static fn (object $object): mixed => property_get($object, $path);
+    $z = 'z';
+    $x = new X();
 
-//$y = property_get($x, $z);
-$y = curried($z)($x);
-
-/** @psalm-trace $y */
+    return $curried($z)($x);
+}

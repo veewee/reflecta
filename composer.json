@@ -25,6 +25,11 @@
           "src/Reflect/Internal/reflect_property.php"
         ]
     },
+    "autoload-dev": {
+      "psr-4": {
+        "VeeWee\\Reflecta\\SaTests\\": "tests/static-analyzer/"
+      }
+    },
     "authors": [
         {
             "name": "Toon Verwerft",

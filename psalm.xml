@@ -7,12 +7,13 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
     findUnusedBaselineEntry="false"
     findUnusedCode="false"
+    findUnusedPsalmSuppress="true"
 >
     <projectFiles>
         <directory name="src" />
         <directory name="tests/static-analyzer" />
         <ignoreFiles>
-            <directory name="src/Psalm/Provider" />
+            <directory name="src/Psalm" />
             <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>

@@ -26,6 +26,7 @@ class Plugin implements PluginEntryPointInterface
      */
     private function getHooks(): iterable
     {
-        yield Provider\PropertyGetProvider::class;
+        yield Reflect\Provider\PropertyGetProvider::class;
+        yield Reflect\Provider\PropertySetProvider::class;
     }
 }
