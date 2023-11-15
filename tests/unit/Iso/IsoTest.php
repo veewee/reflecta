@@ -69,6 +69,7 @@ class IsoTest extends TestCase
         self::assertSame($initial, $from);
     }
 
+    /** @test */
     public function it_can_be_inversed(): void
     {
         $commaSeparated = (new Iso(
@@ -84,6 +85,7 @@ class IsoTest extends TestCase
         self::assertSame($data, $exploded);
     }
 
+    /** @test */
     public function it_can_be_transformed_in_a_lens(): void
     {
         $commaSeparated = new Iso(
@@ -92,10 +94,9 @@ class IsoTest extends TestCase
         );
         $lens = $commaSeparated->asLens();
 
-
         $data = ['hello' ,'world'];
         $joined = $lens->get($data);
-        $exploded = $commaSeparated->set(null, $joined);
+        $exploded = $lens->set(null, $joined);
 
         self::assertSame('hello,world', $joined);
         self::assertSame($data, $exploded);
