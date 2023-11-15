@@ -96,21 +96,21 @@ final class Lens
     }
 
     /**
-     * @param callable(A): A $f
      * @param S $s
+     * @param callable(A): A $f
      * @return S
      */
-    public function update(callable $f, $s)
+    public function update($s, callable $f)
     {
         return $this->set($s, $f(($this->get)($s)));
     }
 
     /**
-     * @param callable(A): A $f
      * @param S $s
+     * @param callable(A): A $f
      * @return ResultInterface<S>
      */
-    public function tryUpdate(callable $f, $s): ResultInterface
+    public function tryUpdate($s, callable $f): ResultInterface
     {
         return wrap(fn() => $this->set($s, $f(($this->get)($s))));
     }

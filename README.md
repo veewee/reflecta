@@ -45,13 +45,24 @@ composer require veewee/reflecta
 
 ### Psalm support
 
-In order to have better type completions, this package is shipped with a psalm plugin.
+This package is created with type-safety and error awareness in mind.
+
+In order to have better type inference, this package comes shipped with a psalm plugin.
 You can enable it by:
 
 ```
 ./vendor/bin/psalm-plugin enable 'VeeWee\Reflecta\Psalm\Plugin'
 ```
 > Requires vimeo/psalm 5+
+
+## Components
+
+This package provides following components:
+
+* [ArrayAccess](/docs/array-access.md): helps you read from and write to arrays.
+* [Iso](/docs/isomorphisms.md): Provides bidirectional transformations on your data.
+* [Lens](/docs/lens.md): Separate your data from it's structure
+* [Reflect](/docs/reflect.md): helps you read from and write to objects in a runtime-safe context.
 
 
 ## Inspiration
@@ -60,5 +71,4 @@ This library was inspired by the following projects:
 
 * [marcosh/lamphpda-optics](https://github.com/marcosh/lamphpda-optics)
 * [fp-ts/optic](https://github.com/fp-ts/optic)
-* [haskell](https://hackage.haskell.org/package/lens)
-
+* [haskell lens](https://hackage.haskell.org/package/lens)
