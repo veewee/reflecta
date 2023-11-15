@@ -10,7 +10,7 @@ use function VeeWee\Reflecta\Lens\index;
 
 final class LensTest extends TestCase
 {
-    
+
     public function test_it_can_get_data(): void
     {
         $lens = new Lens(
@@ -23,7 +23,7 @@ final class LensTest extends TestCase
         static::assertSame('world', $lens->tryGet($data)->getResult());
     }
 
-    
+
     public function test_it_can_set_data(): void
     {
         $lens = new Lens(
@@ -36,7 +36,7 @@ final class LensTest extends TestCase
         static::assertSame(['hello' => 'earth'], $lens->trySet($data, 'earth')->getResult());
     }
 
-    
+
     public function test_it_can_update_data(): void
     {
         $lens = new Lens(
@@ -55,7 +55,7 @@ final class LensTest extends TestCase
         );
     }
 
-    
+
     public function test_it_can_have_identity(): void
     {
         $lens = Lens::identity();
@@ -64,7 +64,7 @@ final class LensTest extends TestCase
         static::assertSame('hello', $lens->set('hello', 'ignored'));
     }
 
-    
+
     public function test_it_can_be_optional(): void
     {
         $lens = (new Lens(
@@ -93,7 +93,7 @@ final class LensTest extends TestCase
         static::assertSame(null, $lens->set($invalidData, 'earth'));
     }
 
-    
+
     public function test_it_can_compose_lenses(): void
     {
         $greetLens = index('greet');
