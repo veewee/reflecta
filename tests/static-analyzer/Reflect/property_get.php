@@ -2,7 +2,7 @@
 
 namespace VeeWee\Reflecta\SaTests\Reflect;
 
-use VeeWee\Reflecta\SaTests\Fixtures\X;
+use VeeWee\Reflecta\TestFixtures\X;
 use function VeeWee\Reflecta\Reflect\property_get;
 
 function test_get_prop_return_type(): ?int {

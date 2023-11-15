@@ -29,6 +29,7 @@
     },
     "autoload-dev": {
       "psr-4": {
+        "VeeWee\\Reflecta\\TestFixtures\\": "tests/fixtures/",
         "VeeWee\\Reflecta\\SaTests\\": "tests/static-analyzer/",
         "VeeWee\\Reflecta\\UnitTests\\": "tests/unit/"
       }
