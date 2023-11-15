@@ -1,0 +1,21 @@
+{
+    "source": {
+        "directories": [
+            "src"
+        ]
+    },
+    "minMsi": 100,
+    "minCoveredMsi": 100,
+    "logs": {
+        "text": ".phpunit.cache/infection.log",
+        "html": ".phpunit.cache/infection"
+    },
+    "mutators": {
+        "@default": true,
+        "CastInt": {
+            "ignore": [
+                "VeeWee\\Reflecta\\*Exception::__construct"
+            ]
+        }
+    }
+}
