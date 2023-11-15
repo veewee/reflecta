@@ -57,6 +57,6 @@ class ReflectPropertyTest extends TestCase
         $object->z = 'hello';
 
         $this->expectException(UnreflectableException::class);
-        $rp = reflect_property($object, 'unkown');
+        reflect_property($object, 'unkown');
     }
 }
