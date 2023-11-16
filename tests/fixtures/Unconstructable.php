@@ -5,7 +5,7 @@ namespace VeeWee\Reflecta\TestFixtures;
 
 use RuntimeException;
 
-final class Boom
+final class Unconstructable
 {
     public function __construct()
     {
