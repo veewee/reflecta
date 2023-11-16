@@ -61,7 +61,7 @@ final class LensTest extends TestCase
         $lens = Lens::identity();
 
         static::assertSame('hello', $lens->get('hello'));
-        static::assertSame('hello', $lens->set('hello', 'ignored'));
+        static::assertSame('hello', $lens->set('ignored', 'hello'));
     }
 
 

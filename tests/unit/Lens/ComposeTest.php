@@ -11,8 +11,6 @@ final class ComposeTest extends TestCase
 {
     public function test_it_can_compose_lenses(): void
     {
-        static::markTestIncomplete('Identity doesnt seem to work as expected');
-
         $greetLens = index('greet');
         $messageLens = index('message');
         $composed = compose($greetLens, $messageLens);

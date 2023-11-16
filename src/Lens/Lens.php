@@ -49,11 +49,11 @@ final class Lens
              */
             static fn ($s) => $s,
             /**
-             * @param I $s
-             * @param mixed $_
+             * @param I $_
+             * @param I $a
              * @returns I
              */
-            static fn ($s, $_) => $s
+            static fn ($_, $a) => $a
         );
     }
 

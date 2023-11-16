@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace VeeWee\Reflecta\UnitTests\Reflect;
 
+use Generator;
 use PHPUnit\Framework\TestCase;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
 use VeeWee\Reflecta\TestFixtures\Boom;
@@ -12,12 +13,10 @@ use function VeeWee\Reflecta\Reflect\instantiate;
 final class InstantiateTest extends TestCase
 {
 
-    
     public function test_it_errors(): void
     {
-        static::markTestIncomplete('TODO : find final internal class');
         $this->expectException(UnreflectableException::class);
-        instantiate('internalfinalclass');
+        instantiate(Generator::class);
     }
 
     public function it_returns_instance()
