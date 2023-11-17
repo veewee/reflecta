@@ -4,6 +4,10 @@ Focus on what matters most.
 Our lenses provide a crystal-clear view, allowing you to zero in on specific data points without the distraction of unnecessary details.
 Precision meets simplicity in every line of code.
 
+<div align="center">
+    <img src="./assets/lens.png" alt="Lenses visualized" align="center" />
+</div>
+
 Lenses, in the realm of optics, act as your data's precision-guided magnifying glasses.
 Think of them as focused spotlights that allow you to zoom in on specific details within your data without being bogged down by the noise around it.
 Like a photographer adjusting the lens to capture the perfect shot, lenses enable you to fine-tune your view, isolating and manipulating exactly what you need.

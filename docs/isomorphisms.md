@@ -3,6 +3,10 @@
 Seamlessly navigate between different data representations with our Isomorphisms.
 Experience the enchantment of transforming your data effortlessly, as if conducting a symphony of bits and bytes.
 
+<div align="center">
+    <img src="./assets/iso.png" alt="Isos visualized" align="center" />
+</div>
+
 An isomorphism, in the world of optics, is like a universal translator for your data.
 It's the secret sauce that allows you to seamlessly switch between different representations of information without losing any meaning.
 Imagine effortlessly translating a complex concept from one language to another, each version capturing the essence perfectly.
