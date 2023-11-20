@@ -1,6 +1,7 @@
 {
     "name": "veewee/reflecta",
-    "description": "Type-safe runtime reflections",
+    "description": "Unleash the Power of Optics in your code!",
+    "keywords": ["reflection", "lenses", "optics", "array-access", "isomorphisms"],
     "type": "library",
     "license": "MIT",
     "autoload": {
