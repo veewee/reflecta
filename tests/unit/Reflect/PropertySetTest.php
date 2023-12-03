@@ -6,6 +6,7 @@ namespace VeeWee\Reflecta\UnitTests\Reflect;
 use PHPUnit\Framework\TestCase;
 use VeeWee\Reflecta\Exception\CloneException;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
+use VeeWee\Reflecta\TestFixtures\Dynamic;
 use VeeWee\Reflecta\TestFixtures\ReadonlyX;
 use VeeWee\Reflecta\TestFixtures\Unclonable;
 use VeeWee\Reflecta\TestFixtures\X;
@@ -36,6 +37,28 @@ final class PropertySetTest extends TestCase
         property_set($x, 'z', 345);
     }
 
+    public function test_it_errors_on_unknown_prop(): void
+    {
+        if (PHP_VERSION_ID < 80200) {
+            static::markTestSkipped('On PHP 8.2, all classes are safely dynamic');
+        }
+
+        $x = new X();
+        $x->z = 123;
+
+        $this->expectException(UnreflectableException::class);
+        property_set($x, 'unkown', 123);
+    }
+
+    public function test_it_can_set_unkown_prop_on_dynamic_object(): void
+    {
+        $x = new Dynamic();
+        $actual = property_set($x, 'unkown', 123);
+
+        static::assertNotSame($x, $actual);
+        static::assertInstanceOf(Dynamic::class, $actual);
+        static::assertSame(123, $actual->unkown);
+    }
 
     public function test_it_errors_on_initialized_readonly(): void
     {

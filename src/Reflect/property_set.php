@@ -16,13 +16,23 @@ use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
  */
 function property_set(object $object, string $name, mixed $value): object
 {
-
-    $propertyInfo = reflect_property($object, $name);
-
     try {
         $new = clone $object;
     } catch (Throwable $previous) {
         throw CloneException::impossibleToClone($object, $previous);
+    }
+
+    try {
+        $propertyInfo = reflect_property($object, $name);
+    } catch (UnreflectableException $e) {
+        // In case the property is unknown, try to set a dynamic property.
+        if (object_is_dynamic($new)) {
+            $new->{$name} = $value;
+
+            return $new;
+        }
+
+        throw $e;
     }
 
     try {

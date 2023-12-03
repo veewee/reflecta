@@ -24,6 +24,58 @@ try {
 }
 ```
 
+#### object_attributes
+
+Detects all attributes at the class level of the given object that match the optionally provided argument type (or super-type).
+If the object is not reflectable or there is an error instantiating any argument, an `UnreflectableException` exception is triggered!
+The result of this function is of type: `list<object>`. However, if you provide an argument name: psalm will know the type of the attribute.
+
+```php
+use function VeeWee\Reflecta\Reflect\object_attributes;
+
+try {
+    $allAttributes = object_attributes($yourObject);
+    $allAttributesOfType = object_attributes($yourObject, \YourAttributeType::class);
+    $allAttributesOfType = object_attributes($yourObject, \YourAbstractBaseType::class);
+} catch (UnreflectableException) {
+    // Deal with it
+}
+```
+
+#### object_has_attribute
+
+Checks if the object contains an attribute of given type (or super-type).
+If the object is not reflectable, an `UnreflectableException` exception is triggered!
+
+```php
+use function VeeWee\Reflecta\Reflect\object_has_attribute;
+
+try {
+    $hasAttribute = object_has_attribute($yourObject, \YourAttributeType::class);
+    $hasAttributeThatImplementsBaseType = object_has_attribute($yourObject, \YourAbstractBaseType::class);
+} catch (UnreflectableException) {
+    // Deal with it
+}
+```
+
+#### object_is_dynamic
+
+Checks if the provided object is considered a safe dynamic object that implements `AllowDynamicProperties`.
+Since this property was only added in PHP 8.1, all older versions will always return `true` and allow adding dynamic properties to your object.
+If the object is not reflectable, an `UnreflectableException` exception is triggered!
+
+```php
+use function VeeWee\Reflecta\Reflect\object_is_dynamic;
+
+try {
+    $isDynamic = object_is_dynamic(new stdClass());
+    $isDynamic = object_is_dynamic(new #[\AllowDynamicProperties] class() {});
+    $isNotDynamic = object_is_dynamic(new class() {});
+} catch (UnreflectableException) {
+    // Deal with it
+}
+```
+
 #### properties_get
 
 Detects all values of all properties for a given object.

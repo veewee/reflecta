@@ -9,8 +9,8 @@ use function VeeWee\Reflecta\Reflect\properties_set;
 
 final class PropertiesSetTest extends TestCase
 {
-    
-    public function test_it_can_get_properties(): void
+
+    public function test_it_can_set_properties(): void
     {
         $x = new X();
         $actual = properties_set($x, ['z' => 123]);
