@@ -58,7 +58,7 @@ $commaSeparatedBase64 = $commaSeparated->compose($base64);
 
 $data = ['hello' ,'world'];
 $encoded = $commaSeparatedBase64->to($data);
-// > ["hello", "world] -> "hello,world" -> aGVsbG8sd29ybGQ=
+// > ["hello", "world"] -> "hello,world" -> aGVsbG8sd29ybGQ=
 $actual = $commaSeparatedBase64->from($encoded);
 // > aGVsbG8sd29ybGQ= -> "hello,world", ["hello", "world"]
 
