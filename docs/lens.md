@@ -92,7 +92,7 @@ $person->hat->color = 'green';
 $theColor = $personsHatColorLens->get($person);
 // > "green"
 $newPerson = $personsHatColorLens->set($person, 'red');
-// > Person { hat: { color: "green" }}
+// > Person { hat: { color: "red" }}
 ```
 
 ## Functions
