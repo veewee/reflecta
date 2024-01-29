@@ -9,7 +9,7 @@ use Psalm\Type\Atomic\TNamedObject;
 use Psalm\Type\Atomic\TTemplateParam;
 use Psalm\Type\Union;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
-use function VeeWee\Reflecta\Reflect\reflect_property;
+use function VeeWee\Reflecta\Reflect\Internal\reflect_property;
 
 final class PropertyValueType
 {

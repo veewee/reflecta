@@ -6,11 +6,11 @@ namespace VeeWee\Reflecta\UnitTests\Reflect\Internal;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
-use function VeeWee\Reflecta\Reflect\reflect_class;
+use function VeeWee\Reflecta\Reflect\Internal\reflect_class;
 
 final class ReflectClassTest extends TestCase
 {
-    
+
     public function test_it_errors(): void
     {
         $this->expectException(UnreflectableException::class);
