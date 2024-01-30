@@ -9,6 +9,58 @@ This component provides runtime-safe reflections on objects.
 
 This package provides following functions for dealing with objects.
 
+#### class_attributes
+
+Detects all attributes at the class level of the given className that match the optionally provided argument type (or super-type).
+If the class is not reflectable or there is an error instantiating any argument, an `UnreflectableException` exception is triggered!
+The result of this function is of type: `list<object>`. However, if you provide an argument name: psalm will know the type of the attribute.
+
+```php
+use function VeeWee\Reflecta\Reflect\class_attributes;
+
+try {
+    $allAttributes = class_attributes(YourClass::name);
+    $allAttributesOfType = class_attributes(YourClass::name, \YourAttributeType::class);
+    $allAttributesOfType = class_attributes(YourClass::name, \YourAbstractBaseType::class);
+} catch (UnreflectableException) {
+    // Deal with it
+}
+```
+
+#### class_has_attribute
+
+Checks if the class contains an attribute of given type (or super-type).
+If the class is not reflectable, an `UnreflectableException` exception is triggered!
+
+```php
+use function VeeWee\Reflecta\Reflect\object_has_attribute;
+
+try {
+    $hasAttribute = class_has_attribute(YourClass::name, \YourAttributeType::class);
+    $hasAttributeThatImplementsBaseType = class_has_attribute(YourClass::name, \YourAbstractBaseType::class);
+} catch (UnreflectableException) {
+    // Deal with it
+}
+```
+
+#### class_is_dynamic
+
+Checks if the provided class is considered a safe dynamic object that implements `AllowDynamicProperties`.
+Since this property was only added in PHP 8.1, all older versions will always return `true` and allow adding dynamic properties to that class.
+If the object is not reflectable, an `UnreflectableException` exception is triggered!
+
+```php
+use function VeeWee\Reflecta\Reflect\class_is_dynamic;
+
+try {
+    $isDynamic = class_is_dynamic(new stdClass());
+    $isDynamic = class_is_dynamic(new #[\AllowDynamicProperties] class() {});
+    $isNotDynamic = class_is_dynamic(new class() {});
+} catch (UnreflectableException) {
+    // Deal with it
+}
+```
+
 #### instantiate
 
 This function instantiates a new object of the provided type by bypassing the constructor.
