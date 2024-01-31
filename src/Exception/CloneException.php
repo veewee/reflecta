@@ -7,6 +7,9 @@ use Throwable;
 
 final class CloneException extends RuntimeException
 {
+    /**
+     * @psalm-param mixed $object
+     */
     public static function impossibleToClone(mixed $object, ?Throwable $previous = null): self
     {
         return new self(

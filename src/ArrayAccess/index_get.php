@@ -16,7 +16,7 @@ use VeeWee\Reflecta\ArrayAccess\Exception\ArrayAccessException;
  *
  * @throws ArrayAccessException
  */
-function index_get(array $array, $index): mixed
+function index_get(array $array, string|int $index): mixed
 {
     if (!array_key_exists($index, $array)) {
         throw ArrayAccessException::cannotAccessIndex($index);

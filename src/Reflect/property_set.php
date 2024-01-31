@@ -5,6 +5,8 @@ namespace VeeWee\Reflecta\Reflect;
 use Throwable;
 use VeeWee\Reflecta\Exception\CloneException;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
+use function VeeWee\Reflecta\Reflect\Internal\reflect_property;
+use function VeeWee\Reflecta\Reflect\Predicate\class_is_dynamic;
 
 /**
  * @throws UnreflectableException
@@ -26,7 +28,7 @@ function property_set(object $object, string $name, mixed $value): object
         $propertyInfo = reflect_property($object, $name);
     } catch (UnreflectableException $e) {
         // In case the property is unknown, try to set a dynamic property.
-        if (object_is_dynamic($new)) {
+        if (object_info($object)->check(class_is_dynamic())) {
             $new->{$name} = $value;
 
             return $new;
