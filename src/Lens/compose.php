@@ -10,19 +10,19 @@ use function Psl\Iter\reduce;
  * @template S
  * @template A
  *
- * @param non-empty-array<int, Lens<mixed, mixed>> $lenses
+ * @param non-empty-array<int, LensInterface<mixed, mixed>> $lenses
  *
- * @return Lens<S, A>
+ * @return LensInterface<S, A>
  *
  * @psalm-pure
  * @psalm-suppress ImpureFunctionCall
  */
-function compose(Lens ... $lenses): Lens
+function compose(LensInterface ... $lenses): LensInterface
 {
-    /** @Lens<S, A> */
+    /** @var LensInterface<S, A> */
     return reduce(
         $lenses,
-        static fn (Lens $current, Lens $next) => $current->compose($next),
+        static fn (LensInterface $current, LensInterface $next) => $current->compose($next),
         Lens::identity()
     );
 }

@@ -5,6 +5,7 @@ namespace VeeWee\Reflecta\Iso;
 
 use Psl\Result\ResultInterface;
 use VeeWee\Reflecta\Lens\Lens;
+use VeeWee\Reflecta\Lens\LensInterface;
 use function Psl\Result\wrap;
 
 /**
@@ -13,8 +14,9 @@ use function Psl\Result\wrap;
  *
  * @psalm-immutable
  * @psalm-suppress ImpureFunctionCall
+ * @implements IsoInterface<S, A>
  */
-final class Iso
+final class Iso implements IsoInterface
 {
     /** @var callable(S): A */
     private $to;
@@ -92,7 +94,7 @@ final class Iso
     /**
      * @return Lens<S, A>
      */
-    public function asLens(): Lens
+    public function asLens(): LensInterface
     {
         return new Lens(
             $this->to,
@@ -116,10 +118,10 @@ final class Iso
     /**
      * @template S2
      * @template A2
-     * @param Iso<S2, A2> $that
+     * @param IsoInterface<S2, A2> $that
      * @return Iso<S, A2>
      */
-    public function compose(Iso $that): Iso
+    public function compose(IsoInterface $that): IsoInterface
     {
         /** @psalm-suppress InvalidArgument */
         return new self(

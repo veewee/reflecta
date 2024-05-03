@@ -12,8 +12,9 @@ use function Psl\Result\wrap;
  *
  * @psalm-immutable
  * @psalm-suppress ImpureFunctionCall
+ * @implements LensInterface<S, A>
  */
-final class Lens
+final class Lens implements LensInterface
 {
     /**
      * @var callable(S): A
@@ -116,9 +117,9 @@ final class Lens
     }
 
     /**
-     * @return Lens<S, A|null>
+     * @return LensInterface<S, A|null>
      */
-    public function optional(): Lens
+    public function optional(): LensInterface
     {
         return optional($this);
     }
@@ -126,10 +127,10 @@ final class Lens
     /**
      * @template S2
      * @template A2
-     * @param Lens<S2, A2> $that
-     * @return Lens<S, A2>
+     * @param LensInterface<S2, A2> $that
+     * @return LensInterface<S, A2>
      */
-    public function compose(Lens $that): Lens
+    public function compose(LensInterface $that): LensInterface
     {
         /** @psalm-suppress InvalidArgument */
         return new self(
