@@ -6,13 +6,13 @@ namespace VeeWee\Reflecta\Lens;
  * @template S
  * @template A
  *
- * @param Lens<S, A> $that
+ * @param LensInterface<S, A> $that
  *
  * @return Lens<S, A|null>
  *
  * @psalm-pure
  */
-function optional(Lens $that): Lens
+function optional(LensInterface $that): Lens
 {
     return new Lens(
         /**

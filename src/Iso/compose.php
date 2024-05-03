@@ -10,19 +10,19 @@ use function Psl\Iter\reduce;
  * @template S
  * @template A
  *
- * @param non-empty-array<int, Iso<mixed, mixed>> $isos
+ * @param non-empty-array<int, IsoInterface<mixed, mixed>> $isos
  *
- * @return Iso<S, A>
+ * @return IsoInterface<S, A>
  *
  * @psalm-pure
  * @psalm-suppress ImpureFunctionCall
  */
-function compose(Iso ... $isos): Iso
+function compose(IsoInterface ... $isos): IsoInterface
 {
-    /** @Iso<S, A> */
+    /** @var IsoInterface<S, A> */
     return reduce(
         $isos,
-        static fn (Iso $current, Iso $next) => $current->compose($next),
+        static fn (IsoInterface $current, IsoInterface $next) => $current->compose($next),
         Iso::identity()
     );
 }
