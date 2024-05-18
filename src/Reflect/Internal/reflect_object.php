@@ -1,5 +1,6 @@
 <?php declare(strict_types=1);
-namespace VeeWee\Reflecta\Reflect;
+
+namespace VeeWee\Reflecta\Reflect\Internal;
 
 use ReflectionObject;
 

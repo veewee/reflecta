@@ -12,7 +12,7 @@ use function VeeWee\Reflecta\ArrayAccess\index_set;
  * @return Lens<S, A>
  * @psalm-pure
  */
-function index($index): Lens
+function index(string|int $index): Lens
 {
     /** @return Lens<S, A> */
     return new Lens(

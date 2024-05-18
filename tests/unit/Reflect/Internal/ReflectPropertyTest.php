@@ -8,18 +8,18 @@ use ReflectionProperty;
 use stdClass;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
 use VeeWee\Reflecta\TestFixtures\X;
-use function VeeWee\Reflecta\Reflect\reflect_property;
+use function VeeWee\Reflecta\Reflect\Internal\reflect_property;
 
 final class ReflectPropertyTest extends TestCase
 {
-    
+
     public function test_it_errors_on_unkown_object_property(): void
     {
         $this->expectException(UnreflectableException::class);
         reflect_property(new X(), 'foo');
     }
 
-    
+
     public function test_it_errors_on_unkown_class_property(): void
     {
         $this->expectException(UnreflectableException::class);

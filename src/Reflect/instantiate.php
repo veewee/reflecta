@@ -4,6 +4,7 @@ namespace VeeWee\Reflecta\Reflect;
 
 use Throwable;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
+use function VeeWee\Reflecta\Reflect\Internal\reflect_class;
 
 /**
  * @template T of object

@@ -3,6 +3,7 @@
 namespace VeeWee\Reflecta\Reflect;
 
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
+use function VeeWee\Reflecta\Reflect\Internal\reflect_property;
 
 /**
  * @throws UnreflectableException
