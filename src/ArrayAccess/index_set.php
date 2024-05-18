@@ -14,7 +14,7 @@ namespace VeeWee\Reflecta\ArrayAccess;
  *
  * @return array<Tk, Tv>
  */
-function index_set(array $array, $index, $value): array
+function index_set(array $array, string|int $index, $value): array
 {
     $new = array_merge($array, []);
     $new[$index] = $value;
