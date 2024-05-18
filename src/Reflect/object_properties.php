@@ -4,16 +4,16 @@ namespace VeeWee\Reflecta\Reflect;
 
 use Closure;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
-use VeeWee\Reflecta\Reflect\Type\Property;
-use function VeeWee\Reflecta\Reflect\Internal\reflect_properties;
+use VeeWee\Reflecta\Reflect\Type\ReflectedClass;
+use VeeWee\Reflecta\Reflect\Type\ReflectedProperty;
 
 /**
- * @param null|Closure(Property): bool $predicate
+ * @param null|Closure(ReflectedProperty): bool $predicate
  *
- * @throws UnreflectableException
- * @return array<string, Property>
+ * @return array<string, ReflectedProperty>
+ *@throws UnreflectableException
  */
 function object_properties(object $object, Closure|null $predicate = null): array
 {
-    return reflect_properties($object, $predicate);
+    return ReflectedClass::fromObject($object)->properties($predicate);
 }

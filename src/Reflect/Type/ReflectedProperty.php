@@ -5,8 +5,12 @@ namespace VeeWee\Reflecta\Reflect\Type;
 
 use Closure;
 use ReflectionProperty;
+use VeeWee\Reflecta\Exception\CloneException;
+use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
+use function Psl\Vec\map;
+use function VeeWee\Reflecta\Reflect\Internal\reflect_property;
 
-final class Property
+final class ReflectedProperty
 {
     public function __construct(
         private readonly ReflectionProperty $property
@@ -18,9 +22,9 @@ final class Property
         return $this->property->getName();
     }
 
-    public function declaringClass(): ClassInfo
+    public function declaringClass(): ReflectedClass
     {
-        return new ClassInfo($this->property->getDeclaringClass());
+        return new ReflectedClass($this->property->getDeclaringClass());
     }
 
     public function visibility(): Visibility
@@ -29,7 +33,7 @@ final class Property
     }
 
     /**
-     * @param Closure(Property): bool $predicate
+     * @param Closure(ReflectedProperty): bool $predicate
      */
     public function check(Closure $predicate): bool
     {
@@ -89,5 +93,30 @@ final class Property
     public function hasDefaultValue(): bool
     {
         return $this->property->hasDefaultValue();
+    }
+
+    /**
+     * @template T extends object
+     *
+     * @param class-string<T>|null $attributeClassName
+     *
+     * @return (T is null ? list<object> : list<T>)
+     * @throws UnreflectableException
+     */
+    public function attributes(?string $attributeClassName = null): array
+    {
+        return map(
+            $this->property->getAttributes($attributeClassName, \ReflectionAttribute::IS_INSTANCEOF),
+            static fn (\ReflectionAttribute $attribute): object => (new ReflectedAttribute($attribute))->instantiate()
+        );
+    }
+
+    /**
+     * @param class-string $attributeClassName
+     * @return bool
+     */
+    public function hasAttributeOfType(string $attributeClassName): bool
+    {
+        return (bool) $this->property->getAttributes($attributeClassName, \ReflectionAttribute::IS_INSTANCEOF);
     }
 }

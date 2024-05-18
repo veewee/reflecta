@@ -3,7 +3,7 @@
 namespace VeeWee\Reflecta\Lens;
 
 use Closure;
-use VeeWee\Reflecta\Reflect\Type\Property;
+use VeeWee\Reflecta\Reflect\Type\ReflectedProperty;
 use function VeeWee\Reflecta\Reflect\properties_get;
 use function VeeWee\Reflecta\Reflect\properties_set;
 
@@ -11,7 +11,7 @@ use function VeeWee\Reflecta\Reflect\properties_set;
  * @template S of object
  * @template A of array<string, mixed>
  *
- * @param null|Closure(Property): bool $predicate
+ * @param null|Closure(ReflectedProperty): bool $predicate
  *
  * @return Lens<S, A>
  * @psalm-pure

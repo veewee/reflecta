@@ -5,18 +5,20 @@ namespace VeeWee\Reflecta\Reflect\Internal;
 use Closure;
 use ReflectionProperty;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
-use VeeWee\Reflecta\Reflect\Type\Property;
+use VeeWee\Reflecta\Reflect\Type\ReflectedProperty;
 use function Psl\Dict\filter;
 use function Psl\Dict\pull;
 
 /**
+ * TODO : REMOVE THIS FILE
+ *
  * @psalm-internal VeeWee\Reflecta
  *
  * @param object|class-string $objectOrClassName
- * @param null|Closure(Property): bool $predicate
+ * @param null|Closure(ReflectedProperty): bool $predicate
  *
+ * @return array<string, ReflectedProperty>
  * @throws UnreflectableException
- * @return array<string, Property>
  */
 function reflect_properties(mixed $objectOrClassName, Closure|null $predicate = null): array
 {
@@ -24,7 +26,7 @@ function reflect_properties(mixed $objectOrClassName, Closure|null $predicate = 
 
     $properties = pull(
         $reflection->getProperties(),
-        static fn (ReflectionProperty $reflectionProperty): Property => new Property($reflectionProperty),
+        static fn (ReflectionProperty $reflectionProperty): ReflectedProperty => new ReflectedProperty($reflectionProperty),
         static fn (ReflectionProperty $reflectionProperty): string => $reflectionProperty->name
     );
 

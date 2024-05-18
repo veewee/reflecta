@@ -4,20 +4,20 @@ namespace VeeWee\Reflecta\Reflect;
 
 use Closure;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
-use VeeWee\Reflecta\Reflect\Type\Property;
+use VeeWee\Reflecta\Reflect\Type\ReflectedProperty;
 use function Psl\Dict\intersect_by_key;
 use function Psl\Iter\reduce_with_keys;
 
 /**
- * @throws UnreflectableException
+ * @param T $object
+ * @param array<string, mixed> $values
+ * @param null|Closure(ReflectedProperty): bool $predicate
+ *
+ * @return T
+ *@throws UnreflectableException
  *
  * @template T of object
  *
- * @param T $object
- * @param array<string, mixed> $values
- * @param null|Closure(Property): bool $predicate
- *
- * @return T
  */
 function properties_set(object $object, array $values, Closure|null $predicate = null): object
 {

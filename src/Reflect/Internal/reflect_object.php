@@ -5,6 +5,8 @@ namespace VeeWee\Reflecta\Reflect\Internal;
 use ReflectionObject;
 
 /**
+ * TODO : REMOVE THIS FILE
+ *
  * @psalm-internal VeeWee\Reflecta
  */
 function reflect_object(object $object): ReflectionObject

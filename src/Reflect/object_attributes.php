@@ -3,7 +3,7 @@
 namespace VeeWee\Reflecta\Reflect;
 
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
-use function VeeWee\Reflecta\Reflect\Internal\reflect_class_attributes;
+use VeeWee\Reflecta\Reflect\Type\ReflectedClass;
 
 /**
  * @template T extends object
@@ -15,5 +15,5 @@ use function VeeWee\Reflecta\Reflect\Internal\reflect_class_attributes;
  */
 function object_attributes(object $object, ?string $attributeClassName = null): array
 {
-    return reflect_class_attributes($object, $attributeClassName);
+    return ReflectedClass::fromObject($object)->attributes($attributeClassName);
 }
