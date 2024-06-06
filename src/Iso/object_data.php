@@ -8,24 +8,23 @@ use function VeeWee\Reflecta\Reflect\instantiate;
 
 /**
  * @template S of object
- * @template A of array<string, mixed>
  * @param class-string<S> $className
- * @return Iso<S, A>
+ * @return Iso<S, array<string, mixed>>
  * @psalm-pure
  */
 function object_data(string $className): Iso
 {
-    /** @var Lens<S, A> $propertiesLens */
+    /** @var Lens<S, array<string, mixed>> $propertiesLens */
     $propertiesLens = properties();
 
     return new Iso(
         /**
          * @param S $object
-         * @return A
+         * @return array<string, mixed>
          */
         static fn (object $object): array => $propertiesLens->get($object),
         /**
-         * @param A $properties
+         * @param array<string, mixed> $properties
          * @return S
          */
         static fn (array $properties): object => $propertiesLens->set(
