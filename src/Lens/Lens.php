@@ -7,8 +7,8 @@ use Psl\Result\ResultInterface;
 use function Psl\Result\wrap;
 
 /**
- * @template S
- * @template A
+ * @template-covariant S
+ * @template-covariant A
  *
  * @psalm-immutable
  * @psalm-suppress ImpureFunctionCall

@@ -6,8 +6,8 @@ use Psl\Result\ResultInterface;
 use VeeWee\Reflecta\Lens\LensInterface;
 
 /**
- * @template S
- * @template A
+ * @template-covariant S
+ * @template-covariant A
  *
  * @psalm-immutable
  */

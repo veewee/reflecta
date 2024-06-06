@@ -5,8 +5,8 @@ namespace VeeWee\Reflecta\Lens;
 use Psl\Result\ResultInterface;
 
 /**
- * @template S
- * @template A
+ * @template-covariant S
+ * @template-covariant A
  *
  * @psalm-immutable
  */

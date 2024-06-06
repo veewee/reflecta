@@ -12,11 +12,13 @@ use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
  *
  * @template T of object
  * @param T $object
+ * @psalm-param mixed $value
  * @return T
  */
 function property_set(object $object, string $name, mixed $value): object
 {
     try {
+        /** @var T $new */
         $new = clone $object;
     } catch (Throwable $previous) {
         throw CloneException::impossibleToClone($object, $previous);
