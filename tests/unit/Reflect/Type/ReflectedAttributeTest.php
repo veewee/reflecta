@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace VeeWee\Reflecta\UnitTests\Reflect\Type;
 
 use PHPUnit\Framework\TestCase;
+use ReflectionAttribute;
 use ReflectionClass;
 use ThisIsAnUnknownAttribute;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
@@ -61,4 +62,16 @@ final class ReflectedAttributeTest extends TestCase
         $reflected->instantiate();
     }
 
+    public function test_it_can_apply(): void
+    {
+        $x = new #[CustomAttribute] class {};
+        $attribute = (new ReflectionClass($x))->getAttributes()[0];
+        $reflected = new ReflectedAttribute($attribute);
+
+        $result = $reflected->apply(
+            static fn (ReflectionAttribute $attr): string => $attr->getName()
+        );
+
+        static::assertSame(CustomAttribute::class, $result);
+    }
 }

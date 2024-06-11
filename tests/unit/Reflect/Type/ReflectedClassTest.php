@@ -5,6 +5,7 @@ namespace VeeWee\Reflecta\UnitTests\Reflect\Type;
 
 use AllowDynamicProperties;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use ThisIsAnUnknownAttribute;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
 use VeeWee\Reflecta\Reflect\Type\ReflectedClass;
@@ -200,5 +201,16 @@ final class ReflectedClassTest extends TestCase
         $this->expectExceptionMessage('Unable to instantiate class ThisIsAnUnknownAttribute.');
 
         $class->attributes();
+    }
+
+    public function test_it_can_apply(): void
+    {
+        $class = ReflectedClass::fromFullyQualifiedClassName(X::class);
+
+        $result = $class->apply(
+            static fn (ReflectionClass $class): string => $class->getName()
+        );
+
+        static::assertSame(X::class, $result);
     }
 }

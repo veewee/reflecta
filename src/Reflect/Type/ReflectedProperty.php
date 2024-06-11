@@ -117,4 +117,13 @@ final class ReflectedProperty
     {
         return (bool) $this->property->getAttributes($attributeClassName, ReflectionAttribute::IS_INSTANCEOF);
     }
+
+    /**
+     * @template T
+     * @param Closure(ReflectionProperty): T $closure
+     */
+    public function apply(Closure $closure): mixed
+    {
+        return $closure($this->property);
+    }
 }

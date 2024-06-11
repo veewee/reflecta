@@ -2,8 +2,8 @@
 
 namespace VeeWee\Reflecta\Reflect;
 
-use ReflectionAttribute;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
+use VeeWee\Reflecta\Reflect\Type\ReflectedClass;
 
 /**
  * @throws UnreflectableException
@@ -12,7 +12,5 @@ use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
  */
 function object_has_attribute(object $object, string $attributeClassName): bool
 {
-    $propertyInfo = reflect_object($object);
-
-    return (bool) $propertyInfo->getAttributes($attributeClassName, ReflectionAttribute::IS_INSTANCEOF);
+    return ReflectedClass::fromObject($object)->hasAttributeOfType($attributeClassName);
 }

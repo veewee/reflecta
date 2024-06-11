@@ -23,8 +23,6 @@ final class ReflectedClass
     }
 
     /**
-     * @throws UnreflectableException
-     *
      * @param class-string $className
      */
     public static function fromFullyQualifiedClassName(string $className): self
@@ -43,6 +41,7 @@ final class ReflectedClass
 
     /**
      * @param class-string|object $objectOrClassName
+     * @throws UnreflectableException
      */
     public static function from(mixed $objectOrClassName): self
     {
@@ -160,11 +159,11 @@ final class ReflectedClass
     }
 
     /**
-     * @template T extends object
+     * @template Ta extends object
      *
-     * @param class-string<T>|null $attributeClassName
+     * @param class-string<Ta>|null $attributeClassName
      *
-     * @return (T is null ? list<object> : list<T>)
+     * @return (Ta is null ? list<object> : list<Ta>)
      * @throws UnreflectableException
      */
     public function attributes(?string $attributeClassName = null): array
@@ -181,5 +180,26 @@ final class ReflectedClass
     public function hasAttributeOfType(string $attributeClassName): bool
     {
         return (bool) $this->class->getAttributes($attributeClassName, ReflectionAttribute::IS_INSTANCEOF);
+    }
+
+    /**
+     * @throws UnreflectableException
+     */
+    public function instantiate(): object
+    {
+        try {
+            return $this->class->newInstanceWithoutConstructor();
+        } catch (Throwable $previous) {
+            throw UnreflectableException::nonInstantiatable($this->fullName(), $previous);
+        }
+    }
+
+    /**
+     * @template T
+     * @param Closure(ReflectionClass): T $closure
+     */
+    public function apply(Closure $closure): mixed
+    {
+        return $closure($this->class);
     }
 }

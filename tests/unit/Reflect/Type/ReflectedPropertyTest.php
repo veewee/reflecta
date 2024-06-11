@@ -5,6 +5,7 @@ namespace VeeWee\Reflecta\UnitTests\Reflect\Type;
 
 use AllowDynamicProperties;
 use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
 use VeeWee\Reflecta\Reflect\Type\ReflectedClass;
 use VeeWee\Reflecta\Reflect\Type\ReflectedProperty;
 use VeeWee\Reflecta\Reflect\Type\Visibility;
@@ -169,12 +170,12 @@ final class ReflectedPropertyTest extends TestCase
     public function test_it_knows_about_docblocks(): void
     {
         $x = new class() {
+            /** docblock */
             private int $foo = 0;
         };
         $class = ReflectedClass::fromObject($x);
-        $tab = '            ';
 
-        static::assertSame('/**' . PHP_EOL . $tab.' * @var int' . PHP_EOL . $tab.' */', $class->property('foo')->docComment());
+        static::assertSame('/** docblock */', $class->property('foo')->docComment());
     }
 
     public function test_it_knows_about_attributes(): void
@@ -191,5 +192,19 @@ final class ReflectedPropertyTest extends TestCase
         static::assertTrue($prop->hasAttributeOfType(CustomAttribute::class));
         static::assertEquals($attributes, $filteredAttributes);
         static::assertEquals([new CustomAttribute()], $attributes);
+    }
+
+    public function test_it_can_apply(): void
+    {
+        $x = new class() {
+            private int $foo = 0;
+        };
+        $prop = ReflectedClass::fromObject($x)->property('foo');
+
+        $result = $prop->apply(
+            static fn (ReflectionProperty $prop): string => $prop->getName()
+        );
+
+        static::assertSame('foo', $result);
     }
 }

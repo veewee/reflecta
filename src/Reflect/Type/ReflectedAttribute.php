@@ -38,4 +38,13 @@ final class ReflectedAttribute
             );
         }
     }
+
+    /**
+     * @template T
+     * @param Closure(ReflectionAttribute): T $closure
+     */
+    public function apply(\Closure $closure): mixed
+    {
+        return $closure($this->attribute);
+    }
 }

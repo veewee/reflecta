@@ -4,6 +4,8 @@ namespace VeeWee\Reflecta\Reflect;
 
 use ReflectionProperty;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
+use VeeWee\Reflecta\Reflect\Type\ReflectedClass;
+use VeeWee\Reflecta\Reflect\Type\ReflectedProperty;
 use function Psl\Dict\pull;
 
 /**
@@ -12,12 +14,11 @@ use function Psl\Dict\pull;
  */
 function properties_get(object $object): array
 {
-
-    $propertyInfo = reflect_object($object);
-
     return pull(
-        $propertyInfo->getProperties(),
-        static fn (ReflectionProperty $reflectionProperty): mixed => $reflectionProperty->getValue($object),
-        static fn (ReflectionProperty $reflectionProperty): string => $reflectionProperty->name
+        ReflectedClass::fromObject($object)->properties(),
+        static fn (ReflectedProperty $prop): mixed => $prop->apply(
+            static fn (ReflectionProperty $property): mixed => $property->getValue($object)
+        ),
+        static fn (ReflectedProperty $prop): string => $prop->name()
     );
 }

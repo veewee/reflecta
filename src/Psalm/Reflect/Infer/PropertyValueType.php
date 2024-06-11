@@ -8,8 +8,9 @@ use Psalm\Type\Atomic\TLiteralString;
 use Psalm\Type\Atomic\TNamedObject;
 use Psalm\Type\Atomic\TTemplateParam;
 use Psalm\Type\Union;
+use ReflectionProperty;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
-use function VeeWee\Reflecta\Reflect\reflect_property;
+use VeeWee\Reflecta\Reflect\Type\ReflectedClass;
 
 final class PropertyValueType
 {
@@ -22,11 +23,13 @@ final class PropertyValueType
         }
 
         try {
-            $prop = reflect_property($objectType->value, $propertyNameType->value);
+            $prop = ReflectedClass::fromFullyQualifiedClassName($objectType->value)->property($propertyNameType->value);
         } catch (UnreflectableException $e) {
             return null;
         }
 
-        return Reflection::getPsalmTypeFromReflectionType($prop->getType());
+        return Reflection::getPsalmTypeFromReflectionType($prop->apply(
+            static fn (ReflectionProperty $reflected) => $reflected->getType()
+        ));
     }
 }
