@@ -8,26 +8,31 @@ use function VeeWee\Reflecta\Reflect\instantiate;
 
 /**
  * @template S of object
+ * @template A of array<string, mixed>
+ *
  * @param class-string<S> $className
- * @return Iso<S, array<string, mixed>>
+ * @param null|Lens<S, A> $accessor
+ *
+ * @return Iso<S, A>
+ *
  * @psalm-pure
  */
-function object_data(string $className): Iso
+function object_data(string $className, Lens $accessor = null): Iso
 {
-    /** @var Lens<S, array<string, mixed>> $propertiesLens */
-    $propertiesLens = properties();
+    /** @var Lens<S, A> $typedAccessor */
+    $typedAccessor = $accessor ?? properties();
 
     return new Iso(
         /**
          * @param S $object
-         * @return array<string, mixed>
+         * @return A
          */
-        static fn (object $object): array => $propertiesLens->get($object),
+        static fn (object $object): array => $typedAccessor->get($object),
         /**
-         * @param array<string, mixed> $properties
+         * @param A $properties
          * @return S
          */
-        static fn (array $properties): object => $propertiesLens->set(
+        static fn (array $properties): object => $typedAccessor->set(
             instantiate($className),
             $properties
         ),

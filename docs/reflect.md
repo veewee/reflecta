@@ -140,7 +140,20 @@ use VeeWee\Reflecta\ArrayAccess\Exception\ArrayAccessException;
 use function VeeWee\Reflecta\Reflect\properties_get;
 
 try {
-    $aDictOfProperties = properties_get($yourObject, $theProperty);
+    $aDictOfProperties = properties_get($yourObject);
+} catch (UnreflectableException) {
+    // Deal with it
+}
+```
+
+Additionally, you can provide a custom predicate to filter the properties you want to zoom in on:
+
+```php
+use VeeWee\Reflecta\Reflect\Type\Visibility;
+use function VeeWee\Reflecta\Reflect\Predicate\property_visibility;
+
+try {
+    $aDictOfProperties = properties_get($yourObject, property_visibility(Visibility::Public));
 } catch (UnreflectableException) {
     // Deal with it
 }
@@ -159,6 +172,21 @@ use function VeeWee\Reflecta\Reflect\properties_set;
 try {
     $yourNewObject = properties_set($yourOldObject, $newValuesDict);
 } catch (UnreflectableException | CloneException) {
+    // Deal with it
+}
+```
+
+Additionally, you can provide a custom predicate to filter the properties you want to set.
+This predicate will make sure that only the data that should be stores is set.
+
+```php
+use VeeWee\Reflecta\Reflect\Type\Visibility;
+use function VeeWee\Reflecta\Reflect\Predicate\property_visibility;
+use function VeeWee\Reflecta\Reflect\properties_set;
+
+try {
+    $aDictOfProperties = properties_set($yourObject, $newValuesDict, property_visibility(Visibility::Public));
+} catch (UnreflectableException) {
     // Deal with it
 }
 ```
