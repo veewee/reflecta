@@ -3,6 +3,7 @@
 namespace VeeWee\Reflecta\Reflect;
 
 use ReflectionProperty;
+use Throwable;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
 use VeeWee\Reflecta\Reflect\Type\ReflectedClass;
 
@@ -11,9 +12,14 @@ use VeeWee\Reflecta\Reflect\Type\ReflectedClass;
  */
 function property_get(object $object, string $name): mixed
 {
-    $property = ReflectedClass::fromObject($object)->property($name);
+    $class = ReflectedClass::fromObject($object);
+    $property = $class->property($name);
 
-    return $property->apply(
-        static fn (ReflectionProperty $property): mixed => $property->getValue($object)
-    );
+    try {
+        return $property->apply(
+            static fn (ReflectionProperty $reflectionProperty): mixed => $reflectionProperty->getValue($object)
+        );
+    } catch (Throwable $previous) {
+        throw UnreflectableException::unreadableProperty($class->fullName(), $name, $previous);
+    }
 }
