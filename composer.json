@@ -67,7 +67,6 @@
             "./vendor/bin/infection --show-mutations -v"
         ],
         "ci": [
-            "@autoload",
             "@parallel cs psalm tests",
             "@parallel infection"
       ]
