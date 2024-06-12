@@ -225,3 +225,48 @@ try {
     // Deal with it
 }
 ```
+
+## Types
+
+This package provides following classes for dealing with reflection in a central location:
+
+#### ReflectedAttribute
+
+Provides a tiny wrapper around PHP's `\ReflectionAttribute`;
+
+```php
+use VeeWee\Reflecta\Reflect\Type\ReflectedAttribute;
+
+#[MyAttribute]
+class X {
+}
+
+$attribute = new ReflectedAttribute(
+    new \ReflectionClass(X::class)->getAttributes()[0]
+);
+```
+
+#### ReflectedClass
+
+Provides a tiny wrapper around PHP's `\ReflectionClass`;
+
+```php
+use VeeWee\Reflecta\Reflect\Type\ReflectedClass;
+
+$class = new ReflectedClass(new \ReflectionClass(Your::class));
+$class = ReflectedClass::fromObject(new Your());
+$class = ReflectedClass::fromClassName(Your::class);
+$class = ReflectedClass::from($instanceOrFqcn);
+```
+
+#### ReflectedProperty
+
+Provides a tiny wrapper around PHP's `\ReflectionProperty`;
+
+```php
+use VeeWee\Reflecta\Reflect\Type\ReflectedClass;
+use VeeWee\Reflecta\Reflect\Type\ReflectedProperty;
+
+$property = new ReflectedProperty(new \ReflectionProperty(Your::class, 'property'));
+$property = ReflectedClass::from(new Your())->property('property');
+```
