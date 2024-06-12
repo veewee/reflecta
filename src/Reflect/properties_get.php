@@ -2,22 +2,23 @@
 
 namespace VeeWee\Reflecta\Reflect;
 
-use ReflectionProperty;
+use Closure;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
+use VeeWee\Reflecta\Reflect\Type\ReflectedClass;
+use VeeWee\Reflecta\Reflect\Type\ReflectedProperty;
 use function Psl\Dict\pull;
 
 /**
- * @throws UnreflectableException
+ * @param null|Closure(ReflectedProperty): bool $predicate
+ *
  * @return array<string, mixed>
+ * @throws UnreflectableException
  */
-function properties_get(object $object): array
+function properties_get(object $object, Closure|null $predicate = null): array
 {
-
-    $propertyInfo = reflect_object($object);
-
     return pull(
-        $propertyInfo->getProperties(),
-        static fn (ReflectionProperty $reflectionProperty): mixed => $reflectionProperty->getValue($object),
-        static fn (ReflectionProperty $reflectionProperty): string => $reflectionProperty->name
+        ReflectedClass::fromObject($object)->properties($predicate),
+        static fn (ReflectedProperty $property): mixed => property_get($object, $property->name()),
+        static fn (ReflectedProperty $property): string => $property->name()
     );
 }

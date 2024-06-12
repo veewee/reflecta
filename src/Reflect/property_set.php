@@ -2,9 +2,11 @@
 
 namespace VeeWee\Reflecta\Reflect;
 
+use ReflectionProperty;
 use Throwable;
 use VeeWee\Reflecta\Exception\CloneException;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
+use VeeWee\Reflecta\Reflect\Type\ReflectedClass;
 
 /**
  * @throws UnreflectableException
@@ -25,7 +27,7 @@ function property_set(object $object, string $name, mixed $value): object
     }
 
     try {
-        $propertyInfo = reflect_property($object, $name);
+        $property = ReflectedClass::fromObject($object)->property($name);
     } catch (UnreflectableException $e) {
         // In case the property is unknown, try to set a dynamic property.
         if (object_is_dynamic($new)) {
@@ -38,7 +40,9 @@ function property_set(object $object, string $name, mixed $value): object
     }
 
     try {
-        $propertyInfo->setValue($new, $value);
+        $property->apply(
+            static fn (ReflectionProperty $reflectionProperty) => $reflectionProperty->setValue($new, $value)
+        );
     } catch (Throwable $previous) {
         throw UnreflectableException::unwritableProperty(get_debug_type($object), $name, $value, $previous);
     }

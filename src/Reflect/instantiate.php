@@ -2,8 +2,8 @@
 
 namespace VeeWee\Reflecta\Reflect;
 
-use Throwable;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
+use VeeWee\Reflecta\Reflect\Type\ReflectedClass;
 
 /**
  * @template T of object
@@ -14,11 +14,6 @@ use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
  */
 function instantiate(string $className): mixed
 {
-    $classInfo = reflect_class($className);
-
-    try {
-        return $classInfo->newInstanceWithoutConstructor();
-    } catch (Throwable $previous) {
-        throw UnreflectableException::nonInstantiatable($className, $previous);
-    }
+    /** @var T */
+    return ReflectedClass::fromFullyQualifiedClassName($className)->instantiate();
 }

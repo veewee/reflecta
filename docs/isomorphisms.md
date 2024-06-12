@@ -108,3 +108,32 @@ $actualData = $itemData->to($item);
 
 assert($data === $actualData);
 ```
+
+Additionally, you can provide a custom Lens to the `object_data` function which will be used to read and write the data.
+This makes it possible to check property visibility or alternatively use getters and setters to access the data.
+
+```php
+use VeeWee\Reflecta\Reflect\Type\Visibility;
+use function VeeWee\Reflecta\Iso\object_data;
+use function VeeWee\Reflecta\Lens\properties;
+use function VeeWee\Reflecta\Reflect\Predicate\property_visibility;
+
+class Item {
+    public string $value = 'value';
+    private string $hidden = 'hidden';
+}
+
+$itemData = object_data(Item::class, properties(property_visibility(Visibility::Public)));
+
+$data = [
+    'value' => 'hello',
+    'hidden' => 'ignored',
+];
+
+$itemInstance = $itemData->from($data);
+// > Item { value: "hello", hidden: "hidden" }
+$actualData = $itemData->to($item);
+// > ['value' => 'hello']
+
+assert($data === $actualData);
+```

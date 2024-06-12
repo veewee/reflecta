@@ -19,6 +19,16 @@
             "ignore": [
                 "VeeWee\\Reflecta\\*Exception::__construct"
             ]
+        },
+        "LessThan": {
+            "ignore": [
+                "VeeWee\\Reflecta\\Reflect\\Type\\ReflectedClass::isDynamic"
+            ]
+        },
+        "TrueValue": {
+            "ignore": [
+                "VeeWee\\Reflecta\\Reflect\\Type\\ReflectedClass::isDynamic"
+            ]
         }
     }
 }

@@ -140,7 +140,20 @@ use VeeWee\Reflecta\ArrayAccess\Exception\ArrayAccessException;
 use function VeeWee\Reflecta\Reflect\properties_get;
 
 try {
-    $aDictOfProperties = properties_get($yourObject, $theProperty);
+    $aDictOfProperties = properties_get($yourObject);
+} catch (UnreflectableException) {
+    // Deal with it
+}
+```
+
+Additionally, you can provide a custom predicate to filter the properties you want to zoom in on:
+
+```php
+use VeeWee\Reflecta\Reflect\Type\Visibility;
+use function VeeWee\Reflecta\Reflect\Predicate\property_visibility;
+
+try {
+    $aDictOfProperties = properties_get($yourObject, property_visibility(Visibility::Public));
 } catch (UnreflectableException) {
     // Deal with it
 }
@@ -159,6 +172,21 @@ use function VeeWee\Reflecta\Reflect\properties_set;
 try {
     $yourNewObject = properties_set($yourOldObject, $newValuesDict);
 } catch (UnreflectableException | CloneException) {
+    // Deal with it
+}
+```
+
+Additionally, you can provide a custom predicate to filter the properties you want to set.
+This predicate will make sure that only the data that should be stores is set.
+
+```php
+use VeeWee\Reflecta\Reflect\Type\Visibility;
+use function VeeWee\Reflecta\Reflect\Predicate\property_visibility;
+use function VeeWee\Reflecta\Reflect\properties_set;
+
+try {
+    $aDictOfProperties = properties_set($yourObject, $newValuesDict, property_visibility(Visibility::Public));
+} catch (UnreflectableException) {
     // Deal with it
 }
 ```
@@ -196,4 +224,49 @@ try {
 } catch (UnreflectableException | CloneException) {
     // Deal with it
 }
+```
+
+## Types
+
+This package provides following classes for dealing with reflection in a central location:
+
+#### ReflectedAttribute
+
+Provides a tiny wrapper around PHP's `\ReflectionAttribute`;
+
+```php
+use VeeWee\Reflecta\Reflect\Type\ReflectedAttribute;
+
+#[MyAttribute]
+class X {
+}
+
+$attribute = new ReflectedAttribute(
+    new \ReflectionClass(X::class)->getAttributes()[0]
+);
+```
+
+#### ReflectedClass
+
+Provides a tiny wrapper around PHP's `\ReflectionClass`;
+
+```php
+use VeeWee\Reflecta\Reflect\Type\ReflectedClass;
+
+$class = new ReflectedClass(new \ReflectionClass(Your::class));
+$class = ReflectedClass::fromObject(new Your());
+$class = ReflectedClass::fromClassName(Your::class);
+$class = ReflectedClass::from($instanceOrFqcn);
+```
+
+#### ReflectedProperty
+
+Provides a tiny wrapper around PHP's `\ReflectionProperty`;
+
+```php
+use VeeWee\Reflecta\Reflect\Type\ReflectedClass;
+use VeeWee\Reflecta\Reflect\Type\ReflectedProperty;
+
+$property = new ReflectedProperty(new \ReflectionProperty(Your::class, 'property'));
+$property = ReflectedClass::from(new Your())->property('property');
 ```

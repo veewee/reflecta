@@ -29,9 +29,7 @@
           "src/Reflect/properties_set.php",
           "src/Reflect/property_get.php",
           "src/Reflect/property_set.php",
-          "src/Reflect/Internal/reflect_class.php",
-          "src/Reflect/Internal/reflect_object.php",
-          "src/Reflect/Internal/reflect_property.php"
+          "src/Reflect/Predicate/property_visibility.php"
         ]
     },
     "autoload-dev": {

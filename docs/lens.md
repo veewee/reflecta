@@ -200,6 +200,27 @@ $propertiesLens->set(new Item(), ['value': 'world']);
 // > Item { value: "world" }
 ```
 
+Additionally, you can pass a predicate to filter the properties you want to zoom in on:
+
+```php
+use VeeWee\Reflecta\Reflect\Type\Visibility;
+use function VeeWee\Reflecta\Lens\properties;
+use function VeeWee\Reflecta\Reflect\Predicate\property_visibility;
+
+class Item {
+    public string $value = 'hello';
+    private string $hidden = 'hidden';
+}
+
+$propertiesLens = properties(property_visibility(Visibility::Public));
+
+$propertiesLens->get(new Item());
+// > ["value": "hello"]
+
+$propertiesLens->set(new Item(), ['value': 'world', 'hidden' => 'is-ignored']);
+// > Item { value: "world", hidden: "hidden" }
+```
+
 #### property
 
 This function will create a lens that can zoom in on one named object's property (with any visibility).
