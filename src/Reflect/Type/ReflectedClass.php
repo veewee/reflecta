@@ -81,17 +81,6 @@ final class ReflectedClass
         return $this->class->isFinal();
     }
 
-    public function isReadOnly(): bool
-    {
-        // Readonly classes is a PHP 8.2 feature.
-        // In previous versions, all objects are not readonly
-        if (PHP_VERSION_ID < 80_20_0 || !method_exists($this->class, 'isReadOnly')) {
-            return false;
-        }
-
-        return (bool) $this->class->isReadOnly();
-    }
-
     public function isDynamic(): bool
     {
         // Dynamic props is a 80200 feature.

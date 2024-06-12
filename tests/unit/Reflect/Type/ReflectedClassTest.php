@@ -6,12 +6,14 @@ namespace VeeWee\Reflecta\UnitTests\Reflect\Type;
 use AllowDynamicProperties;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use stdClass;
 use ThisIsAnUnknownAttribute;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
 use VeeWee\Reflecta\Reflect\Type\ReflectedClass;
 use VeeWee\Reflecta\Reflect\Type\ReflectedProperty;
 use VeeWee\Reflecta\TestFixtures\AbstractAttribute;
 use VeeWee\Reflecta\TestFixtures\CustomAttribute;
+use VeeWee\Reflecta\TestFixtures\Dynamic;
 use VeeWee\Reflecta\TestFixtures\InheritedCustomAttribute;
 use VeeWee\Reflecta\TestFixtures\X;
 
@@ -59,34 +61,34 @@ final class ReflectedClassTest extends TestCase
         static::assertFalse($y->check(static fn (ReflectedClass $class) => $class->isFinal()));
     }
 
-    public function test_it_knows_readonly_classes(): void
-    {
-        if (PHP_VERSION_ID < 80300) {
-            static::markTestSkipped('On PHP 8.3, readonly classes are allowed');
-        }
-
-        $x = ReflectedClass::fromObject(new readonly class() {});
-        $y = ReflectedClass::fromObject(new class() {});
-
-        static::assertTrue($x->isReadOnly());
-        static::assertTrue($x->check(static fn (ReflectedClass $class) => $class->isReadOnly()));
-        static::assertFalse($y->isReadOnly());
-        static::assertFalse($y->check(static fn (ReflectedClass $class) => $class->isReadOnly()));
-    }
-
-    public function test_it_knows_about_dynamic_classes(): void
+    public function test_it_can_check_for_dynamic_objects(): void
     {
         if (PHP_VERSION_ID < 80200) {
-            static::markTestSkipped('On PHP <8.2, all classes are dynamic');
+            static::markTestSkipped('On PHP 8.2, all classes are safely dynamic');
         }
 
-        $x = ReflectedClass::fromObject(new #[AllowDynamicProperties] class() {});
-        $y = ReflectedClass::fromObject(new class() {});
+        $x = new #[AllowDynamicProperties] class {};
+        $y = new class {};
+        $s = new stdClass();
 
-        static::assertTrue($x->isDynamic());
-        static::assertTrue($x->check(static fn (ReflectedClass $class) => $class->isDynamic()));
-        static::assertFalse($y->isDynamic());
-        static::assertFalse($y->check(static fn (ReflectedClass $class) => $class->isDynamic()));
+        static::assertTrue(ReflectedClass::fromObject($x)->isDynamic());
+        static::assertFalse(ReflectedClass::fromObject($y)->isDynamic());
+        static::assertTrue(ReflectedClass::fromObject($s)->isDynamic());
+    }
+
+    public function test_it_can_check_for_dynamic_objects_in_php_81(): void
+    {
+        if (PHP_VERSION_ID >= 80200) {
+            static::markTestSkipped('On PHP 8.2, all classes are safely dynamic');
+        }
+
+        $x = new #[AllowDynamicProperties] class {};
+        $y = new class {};
+        $s = new stdClass()
+        ;
+        static::assertTrue(ReflectedClass::fromObject($x)->isDynamic());
+        static::assertTrue(ReflectedClass::fromObject($y)->isDynamic());
+        static::assertTrue(ReflectedClass::fromObject($s)->isDynamic());
     }
 
     public function test_it_knows_if_class_is_abstract(): void
@@ -144,6 +146,19 @@ final class ReflectedClassTest extends TestCase
 
         static::assertCount(1, $properties);
         static::assertSame('z', $properties['z']->name());
+    }
+
+    public function test_it_can_list_dynamic_properties(): void
+    {
+        $x = new Dynamic();
+        $x->x = 'foo';
+        $x->y = 'bar';
+        $class = ReflectedClass::fromObject($x);
+        $properties = $class->properties();
+
+        static::assertCount(2, $properties);
+        static::assertSame('x', $properties['x']->name());
+        static::assertSame('y', $properties['y']->name());
     }
 
     public function test_it_can_filter_properties(): void
