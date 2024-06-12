@@ -5,6 +5,7 @@ namespace VeeWee\Reflecta\Reflect\Type;
 
 use AllowDynamicProperties;
 use Closure;
+use Psl\Option\Option;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionObject;
@@ -12,7 +13,7 @@ use ReflectionProperty;
 use Throwable;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
 use function Psl\Dict\filter;
-use function Psl\Dict\pull;
+use function Psl\Dict\reindex;
 use function Psl\Vec\map;
 
 final class ReflectedClass
@@ -69,6 +70,16 @@ final class ReflectedClass
     }
 
     /**
+     * @return Option<ReflectedClass>
+     */
+    public function parent(): Option
+    {
+        $parent = $this->class->getParentClass();
+
+        return $parent? Option::some(new self($parent)) : Option::none();
+    }
+
+    /**
      * @param Closure(ReflectedClass): bool $predicate
      */
     public function check(Closure $predicate): bool
@@ -114,15 +125,12 @@ final class ReflectedClass
 
     public function property(string $property): ReflectedProperty
     {
-        try {
-            return new ReflectedProperty($this->class->getProperty($property));
-        } catch (Throwable $previous) {
-            throw UnreflectableException::unknownProperty(
-                $this->fullName(),
-                $property,
-                $previous
-            );
+        $properties = $this->properties();
+        if (!array_key_exists($property, $properties)) {
+            throw UnreflectableException::unknownProperty($this->fullName(), $property);
         }
+
+        return $properties[$property];
     }
 
     /**
@@ -134,10 +142,19 @@ final class ReflectedClass
      */
     public function properties(Closure|null $predicate = null): array
     {
-        $properties = pull(
-            $this->class->getProperties(),
-            static fn (ReflectionProperty $reflectionProperty): ReflectedProperty => new ReflectedProperty($reflectionProperty),
-            static fn (ReflectionProperty $reflectionProperty): string => $reflectionProperty->name
+        $properties = reindex(
+            [
+                // Collects private properties from parents as well:
+                ...$this->parent()->map(
+                    static fn (ReflectedClass $parent): array => $parent->properties()
+                )->unwrapOr([]),
+                // Collects properties from the current class:
+                ...map(
+                    $this->class->getProperties(),
+                    static fn (ReflectionProperty $property): ReflectedProperty => new ReflectedProperty($property)
+                )
+            ],
+            static fn (ReflectedProperty $property): string => $property->name(),
         );
 
         if ($predicate !== null) {

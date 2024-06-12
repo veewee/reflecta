@@ -35,6 +35,15 @@ final class UnreflectableException extends RuntimeException
         );
     }
 
+    public static function unreadableProperty(string $className, string $property, ?Throwable $previous = null): self
+    {
+        return new self(
+            sprintf('Unable to read property %s::$%s.', $className, $property),
+            0,
+            $previous
+        );
+    }
+
     public static function nonInstantiatable(string $className, Throwable $previous): self
     {
         return new self(

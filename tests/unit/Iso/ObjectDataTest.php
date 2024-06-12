@@ -5,6 +5,7 @@ namespace VeeWee\Reflecta\UnitTests\Iso;
 
 use PHPUnit\Framework\TestCase;
 use VeeWee\Reflecta\Reflect\Type\Visibility;
+use VeeWee\Reflecta\TestFixtures\AbstractProperties;
 use VeeWee\Reflecta\TestFixtures\X;
 use function VeeWee\Reflecta\Iso\object_data;
 use function VeeWee\Reflecta\Lens\properties;
@@ -50,5 +51,31 @@ final class ObjectDataTest extends TestCase
         $actualSkippedPrivate = $iso->from(['z' => 300, 'y' => 5000]);
         $expectedInstance->z = 300;
         static::assertEquals($expectedInstance, $actualSkippedPrivate);
+    }
+
+    public function test_it_can_hydrate_inherited_private_props(): void
+    {
+        $x = new class extends AbstractProperties {
+            private string $d = 'd';
+            protected string $e = 'e';
+            public string $f = 'f';
+        };
+        $iso = object_data($x::class);
+
+        $expectedData = [
+            'a' => 'a',
+            'b' => 'b',
+            'c' => 'c',
+            'd' => 'd',
+            'e' => 'e',
+            'f' => 'f',
+        ];
+        $expectedInstance = $x;
+
+        $instance = $iso->from($expectedData);
+        $actualData = $iso->to($instance);
+
+        static::assertEquals($expectedInstance, $instance);
+        static::assertSame($expectedData, $actualData);
     }
 }

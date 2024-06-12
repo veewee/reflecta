@@ -12,6 +12,7 @@ use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
 use VeeWee\Reflecta\Reflect\Type\ReflectedClass;
 use VeeWee\Reflecta\Reflect\Type\ReflectedProperty;
 use VeeWee\Reflecta\TestFixtures\AbstractAttribute;
+use VeeWee\Reflecta\TestFixtures\AbstractProperties;
 use VeeWee\Reflecta\TestFixtures\CustomAttribute;
 use VeeWee\Reflecta\TestFixtures\Dynamic;
 use VeeWee\Reflecta\TestFixtures\InheritedCustomAttribute;
@@ -48,6 +49,18 @@ final class ReflectedClassTest extends TestCase
         static::assertSame(X::class, $class->fullName());
         static::assertSame('X', $class->shortName());
         static::assertSame('VeeWee\Reflecta\TestFixtures', $class->namespaceName());
+    }
+
+    public function test_it_knows_parent(): void
+    {
+        $withParent = new class() extends AbstractAttribute {};
+        $withParentParent = ReflectedClass::fromObject($withParent)->parent();
+        $withoutParent = new class() {};
+        $withoutParentParent = ReflectedClass::fromObject($withoutParent)->parent();
+
+        static::assertTrue($withParentParent->isSome());
+        static::assertEquals($withParentParent->unwrap(), ReflectedClass::fromFullyQualifiedClassName(AbstractAttribute::class));
+        static::assertTrue($withoutParentParent->isNone());
     }
 
     public function test_it_knows_it_is_final(): void
@@ -139,6 +152,15 @@ final class ReflectedClassTest extends TestCase
         static::assertSame('z', $property->name());
     }
 
+    public function test_it_can_grab_inherited_property_by_name(): void
+    {
+        $x = new class extends AbstractProperties {};
+        $class = ReflectedClass::fromObject($x);
+        $property = $class->property('a');
+
+        static::assertSame('a', $property->name());
+    }
+
     public function test_it_can_list_all_properties(): void
     {
         $class = ReflectedClass::fromFullyQualifiedClassName(X::class);
@@ -159,6 +181,52 @@ final class ReflectedClassTest extends TestCase
         static::assertCount(2, $properties);
         static::assertSame('x', $properties['x']->name());
         static::assertSame('y', $properties['y']->name());
+    }
+
+    public function test_it_can_list_inherited_properties(): void
+    {
+        $x = new class extends AbstractProperties {
+            private string $d = 'd';
+            protected string $e = 'e';
+            public string $f = 'f';
+        };
+
+        $class = ReflectedClass::fromObject($x);
+        $properties = $class->properties();
+
+        static::assertCount(6, $properties);
+        static::assertSame('a', $properties['a']->name());
+        static::assertSame(AbstractProperties::class, $properties['a']->declaringClass()->fullName());
+        static::assertSame('b', $properties['b']->name());
+        static::assertSame(AbstractProperties::class, $properties['b']->declaringClass()->fullName());
+        static::assertSame('c', $properties['c']->name());
+        static::assertSame(AbstractProperties::class, $properties['c']->declaringClass()->fullName());
+        static::assertSame('d', $properties['d']->name());
+        static::assertSame($x::class, $properties['d']->declaringClass()->fullName());
+        static::assertSame('e', $properties['e']->name());
+        static::assertSame($x::class, $properties['e']->declaringClass()->fullName());
+        static::assertSame('f', $properties['f']->name());
+        static::assertSame($x::class, $properties['f']->declaringClass()->fullName());
+    }
+
+    public function test_it_can_overwrite_inherited_props(): void
+    {
+        $x = new class extends AbstractProperties {
+            private string $a = 'd';
+            protected string $b = 'e';
+            public string $c = 'f';
+        };
+
+        $class = ReflectedClass::fromObject($x);
+        $properties = $class->properties();
+
+        static::assertCount(3, $properties);
+        static::assertSame('a', $properties['a']->name());
+        static::assertSame($x::class, $properties['a']->declaringClass()->fullName());
+        static::assertSame('b', $properties['b']->name());
+        static::assertSame($x::class, $properties['b']->declaringClass()->fullName());
+        static::assertSame('c', $properties['c']->name());
+        static::assertSame($x::class, $properties['c']->declaringClass()->fullName());
     }
 
     public function test_it_can_filter_properties(): void
