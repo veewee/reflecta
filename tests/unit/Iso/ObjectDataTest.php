@@ -36,11 +36,10 @@ final class ObjectDataTest extends TestCase
             private int $y = 200;
         };
 
-        $iso = object_data(X::class, properties(property_visibility(Visibility::Public)));
+        $iso = object_data($x::class, properties(property_visibility(Visibility::Public)));
 
         $expectedData = ['z' => 100];
-        $expectedInstance = new X();
-        $expectedInstance->z = 100;
+        $expectedInstance = clone $x;
 
         $instance = $iso->from($expectedData);
         $actualData = $iso->to($instance);

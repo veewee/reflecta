@@ -191,6 +191,9 @@ try {
 }
 ```
 
+**Note:** When setting a predicate on a dynamic class, new properties will always be added.
+The next time you call `properties_get` on the same object, the predicate knows about the new property and will take it into account whilst filtering.
+
 #### property_get
 
 Detects the value of a property for a given object.
