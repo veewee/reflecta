@@ -53,5 +53,6 @@ return (new \PhpCsFixer\Config())
         'static_lambda' => true,
         'strict_comparison' => true,
         'strict_param' => true,
+        'native_function_invocation' => true,
     ])
 ;

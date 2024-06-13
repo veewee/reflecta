@@ -6,6 +6,7 @@ namespace VeeWee\Reflecta\UnitTests\Reflect;
 use AllowDynamicProperties;
 use PHPUnit\Framework\TestCase;
 use stdClass;
+use function get_class;
 use function VeeWee\Reflecta\Reflect\class_is_dynamic;
 use const PHP_VERSION_ID;
 

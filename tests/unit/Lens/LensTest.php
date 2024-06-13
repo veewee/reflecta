@@ -6,6 +6,7 @@ namespace VeeWee\Reflecta\UnitTests\Lens;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use VeeWee\Reflecta\Lens\Lens;
+use function array_key_exists;
 use function VeeWee\Reflecta\Lens\index;
 
 final class LensTest extends TestCase

@@ -3,6 +3,7 @@
 namespace VeeWee\Reflecta\ArrayAccess;
 
 use VeeWee\Reflecta\ArrayAccess\Exception\ArrayAccessException;
+use function array_key_exists;
 
 /**
  * @pure
