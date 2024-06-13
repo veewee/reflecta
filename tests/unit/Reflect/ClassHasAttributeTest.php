@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use VeeWee\Reflecta\TestFixtures\AbstractAttribute;
 use VeeWee\Reflecta\TestFixtures\CustomAttribute;
 use VeeWee\Reflecta\TestFixtures\InheritedCustomAttribute;
+use function get_class;
 use function VeeWee\Reflecta\Reflect\class_has_attribute;
 
 final class ClassHasAttributeTest extends TestCase

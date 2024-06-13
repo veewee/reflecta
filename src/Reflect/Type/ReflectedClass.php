@@ -12,6 +12,7 @@ use ReflectionObject;
 use ReflectionProperty;
 use Throwable;
 use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
+use function is_string;
 use function Psl\Dict\filter;
 use function Psl\Dict\reindex;
 use function Psl\Vec\map;
@@ -125,12 +126,15 @@ final class ReflectedClass
 
     public function property(string $property): ReflectedProperty
     {
-        $properties = $this->properties();
-        if (!array_key_exists($property, $properties)) {
-            throw UnreflectableException::unknownProperty($this->fullName(), $property);
+        if ($this->class->hasProperty($property)) {
+            return new ReflectedProperty($this->class->getProperty($property));
         }
 
-        return $properties[$property];
+        if ($parent = $this->parent()->unwrapOr(null)) {
+            return $parent->property($property);
+        }
+
+        throw UnreflectableException::unknownProperty($this->fullName(), $property);
     }
 
     /**
