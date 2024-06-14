@@ -26,12 +26,16 @@ function properties_set(object $object, array $values, Closure|null $predicate =
 {
     $class = ReflectedClass::fromObject($object);
 
-    $allProperties = $class->properties();
-    $filteredProperties = $predicate ? filter($allProperties, $predicate) : $allProperties;
-    $newValues = $class->isDynamic() ? diff_by_key($values, $allProperties) : [];
+    if ($predicate) {
+        $allProperties = $class->properties();
+        $filteredProperties = filter($allProperties, $predicate);
+        $unknownValues = $class->isDynamic() ? diff_by_key($values, $allProperties) : [];
+
+        $values = merge($unknownValues, intersect_by_key($values, $filteredProperties));
+    }
 
     return reduce_with_keys(
-        merge($newValues, intersect_by_key($values, $filteredProperties)),
+        $values,
         /**
          * @param T $object
          * @return T
