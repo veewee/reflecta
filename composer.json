@@ -54,7 +54,7 @@
         "phpunit/phpunit": "^10.4",
         "friendsofphp/php-cs-fixer": "^3.38",
         "veewee/composer-run-parallel": "^1.3",
-        "infection/infection": "^0.27.8"
+        "infection/infection": "^0.27.8 || ^0.29.0"
     },
     "scripts": {
         "cs": "PHP_CS_FIXER_IGNORE_ENV=1 php ./vendor/bin/php-cs-fixer fix --dry-run",
