@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace VeeWee\Reflecta\Exception;
 
 use Throwable;
+use function sprintf;
 
 final class CloneException extends RuntimeException
 {

@@ -27,7 +27,8 @@
         },
         "TrueValue": {
             "ignore": [
-                "VeeWee\\Reflecta\\Reflect\\Type\\ReflectedClass::isDynamic"
+                "VeeWee\\Reflecta\\Reflect\\Type\\ReflectedClass::isDynamic",
+                "VeeWee\\Reflecta\\Reflect\\Type\\Visibility::forProperty"
             ]
         }
     }

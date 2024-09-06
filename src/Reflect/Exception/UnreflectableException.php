@@ -5,6 +5,7 @@ namespace VeeWee\Reflecta\Reflect\Exception;
 
 use Throwable;
 use VeeWee\Reflecta\Exception\RuntimeException;
+use function sprintf;
 
 final class UnreflectableException extends RuntimeException
 {
