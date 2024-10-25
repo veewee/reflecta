@@ -17,7 +17,7 @@ use function VeeWee\Reflecta\Reflect\instantiate;
  *
  * @psalm-pure
  */
-function object_data(string $className, Lens $accessor = null): Iso
+function object_data(string $className, ?Lens $accessor = null): Iso
 {
     /** @var Lens<S, A> $typedAccessor */
     $typedAccessor = $accessor ?? properties();

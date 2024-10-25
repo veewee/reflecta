@@ -54,5 +54,6 @@ return (new \PhpCsFixer\Config())
         'strict_comparison' => true,
         'strict_param' => true,
         'native_function_invocation' => true,
+        'nullable_type_declaration_for_default_null_value' => true,
     ])
 ;
