@@ -5,8 +5,10 @@ namespace VeeWee\Reflecta\UnitTests\Lens;
 
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use VeeWee\Reflecta\Exception\ReadonlyException;
 use VeeWee\Reflecta\Lens\Lens;
 use function array_key_exists;
+use function Psl\Fun\identity;
 use function VeeWee\Reflecta\Lens\index;
 
 final class LensTest extends TestCase
@@ -105,5 +107,20 @@ final class LensTest extends TestCase
 
         static::assertSame('hello', $composed->get($data));
         static::assertSame(['greet' => ['message' => 'goodbye']], $composed->set($data, 'goodbye'));
+    }
+
+    public function test_it_can_read_from_readonly_lens(): void
+    {
+        $lens = Lens::readonly(identity());
+
+        static::assertSame('result', $lens->get('result'));
+    }
+
+    public function test_it_can_not_write_to_readonly_lens(): void
+    {
+        $lens = Lens::readonly(identity());
+
+        $this->expectExceptionObject(ReadonlyException::couldNotWrite());
+        $lens->set('result', 'impossible');
     }
 }
