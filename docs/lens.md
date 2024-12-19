@@ -244,3 +244,37 @@ $propertyLens->set(new Item(), ['value': 'world']);
 // > Item { value: "world" }
 ```
 
+#### read_only
+
+This function will create a lens that can only be used to get the value of the provided value.
+
+* **Get** will try to get() from the decorated lens
+* **Set** will throw a `ReadonlyException` when trying to set a value.
+
+```php
+use function VeeWee\Reflecta\Lens\property;
+use function VeeWee\Reflecta\Lens\read_only;
+
+$readonlyValueLens = read_only(property('value'));
+
+$readonlyValueLens->get(new class {
+    public string $value = 'hello';
+});
+// > "hello"
+
+
+$optionalValueLens->set(new class {
+    public string $value = 'hello';
+}, 'world');
+
+// > Throws ReadonlyException
+```
+
+The main Lens class has a shortcut function as well to create a readonly lens from a getter:
+
+```php
+use VeeWee\Reflecta\Lens\Lens;
+
+$getter = fn (mixed $item): mixed => $item;
+$lens = Lens::readonly($getter);
+```

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace VeeWee\Reflecta\Lens;
 
 use Psl\Result\ResultInterface;
+use VeeWee\Reflecta\Exception\ReadonlyException;
 use function Psl\Result\wrap;
 
 /**
@@ -34,6 +35,18 @@ final class Lens implements LensInterface
     {
         $this->get = $get;
         $this->set = $set;
+    }
+
+    /**
+     * @pure
+     * @template RS
+     * @template RA
+     * @param callable(RS): RA $get
+     * @return Lens<RS, RA>
+     */
+    public static function readonly(callable $get): self
+    {
+        return new self($get, static fn ($s, $a) => throw ReadonlyException::couldNotWrite());
     }
 
     /**
