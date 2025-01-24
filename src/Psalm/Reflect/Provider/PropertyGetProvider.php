@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace VeeWee\Reflecta\Psalm\Reflect\Provider;
 
+use Psalm\Issue\UndefinedPropertyFetch;
+use Psalm\IssueBuffer;
 use Psalm\Plugin\DynamicFunctionStorage;
 use Psalm\Plugin\EventHandler\DynamicFunctionStorageProviderInterface;
 use Psalm\Plugin\EventHandler\Event\DynamicFunctionStorageProviderEvent;
@@ -11,6 +13,7 @@ use Psalm\Type\Union;
 use VeeWee\Reflecta\Psalm\Reflect\Infer\ObjectType;
 use VeeWee\Reflecta\Psalm\Reflect\Infer\PropertyNameType;
 use VeeWee\Reflecta\Psalm\Reflect\Infer\PropertyValueType;
+use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
 
 final class PropertyGetProvider implements DynamicFunctionStorageProviderInterface
 {
@@ -29,7 +32,21 @@ final class PropertyGetProvider implements DynamicFunctionStorageProviderInterfa
 
         $objectType = ObjectType::infer($inferrer, $args[0]);
         $propertyNameType = PropertyNameType::infer($inferrer, $args[1]);
-        $inferredReturnType = PropertyValueType::infer($objectType, $propertyNameType);
+
+        try {
+            $inferredReturnType = PropertyValueType::infer($objectType, $propertyNameType);
+        } catch (UnreflectableException $e) {
+            IssueBuffer::maybeAdd(
+                new UndefinedPropertyFetch(
+                    $e->getMessage(),
+                    $event->getCodeLocation(),
+                    $objectType->value . '::' . $propertyNameType->value,
+                ),
+                $event->getStatementSource()->getSuppressedIssues()
+            );
+
+            return null;
+        }
 
         if (!$objectType || !$propertyNameType || !$inferredReturnType) {
             return null;
