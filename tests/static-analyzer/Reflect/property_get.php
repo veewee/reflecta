@@ -23,3 +23,14 @@ function test_get_mixed_return_type_on_templated_object(): mixed
 
     return $curried($z)($x);
 }
+
+/**
+ * @psalm-suppress UndefinedPropertyFetch
+ */
+function test_getting_unknown_property(): mixed
+{
+    $unknown = 'unknown';
+    $x = new X();
+
+    return property_get($x, $unknown);
+}

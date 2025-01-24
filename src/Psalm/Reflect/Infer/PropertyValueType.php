@@ -14,6 +14,9 @@ use VeeWee\Reflecta\Reflect\Type\ReflectedClass;
 
 final class PropertyValueType
 {
+    /**
+     * @throws UnreflectableException
+     */
     public static function infer(
         TNamedObject | TTemplateParam | null $objectType,
         TLiteralString | null $propertyNameType
@@ -22,11 +25,7 @@ final class PropertyValueType
             return null;
         }
 
-        try {
-            $prop = ReflectedClass::fromFullyQualifiedClassName($objectType->value)->property($propertyNameType->value);
-        } catch (UnreflectableException $e) {
-            return null;
-        }
+        $prop = ReflectedClass::fromFullyQualifiedClassName($objectType->value)->property($propertyNameType->value);
 
         return Reflection::getPsalmTypeFromReflectionType($prop->apply(
             static fn (ReflectionProperty $reflected) => $reflected->getType()
