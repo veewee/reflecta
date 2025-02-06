@@ -28,6 +28,8 @@ final class Plugin implements PluginEntryPointInterface
     {
         yield Iso\Provider\ComposeProvider::class;
         yield Lens\Provider\ComposeProvider::class;
+        yield Reflect\Provider\PropertiesSetProvider::class;
+        yield Reflect\Provider\PropertiesGetProvider::class;
         yield Reflect\Provider\PropertyGetProvider::class;
         yield Reflect\Provider\PropertySetProvider::class;
     }
