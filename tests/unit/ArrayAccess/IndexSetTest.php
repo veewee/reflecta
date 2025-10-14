@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace VeeWee\Reflecta\UnitTests\ArrayAccess;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use function VeeWee\Reflecta\ArrayAccess\index_set;
 
@@ -30,10 +31,7 @@ final class IndexSetTest extends TestCase
         ];
     }
 
-    /**
-     *
-     * @dataProvider provideSetCases
-     */
+    #[DataProvider('provideSetCases')]
     public function test_it_can_set_in_array(
         array $data,
         string|int $index,

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace VeeWee\Reflecta\UnitTests\ArrayAccess;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use VeeWee\Reflecta\ArrayAccess\Exception\ArrayAccessException;
 use function VeeWee\Reflecta\ArrayAccess\index_get;
@@ -23,10 +24,7 @@ final class IndexGetTest extends TestCase
         ];
     }
 
-    /**
-     *
-     * @dataProvider provideGetCases
-     */
+    #[DataProvider('provideGetCases')]
     public function test_it_can_get_from_array(
         array $data,
         string|int $index,
