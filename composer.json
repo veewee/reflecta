@@ -47,10 +47,16 @@
         }
     ],
     "require": {
-        "php": "~8.3.0 || ~8.4.0 || ~8.5.0",
-        "php-standard-library/php-standard-library": "^3.0 || ~4.0 || ^5.0 || ^6.0"
+        "php": "~8.4.0 || ~8.5.0",
+        "php-standard-library/dict": "^6.1",
+        "php-standard-library/foundation": "^6.1",
+        "php-standard-library/iter": "^6.1",
+        "php-standard-library/option": "^6.1",
+        "php-standard-library/result": "^6.1",
+        "php-standard-library/vec": "^6.1"
     },
     "require-dev": {
+        "php-standard-library/fun": "^6.1",
         "vimeo/psalm": "~6.13",
         "phpunit/phpunit": "~12.3",
         "php-cs-fixer/shim": "~3.88",
