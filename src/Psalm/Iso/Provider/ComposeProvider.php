@@ -7,24 +7,37 @@ use Psalm\Plugin\DynamicFunctionStorage;
 use Psalm\Plugin\DynamicTemplateProvider;
 use Psalm\Plugin\EventHandler\DynamicFunctionStorageProviderInterface;
 use Psalm\Plugin\EventHandler\Event\DynamicFunctionStorageProviderEvent;
+use Psalm\Plugin\EventHandler\Event\FunctionReturnTypeProviderEvent;
+use Psalm\Plugin\EventHandler\FunctionReturnTypeProviderInterface;
 use Psalm\Storage\FunctionLikeParameter;
 use Psalm\Type\Atomic\TGenericObject;
 use Psalm\Type\Atomic\TTemplateParam;
 use Psalm\Type\Union;
 
 use VeeWee\Reflecta\Iso\Iso;
+use VeeWee\Reflecta\Psalm\Compose\AdjacentTemplateValidator;
 use function array_map;
 use function count;
 use function range;
 
-final class ComposeProvider implements DynamicFunctionStorageProviderInterface
+final class ComposeProvider implements DynamicFunctionStorageProviderInterface, FunctionReturnTypeProviderInterface
 {
+    private const FUNCTION_ID = 'veewee\reflecta\iso\compose';
+
     /**
      * @return array<lowercase-string>
      */
     public static function getFunctionIds(): array
     {
-        return ['veewee\reflecta\iso\compose'];
+        return [self::FUNCTION_ID];
+    }
+
+    public static function getFunctionReturnType(FunctionReturnTypeProviderEvent $event): ?Union
+    {
+        AdjacentTemplateValidator::validate($event, Iso::class, self::FUNCTION_ID);
+
+        // Defer return type to the DynamicFunctionStorage provider.
+        return null;
     }
 
     public static function getFunctionStorage(DynamicFunctionStorageProviderEvent $event): ?DynamicFunctionStorage
