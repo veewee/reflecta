@@ -32,8 +32,7 @@ function it_knows_composed_result(Lens $lens1, Lens $lens2, Lens $lens3): Lens
  * @param Lens<C,D> $lens3
  * @return Lens<A,D>
  *
- * @  psalm-suppress InvalidArgument -
- * TODO : Invalid compose lens-param detection does not work any since contravariant templates are introduced.
+ * @psalm-suppress InvalidArgument
  */
 function it_knows_broken_composition(Lens $lens1, Lens $lens2, Lens $lens3): Lens
 {

@@ -32,8 +32,7 @@ function it_knows_composed_result(Iso $iso1, Iso $iso2, Iso $iso3): Iso
  * @param Iso<C,D> $iso3
  * @return Iso<A,D>
  *
- * @  psalm-suppress InvalidArgument -
- * TODO : Invalid compose iso-param detection does not work any since contravariant templates are introduced.
+ * @psalm-suppress InvalidArgument
  */
 function it_knows_broken_composition(Iso $iso1, Iso $iso2, Iso $iso3): Iso
 {
