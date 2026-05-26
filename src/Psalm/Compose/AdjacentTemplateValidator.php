@@ -5,8 +5,8 @@ namespace VeeWee\Reflecta\Psalm\Compose;
 
 use Psalm\CodeLocation;
 use Psalm\Internal\Type\Comparator\UnionTypeComparator;
-use Psalm\IssueBuffer;
 use Psalm\Issue\InvalidArgument;
+use Psalm\IssueBuffer;
 use Psalm\Plugin\EventHandler\Event\FunctionReturnTypeProviderEvent;
 use Psalm\Type\Atomic\TGenericObject;
 use Psalm\Type\Union;
