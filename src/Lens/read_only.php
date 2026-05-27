@@ -4,11 +4,13 @@ namespace VeeWee\Reflecta\Lens;
 
 /**
  * @template S
+ * @template T
  * @template A
+ * @template B
  *
- * @param LensInterface<S, A> $that
+ * @param LensInterface<S, T, A, B> $that
  *
- * @return Lens<S, A>
+ * @return Lens<S, S, A, A>
  *
  * @psalm-pure
  */

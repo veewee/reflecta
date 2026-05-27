@@ -125,4 +125,43 @@ final class IsoTest extends TestCase
         static::assertSame(base64_encode('hello,world'), $joined);
         static::assertSame($data, $exploded);
     }
+
+    public function test_it_supports_type_changing_from(): void
+    {
+        $person                   = new IsoTestPerson('Alice');
+        $hashed                   = new IsoTestHashedName('hashed:Alice');
+
+        /** @var Iso<IsoTestPerson, IsoTestAnonymizedPerson, string, IsoTestHashedName> $anonymize */
+        $anonymize = new Iso(
+            static fn (IsoTestPerson $p): string => $p->name,
+            static fn (IsoTestHashedName $h): IsoTestAnonymizedPerson => new IsoTestAnonymizedPerson($h),
+        );
+
+        $back = $anonymize->from($hashed);
+
+        static::assertInstanceOf(IsoTestAnonymizedPerson::class, $back);
+        static::assertSame($hashed, $back->name);
+        static::assertSame('Alice', $anonymize->to($person));
+    }
+}
+
+final class IsoTestPerson
+{
+    public function __construct(public string $name)
+    {
+    }
+}
+
+final class IsoTestHashedName
+{
+    public function __construct(public string $hash)
+    {
+    }
+}
+
+final class IsoTestAnonymizedPerson
+{
+    public function __construct(public IsoTestHashedName $name)
+    {
+    }
 }

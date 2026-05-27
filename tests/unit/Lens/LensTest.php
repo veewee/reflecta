@@ -123,4 +123,44 @@ final class LensTest extends TestCase
         $this->expectExceptionObject(ReadonlyException::couldNotWrite());
         $lens->set('result', 'impossible');
     }
+
+    public function test_it_supports_type_changing_set(): void
+    {
+        $person = new LensTestPerson('Alice');
+        $hashed = new LensTestHashedName('hashed:Alice');
+
+        /** @var Lens<LensTestPerson, LensTestAnonymizedPerson, string, LensTestHashedName> $anonymize */
+        $anonymize = new Lens(
+            static fn (LensTestPerson $p): string => $p->name,
+            static fn (LensTestPerson $_, LensTestHashedName $h): LensTestAnonymizedPerson
+                => new LensTestAnonymizedPerson($h),
+        );
+
+        $back = $anonymize->set($person, $hashed);
+
+        static::assertInstanceOf(LensTestAnonymizedPerson::class, $back);
+        static::assertSame($hashed, $back->name);
+        static::assertSame('Alice', $anonymize->get($person));
+    }
+}
+
+final class LensTestPerson
+{
+    public function __construct(public string $name)
+    {
+    }
+}
+
+final class LensTestHashedName
+{
+    public function __construct(public string $hash)
+    {
+    }
+}
+
+final class LensTestAnonymizedPerson
+{
+    public function __construct(public LensTestHashedName $name)
+    {
+    }
 }

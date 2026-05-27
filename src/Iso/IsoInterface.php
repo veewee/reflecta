@@ -7,7 +7,9 @@ use VeeWee\Reflecta\Lens\LensInterface;
 
 /**
  * @template-covariant S
+ * @template-covariant T
  * @template-covariant A
+ * @template-covariant B
  *
  * @psalm-immutable
  */
@@ -26,32 +28,32 @@ interface IsoInterface
     public function tryTo($s): ResultInterface;
 
     /**
-     * @param A $a
-     * @return S
+     * @param B $b
+     * @return T
      */
-    public function from($a);
+    public function from($b);
 
     /**
-     * @param A $a
-     * @return ResultInterface<S>
+     * @param B $b
+     * @return ResultInterface<T>
      */
-    public function tryFrom($a): ResultInterface;
+    public function tryFrom($b): ResultInterface;
 
     /**
-     * @return LensInterface<S, A>
+     * @return LensInterface<S, T, A, B>
      */
     public function asLens(): LensInterface;
 
     /**
-     * @return IsoInterface<A, S>
+     * @return IsoInterface<B, A, T, S>
      */
     public function inverse(): self;
 
     /**
-     * @template S2
      * @template A2
-     * @param IsoInterface<S2, A2> $that
-     * @return IsoInterface<S, A2>
+     * @template B2
+     * @param IsoInterface<A, B, A2, B2> $that
+     * @return IsoInterface<S, T, A2, B2>
      */
     public function compose(self $that): self;
 }

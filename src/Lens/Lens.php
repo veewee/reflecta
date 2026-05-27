@@ -8,12 +8,14 @@ use VeeWee\Reflecta\Exception\ReadonlyException;
 use function Psl\Result\wrap;
 
 /**
- * @template-covariant S
- * @template-covariant A
+ * @template S
+ * @template T
+ * @template A
+ * @template B
  *
  * @psalm-immutable
  * @psalm-suppress ImpureFunctionCall
- * @implements LensInterface<S, A>
+ * @implements LensInterface<S, T, A, B>
  */
 final class Lens implements LensInterface
 {
@@ -23,13 +25,13 @@ final class Lens implements LensInterface
     private $get;
 
     /**
-     * @var callable(S, A): S
+     * @var callable(S, B): T
      */
     private $set;
 
     /**
      * @param callable(S): A $get
-     * @param callable(S, A): S $set
+     * @param callable(S, B): T $set
      */
     public function __construct(callable $get, callable $set)
     {
@@ -39,10 +41,10 @@ final class Lens implements LensInterface
 
     /**
      * @pure
-     * @template RS
-     * @template RA
-     * @param callable(RS): RA $get
-     * @return Lens<RS, RA>
+     * @template S2
+     * @template A2
+     * @param callable(S2): A2 $get
+     * @return Lens<S2, S2, A2, A2>
      */
     public static function readonly(callable $get): self
     {
@@ -52,7 +54,7 @@ final class Lens implements LensInterface
     /**
      * @pure
      * @template I
-     * @return Lens<I, I>
+     * @return Lens<I, I, I, I>
      */
     public static function identity(): self
     {
@@ -91,28 +93,28 @@ final class Lens implements LensInterface
 
     /**
      * @param S $s
-     * @param A $a
-     * @return S
+     * @param B $b
+     * @return T
      */
-    public function set($s, $a)
+    public function set($s, $b)
     {
-        return ($this->set)($s, $a);
+        return ($this->set)($s, $b);
     }
 
     /**
      * @param S $s
-     * @param A $a
-     * @return ResultInterface<S>
+     * @param B $b
+     * @return ResultInterface<T>
      */
-    public function trySet($s, $a): ResultInterface
+    public function trySet($s, $b): ResultInterface
     {
-        return wrap(fn () => ($this->set)($s, $a));
+        return wrap(fn () => ($this->set)($s, $b));
     }
 
     /**
      * @param S $s
-     * @param callable(A): A $f
-     * @return S
+     * @param callable(A): B $f
+     * @return T
      */
     public function update($s, callable $f)
     {
@@ -121,8 +123,8 @@ final class Lens implements LensInterface
 
     /**
      * @param S $s
-     * @param callable(A): A $f
-     * @return ResultInterface<S>
+     * @param callable(A): B $f
+     * @return ResultInterface<T>
      */
     public function tryUpdate($s, callable $f): ResultInterface
     {
@@ -130,7 +132,7 @@ final class Lens implements LensInterface
     }
 
     /**
-     * @return LensInterface<S, A|null>
+     * @return LensInterface<S|null, T|null, A|null, B|null>
      */
     public function optional(): LensInterface
     {
@@ -138,14 +140,13 @@ final class Lens implements LensInterface
     }
 
     /**
-     * @template S2
      * @template A2
-     * @param LensInterface<S2, A2> $that
-     * @return LensInterface<S, A2>
+     * @template B2
+     * @param LensInterface<A, B, A2, B2> $that
+     * @return LensInterface<S, T, A2, B2>
      */
     public function compose(LensInterface $that): LensInterface
     {
-        /** @psalm-suppress InvalidArgument */
         return new self(
             /**
              * @param S $s
@@ -154,10 +155,10 @@ final class Lens implements LensInterface
             fn ($s) => $that->get(($this->get)($s)),
             /**
              * @param S $s
-             * @param A2 $a2
-             * @return S
+             * @param B2 $b2
+             * @return T
              */
-            fn ($s, $a2) => $this->set($s, $that->set($this->get($s), $a2))
+            fn ($s, $b2) => $this->set($s, $that->set($this->get($s), $b2))
         );
     }
 }

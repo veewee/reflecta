@@ -46,6 +46,10 @@ This package provides following components:
 * [Lens](/docs/lens.md): Separate your data from it's structure
 * [Reflect](/docs/reflect.md): Helps you read from and write to objects in a runtime-safe context.
 
+> Finding your way around optics? The
+> [🧬 STAB optics walkthrough](/docs/stab-optics.md) maps out the
+> `S`, `T`, `A`, `B` type parameters with worked examples.
+
 
 ## Inspiration
 

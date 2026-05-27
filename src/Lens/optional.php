@@ -4,11 +4,13 @@ namespace VeeWee\Reflecta\Lens;
 
 /**
  * @template S
+ * @template T
  * @template A
+ * @template B
  *
- * @param LensInterface<S, A> $that
+ * @param LensInterface<S, T, A, B> $that
  *
- * @return Lens<S, A|null>
+ * @return Lens<S|null, T|null, A|null, B|null>
  *
  * @psalm-pure
  */
@@ -32,13 +34,13 @@ function optional(LensInterface $that): Lens
         ),
         /**
          * @param S|null $subject
-         * @param A $value
-         * @return S|null
+         * @param B|null $value
+         * @return T|null
          */
         static fn ($subject, $value) => $that->trySet($subject, $value)->proceed(
             /**
-             * @param S $s
-             * @return S
+             * @param T $s
+             * @return T
              */
             static fn ($s) => $s,
             /**

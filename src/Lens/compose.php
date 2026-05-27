@@ -8,18 +8,20 @@ use function Psl\Iter\reduce;
  * @no-named-arguments
  *
  * @template S
+ * @template T
  * @template A
+ * @template B
  *
- * @param non-empty-array<int, LensInterface<mixed, mixed>> $lenses
+ * @param array<int, LensInterface<mixed, mixed, mixed, mixed>> $lenses
  *
- * @return LensInterface<S, A>
+ * @return LensInterface<S, T, A, B>
  *
  * @psalm-pure
  * @psalm-suppress ImpureFunctionCall
  */
 function compose(LensInterface ... $lenses): LensInterface
 {
-    /** @var LensInterface<S, A> */
+    /** @var LensInterface<S, T, A, B> */
     return reduce(
         $lenses,
         static fn (LensInterface $current, LensInterface $next) => $current->compose($next),

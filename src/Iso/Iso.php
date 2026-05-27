@@ -9,24 +9,26 @@ use VeeWee\Reflecta\Lens\LensInterface;
 use function Psl\Result\wrap;
 
 /**
- * @template-covariant S
- * @template-covariant A
+ * @template S
+ * @template T
+ * @template A
+ * @template B
  *
  * @psalm-immutable
  * @psalm-suppress ImpureFunctionCall
- * @implements IsoInterface<S, A>
+ * @implements IsoInterface<S, T, A, B>
  */
 final class Iso implements IsoInterface
 {
     /** @var callable(S): A */
     private $to;
 
-    /** @var callable(A): S */
+    /** @var callable(B): T */
     private $from;
 
     /**
      * @param callable(S): A $to
-     * @param callable(A): S $from
+     * @param callable(B): T $from
      */
     public function __construct(callable $to, callable $from)
     {
@@ -37,7 +39,7 @@ final class Iso implements IsoInterface
     /**
      * @pure
      * @template I
-     * @return Iso<I, I>
+     * @return Iso<I, I, I, I>
      */
     public static function identity(): self
     {
@@ -74,25 +76,25 @@ final class Iso implements IsoInterface
     }
 
     /**
-     * @param A $a
-     * @return S
+     * @param B $b
+     * @return T
      */
-    public function from($a)
+    public function from($b)
     {
-        return ($this->from)($a);
+        return ($this->from)($b);
     }
 
     /**
-     * @param A $a
-     * @return ResultInterface<S>
+     * @param B $b
+     * @return ResultInterface<T>
      */
-    public function tryFrom($a): ResultInterface
+    public function tryFrom($b): ResultInterface
     {
-        return wrap(fn () => ($this->from)($a));
+        return wrap(fn () => ($this->from)($b));
     }
 
     /**
-     * @return Lens<S, A>
+     * @return Lens<S, T, A, B>
      */
     public function asLens(): LensInterface
     {
@@ -100,15 +102,15 @@ final class Iso implements IsoInterface
             $this->to,
             /**
              * @param S $_
-             * @param A $a
-             * @return S
+             * @param B $b
+             * @return T
              */
-            fn ($_, $a) => $this->from($a)
+            fn ($_, $b) => $this->from($b)
         );
     }
 
     /**
-     * @return Iso<A, S>
+     * @return Iso<B, A, T, S>
      */
     public function inverse(): self
     {
@@ -116,14 +118,13 @@ final class Iso implements IsoInterface
     }
 
     /**
-     * @template S2
      * @template A2
-     * @param IsoInterface<S2, A2> $that
-     * @return Iso<S, A2>
+     * @template B2
+     * @param IsoInterface<A, B, A2, B2> $that
+     * @return Iso<S, T, A2, B2>
      */
     public function compose(IsoInterface $that): IsoInterface
     {
-        /** @psalm-suppress InvalidArgument */
         return new self(
             /**
              * @param S $s
@@ -131,10 +132,10 @@ final class Iso implements IsoInterface
              */
             fn ($s) => $that->to($this->to($s)),
             /**
-             * @param A2 $a2
-             * @return S
+             * @param B2 $b2
+             * @return T
              */
-            fn ($a2) => $this->from($that->from($a2))
+            fn ($b2) => $this->from($that->from($b2))
         );
     }
 }

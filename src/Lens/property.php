@@ -7,7 +7,7 @@ use function VeeWee\Reflecta\Reflect\property_set;
 
 /**
  * @template S of object
- * @return Lens<S, mixed>
+ * @return Lens<S, S, mixed, mixed>
  * @psalm-pure
  */
 function property(string $propertyName): Lens

@@ -6,7 +6,9 @@ use Psl\Result\ResultInterface;
 
 /**
  * @template-covariant S
+ * @template-covariant T
  * @template-covariant A
+ * @template-covariant B
  *
  * @psalm-immutable
  */
@@ -26,42 +28,42 @@ interface LensInterface
 
     /**
      * @param S $s
-     * @param A $a
-     * @return S
+     * @param B $b
+     * @return T
      */
-    public function set($s, $a);
+    public function set($s, $b);
 
     /**
      * @param S $s
-     * @param A $a
-     * @return ResultInterface<S>
+     * @param B $b
+     * @return ResultInterface<T>
      */
-    public function trySet($s, $a): ResultInterface;
+    public function trySet($s, $b): ResultInterface;
 
     /**
      * @param S $s
-     * @param callable(A): A $f
-     * @return S
+     * @param callable(A): B $f
+     * @return T
      */
     public function update($s, callable $f);
 
     /**
      * @param S $s
-     * @param callable(A): A $f
-     * @return ResultInterface<S>
+     * @param callable(A): B $f
+     * @return ResultInterface<T>
      */
     public function tryUpdate($s, callable $f): ResultInterface;
 
     /**
-     * @return LensInterface<S, A|null>
+     * @return LensInterface<S|null, T|null, A|null, B|null>
      */
     public function optional(): LensInterface;
 
     /**
-     * @template S2
      * @template A2
-     * @param LensInterface<S2, A2> $that
-     * @return LensInterface<S, A2>
+     * @template B2
+     * @param LensInterface<A, B, A2, B2> $that
+     * @return LensInterface<S, T, A2, B2>
      */
     public function compose(LensInterface $that): LensInterface;
 }
