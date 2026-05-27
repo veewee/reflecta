@@ -1,5 +1,9 @@
 # 🔄 Isomorphic Magic
 
+> **Finding your way around?** Get to grips with the dynamics of `Iso`'s
+> `S`, `T`, `A`, `B` type parameters in the short walkthrough at
+> [**🧬 STAB optics — the four-letter dance**](./stab-optics.md).
+
 Seamlessly navigate between different data representations with our Isomorphisms.
 Experience the enchantment of transforming your data effortlessly, as if conducting a symphony of bits and bytes.
 

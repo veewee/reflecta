@@ -13,20 +13,21 @@ use function VeeWee\Reflecta\Reflect\properties_set;
  *
  * @param null|Closure(ReflectedProperty): bool $predicate
  *
- * @return Lens<S, A>
+ * @return Lens<S, S, A, A>
  * @psalm-pure
  */
 function properties(Closure|null $predicate = null): Lens
 {
-    /** @var Lens<S, A> */
+    /** @var Lens<S, S, A, A> */
     return new Lens(
         /**
          * @param S $subject
          * @return A
-         *
-         * @psalm-suppress InvalidReturnType, InvalidReturnStatement
          */
-        static fn (object $subject): array => properties_get($subject, $predicate),
+        static function (object $subject) use ($predicate): array {
+            /** @var A */
+            return properties_get($subject, $predicate);
+        },
         /**
          * @param S $subject
          * @param A $value

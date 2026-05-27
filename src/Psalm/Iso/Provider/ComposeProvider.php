@@ -7,20 +7,17 @@ use Psalm\Plugin\DynamicFunctionStorage;
 use Psalm\Plugin\DynamicTemplateProvider;
 use Psalm\Plugin\EventHandler\DynamicFunctionStorageProviderInterface;
 use Psalm\Plugin\EventHandler\Event\DynamicFunctionStorageProviderEvent;
-use Psalm\Plugin\EventHandler\Event\FunctionReturnTypeProviderEvent;
-use Psalm\Plugin\EventHandler\FunctionReturnTypeProviderInterface;
 use Psalm\Storage\FunctionLikeParameter;
 use Psalm\Type\Atomic\TGenericObject;
 use Psalm\Type\Atomic\TTemplateParam;
 use Psalm\Type\Union;
 
 use VeeWee\Reflecta\Iso\Iso;
-use VeeWee\Reflecta\Psalm\Compose\AdjacentTemplateValidator;
 use function array_map;
 use function count;
 use function range;
 
-final class ComposeProvider implements DynamicFunctionStorageProviderInterface, FunctionReturnTypeProviderInterface
+final class ComposeProvider implements DynamicFunctionStorageProviderInterface
 {
     private const FUNCTION_ID = 'veewee\reflecta\iso\compose';
 
@@ -32,52 +29,56 @@ final class ComposeProvider implements DynamicFunctionStorageProviderInterface, 
         return [self::FUNCTION_ID];
     }
 
-    public static function getFunctionReturnType(FunctionReturnTypeProviderEvent $event): ?Union
-    {
-        AdjacentTemplateValidator::validate($event, Iso::class, self::FUNCTION_ID);
-
-        // Defer return type to the DynamicFunctionStorage provider.
-        return null;
-    }
-
     public static function getFunctionStorage(DynamicFunctionStorageProviderEvent $event): ?DynamicFunctionStorage
     {
         $templateProvider = $event->getTemplateProvider();
         $argsCount = count($event->getArgs());
 
-        // Create S->A iso pairs
-        $composedIsos = array_map(
-            static fn (int $callable_offset) => self::createABIso(
-                self::createTemplateFromOffset($templateProvider, $callable_offset),
-                self::createTemplateFromOffset($templateProvider, $callable_offset + 1),
-            ),
-            range(1, $argsCount)
+        // No args: fall back to the declared signature (its non-empty-array param
+        // already rejects empty calls). Building storage here would compute a
+        // negative base offset and read undefined $templates entries.
+        if ($argsCount === 0) {
+            return null;
+        }
+
+        // STAB chain: for N args, we need 2N+2 templates.
+        // Arg i (1..N) takes Iso<T(2i-1), T(2i), T(2i+1), T(2i+2)>.
+        // Adjacent args share their (slot-3, slot-4) with the next arg's (slot-1, slot-2),
+        // which under invariant templates forces the boundary types to unify.
+        $templateCount = ($argsCount * 2) + 2;
+        $templates = array_map(
+            static fn (int $offset) => self::createTemplateFromOffset($templateProvider, $offset),
+            range(1, $templateCount)
         );
 
         $composeStorage = new DynamicFunctionStorage();
-        $composeStorage->params = [
-            ...array_map(
-                static fn (TGenericObject $iso, int $offset) => self::createParam(
-                    "iso_{$offset}",
-                    new Union([$iso]),
-                ),
-                $composedIsos,
-                array_keys($composedIsos)
-            )
-        ];
+        $composeStorage->templates = $templates;
 
-        // Add compose template list for each intermediate Iso
-        $composeStorage->templates = array_map(
-            static fn ($offset) => self::createTemplateFromOffset($templateProvider, $offset),
-            range(1, $argsCount + 1),
-        );
+        $params = [];
+        foreach (range(1, $argsCount) as $argIndex) {
+            $base = ($argIndex - 1) * 2;
+            $params[] = self::createParam(
+                "iso_{$argIndex}",
+                new Union([
+                    self::createStabIso(
+                        $templates[$base],
+                        $templates[$base + 1],
+                        $templates[$base + 2],
+                        $templates[$base + 3],
+                    ),
+                ]),
+            );
+        }
+        $composeStorage->params = $params;
 
-        // Compose return type from templates T1 -> TLast (Where TLast could also be T1 when no arguments are provided.)
+        // Return type: outer (S, T) of the first arg + inner (A, B) of the last arg.
         $composeStorage->return_type = new Union([
-            self::createABIso(
-                current($composeStorage->templates),
-                end($composeStorage->templates)
-            )
+            self::createStabIso(
+                $templates[0],
+                $templates[1],
+                $templates[$templateCount - 2],
+                $templates[$templateCount - 1],
+            ),
         ]);
 
         return $composeStorage;
@@ -90,15 +91,19 @@ final class ComposeProvider implements DynamicFunctionStorageProviderInterface, 
         return $template_provider->createTemplate("T{$offset}");
     }
 
-    private static function createABIso(
-        TTemplateParam $aType,
-        TTemplateParam $bType
+    private static function createStabIso(
+        TTemplateParam $s,
+        TTemplateParam $t,
+        TTemplateParam $a,
+        TTemplateParam $b,
     ): TGenericObject {
         return new TGenericObject(
             Iso::class,
             [
-                new Union([$aType]),
-                new Union([$bType]),
+                new Union([$s]),
+                new Union([$t]),
+                new Union([$a]),
+                new Union([$b]),
             ]
         );
     }

@@ -1,5 +1,9 @@
 # 🔍 Lenses of Clarity
 
+> **Finding your way around?** Get to grips with the dynamics of `Lens`'s
+> `S`, `T`, `A`, `B` type parameters in the short walkthrough at
+> [**🧬 STAB optics — the four-letter dance**](./stab-optics.md).
+
 Focus on what matters most.
 Our lenses provide a crystal-clear view, allowing you to zero in on specific data points without the distraction of unnecessary details.
 Precision meets simplicity in every line of code.

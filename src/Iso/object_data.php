@@ -11,15 +11,15 @@ use function VeeWee\Reflecta\Reflect\instantiate;
  * @template A of array<string, mixed>
  *
  * @param class-string<S> $className
- * @param null|Lens<S, A> $accessor
+ * @param null|Lens<S, S, A, A> $accessor
  *
- * @return Iso<S, A>
+ * @return Iso<S, S, A, A>
  *
  * @psalm-pure
  */
 function object_data(string $className, ?Lens $accessor = null): Iso
 {
-    /** @var Lens<S, A> $typedAccessor */
+    /** @var Lens<S, S, A, A> $typedAccessor */
     $typedAccessor = $accessor ?? properties();
 
     return new Iso(

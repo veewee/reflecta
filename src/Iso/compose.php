@@ -8,18 +8,20 @@ use function Psl\Iter\reduce;
  * @no-named-arguments
  *
  * @template S
+ * @template T
  * @template A
+ * @template B
  *
- * @param non-empty-array<int, IsoInterface<mixed, mixed>> $isos
+ * @param array<int, IsoInterface<mixed, mixed, mixed, mixed>> $isos
  *
- * @return IsoInterface<S, A>
+ * @return IsoInterface<S, T, A, B>
  *
  * @psalm-pure
  * @psalm-suppress ImpureFunctionCall
  */
 function compose(IsoInterface ... $isos): IsoInterface
 {
-    /** @var IsoInterface<S, A> */
+    /** @var IsoInterface<S, T, A, B> */
     return reduce(
         $isos,
         static fn (IsoInterface $current, IsoInterface $next) => $current->compose($next),
