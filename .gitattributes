@@ -3,5 +3,9 @@
 * export-ignore
 
 composer.json -export-ignore
+LICENSE       -export-ignore
+README.md     -export-ignore
 src/          -export-ignore
 src/**        -export-ignore
+docs/         -export-ignore
+docs/**       -export-ignore
