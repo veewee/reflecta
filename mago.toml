@@ -1,0 +1,50 @@
+[source]
+paths = ["src", "tests/static-analyzer"]
+includes = ["vendor", "tests/fixtures"]
+# The Psalm plugin is only loaded by Psalm itself and targets Psalm's own API.
+excludes = ["src/Psalm"]
+
+[analyzer]
+plugins = ["psl"]
+
+# Every entry below is a mago limitation or a deliberate cross-analyzer trade-off,
+# not a defect in this library. Things that are genuinely unverifiable about our own
+# code carry an inline `@mago-expect` instead.
+ignore = [
+    # LensInterface/IsoInterface declare all four STAB templates `@template-covariant`
+    # (the concrete Lens/Iso are invariant), so `S` and `B` end up in parameter
+    # positions. Mago is right: that is variance-unsound, and it is reachable - widen a
+    # `Lens<X, X, ...>` to `Lens<object, object, ...>` and its getter reflects on a
+    # property the argument does not have.
+    #
+    # Psalm has the same check but skips it for mutation-free methods
+    # (`TypeVisitor/TypeChecker.php`, the `$method_storage->mutation_free` branch), and
+    # `@psalm-immutable` marks every method mutation-free - so these two interfaces slip
+    # through. That carve-out only stops wrongly-typed *writes*, not reads.
+    #
+    # The covariance stays anyway: downstream depends on it. Making `S`/`B` invariant
+    # keeps this repo green but yields 25 Psalm errors in php-soap/encoding, and making
+    # everything invariant yields 27. Do not "fix" it here.
+    { code = "invalid-template-parameter", in = ["src/Lens/LensInterface.php", "src/Iso/IsoInterface.php"] },
+
+    # Mago's stub types `ReflectionAttribute::getName()` as `string`; Psalm types it as
+    # `class-string`, which is what it actually returns. Drop once the stub is fixed.
+    { code = "invalid-return-statement", in = ["src/Reflect/Type/ReflectedAttribute.php"] },
+]
+
+[linter]
+# php-cs-fixer owns this project's style; only rules that would fight it are off.
+[linter.rules]
+# The optics wrap closures that carry `@param`/`@return` docblocks Psalm needs to
+# infer through. First-class callables and arrow functions have nowhere to put them.
+prefer-first-class-callable = { enabled = false }
+prefer-arrow-function = { enabled = false }
+# Reflection wrappers mirror the surface of the Reflection* classes they wrap.
+too-many-methods = { enabled = false }
+no-else-clause = { enabled = false }
+# Static-analysis fixtures pass literals positionally on purpose; naming every
+# argument would bury what each case is actually asserting.
+literal-named-argument = { enabled = false }
+
+[extension-hosts.reflecta]
+command = ["php", "bin/mago-extension.php"]

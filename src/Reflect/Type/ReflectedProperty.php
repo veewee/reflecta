@@ -81,7 +81,9 @@ final class ReflectedProperty
 
     public function docComment(): string
     {
-        return $this->property->getDocComment();
+        $docComment = $this->property->getDocComment();
+
+        return $docComment === false ? '' : $docComment;
     }
 
     public function defaultValue(): mixed
@@ -95,7 +97,7 @@ final class ReflectedProperty
     }
 
     /**
-     * @template T extends object
+     * @template T of object
      *
      * @param class-string<T>|null $attributeClassName
      *

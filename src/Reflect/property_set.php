@@ -31,6 +31,7 @@ function property_set(object $object, string $name, mixed $value): object
     } catch (UnreflectableException $e) {
         // In case the property is unknown, try to set a dynamic property.
         if (object_is_dynamic($new)) {
+            /** @mago-expect analysis:string-member-selector,ambiguous-object-property-access */
             $new->{$name} = $value;
 
             return $new;

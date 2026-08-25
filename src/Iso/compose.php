@@ -21,7 +21,6 @@ use function Psl\Iter\reduce;
  */
 function compose(IsoInterface ... $isos): IsoInterface
 {
-    /** @var IsoInterface<S, T, A, B> */
     return reduce(
         $isos,
         static fn (IsoInterface $current, IsoInterface $next) => $current->compose($next),

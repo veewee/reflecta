@@ -56,6 +56,7 @@
         "php-standard-library/vec": "^6.1"
     },
     "require-dev": {
+        "carthage-software/mago": "^1.47",
         "php-standard-library/fun": "^6.1",
         "vimeo/psalm": "~6.13",
         "phpunit/phpunit": "~12.3",
@@ -67,6 +68,9 @@
         "cs": "PHP_CS_FIXER_IGNORE_ENV=1 php ./vendor/bin/php-cs-fixer fix --dry-run",
         "cs:fix": "PHP_CS_FIXER_IGNORE_ENV=1 php ./vendor/bin/php-cs-fixer fix",
         "psalm": "./vendor/bin/psalm --no-cache --stats",
+        "mago": "@parallel mago:analyze mago:lint",
+        "mago:analyze": "./vendor/bin/mago analyze",
+        "mago:lint": "./vendor/bin/mago lint",
         "tests": "./vendor/bin/phpunit --coverage-text --color",
         "testquality": "@parallel infection",
         "infection": [
@@ -74,7 +78,7 @@
             "./vendor/bin/infection --show-mutations -v"
         ],
         "ci": [
-            "@parallel cs psalm tests",
+            "@parallel cs psalm mago tests",
             "@parallel infection"
       ]
     },

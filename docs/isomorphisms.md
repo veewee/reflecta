@@ -77,6 +77,7 @@ assert($actual === $data);
 This function is able to compose multiple isomorphisms into a new one.
 Check the chapter [composability](#composability) for more information.
 A psalm plugin is available that validates if the types of the ISOs are composable.
+The mago extension infers the composed type as well, but does not validate the chain: a boundary mismatch is reported by psalm only.
 
 ```php
 use function VeeWee\Reflecta\Iso\compose;

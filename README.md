@@ -37,6 +37,17 @@ You can enable it by:
 ```
 > Requires vimeo/psalm 5+
 
+### Mago support
+
+The same inference is available to [mago](https://github.com/carthage-software/mago) through a worker
+extension. Register it in your `mago.toml`:
+
+```toml
+[extension-hosts.reflecta]
+command = ["php", "vendor/veewee/reflecta/bin/mago-extension.php"]
+```
+> Requires carthage-software/mago 1.47+
+
 ## Components
 
 This package provides following components:

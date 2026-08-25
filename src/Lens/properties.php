@@ -18,7 +18,6 @@ use function VeeWee\Reflecta\Reflect\properties_set;
  */
 function properties(Closure|null $predicate = null): Lens
 {
-    /** @var Lens<S, S, A, A> */
     return new Lens(
         /**
          * @param S $subject

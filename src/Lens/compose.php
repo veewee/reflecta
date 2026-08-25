@@ -21,7 +21,6 @@ use function Psl\Iter\reduce;
  */
 function compose(LensInterface ... $lenses): LensInterface
 {
-    /** @var LensInterface<S, T, A, B> */
     return reduce(
         $lenses,
         static fn (LensInterface $current, LensInterface $next) => $current->compose($next),

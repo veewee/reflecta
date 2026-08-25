@@ -48,6 +48,12 @@ final class Lens implements LensInterface
      */
     public static function readonly(callable $get): self
     {
+        /**
+         * The setter only ever throws, so its return type is `never` and `T` cannot be
+         * inferred as `S2` from the closure alone.
+         *
+         * @var Lens<S2, S2, A2, A2>
+         */
         return new self($get, static fn ($s, $a) => throw ReadonlyException::couldNotWrite());
     }
 
@@ -61,13 +67,13 @@ final class Lens implements LensInterface
         return new self(
             /**
              * @param I $s
-             * @returns I
+             * @return I
              */
             static fn ($s) => $s,
             /**
              * @param I $_
              * @param I $a
-             * @returns I
+             * @return I
              */
             static fn ($_, $a) => $a
         );

@@ -9,7 +9,7 @@ use VeeWee\Reflecta\TestFixtures\X;
 use function VeeWee\Reflecta\Reflect\Predicate\property_visibility;
 use function VeeWee\Reflecta\Reflect\properties_set;
 
-function test_set_valid_prop_value_type(): X
+function test_set_valid_props_value_type(): X
 {
     $x = new X();
     $x->z = 123;
@@ -37,7 +37,7 @@ function test_set_partial_props(): MultipleProperties
 /**
  * @psalm-suppress InvalidScalarArgument
  */
-function test_set_invalid_prop_value_type(): X
+function test_set_invalid_props_value_type(): X
 {
     $x = new X();
     $x->z = 123;
@@ -48,7 +48,7 @@ function test_set_invalid_prop_value_type(): X
 /**
  * @psalm-suppress InvalidArgument
  */
-function test_assigning_unknown_property(): X
+function test_assigning_unknown_properties(): X
 {
     $x = new X();
 

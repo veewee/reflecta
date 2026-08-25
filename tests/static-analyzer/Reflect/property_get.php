@@ -3,6 +3,7 @@
 namespace VeeWee\Reflecta\SaTests\Reflect;
 
 use Closure;
+use VeeWee\Reflecta\TestFixtures\ConcreteProperties;
 use VeeWee\Reflecta\TestFixtures\X;
 use function VeeWee\Reflecta\Reflect\property_get;
 
@@ -33,4 +34,15 @@ function test_getting_unknown_property(): mixed
     $x = new X();
 
     return property_get($x, $unknown);
+}
+
+/**
+ * A private property declared on a parent is still reachable, so its type has to
+ * be resolved through the ancestors rather than off the child alone.
+ */
+function test_get_inherited_prop_return_type(): string
+{
+    $a = 'a';
+
+    return property_get(new ConcreteProperties(), $a);
 }

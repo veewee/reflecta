@@ -44,6 +44,10 @@ function it_knows_composed_result(Iso $iso1, Iso $iso2, Iso $iso3): Iso
  * @param Iso<C1, C2, D1, D2> $iso3
  * @return Iso<A1, A2, D1, D2>
  *
+ * Note that this case only asserts anything under psalm. Mago cannot detect the
+ * mismatch: that needs the argument side, and `CallableSignatureProvider` runs
+ * before arguments are analyzed.
+ *
  * @psalm-suppress InvalidArgument
  */
 function it_knows_broken_composition(Iso $iso1, Iso $iso2, Iso $iso3): Iso

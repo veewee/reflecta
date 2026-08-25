@@ -44,6 +44,10 @@ function it_knows_composed_result(Lens $lens1, Lens $lens2, Lens $lens3): Lens
  * @param Lens<C1, C2, D1, D2> $lens3
  * @return Lens<A1, A2, D1, D2>
  *
+ * Note that this case only asserts anything under psalm. Mago cannot detect the
+ * mismatch: that needs the argument side, and `CallableSignatureProvider` runs
+ * before arguments are analyzed.
+ *
  * @psalm-suppress InvalidArgument
  */
 function it_knows_broken_composition(Lens $lens1, Lens $lens2, Lens $lens3): Lens

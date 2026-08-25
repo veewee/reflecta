@@ -6,7 +6,7 @@ use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
 use VeeWee\Reflecta\Reflect\Type\ReflectedClass;
 
 /**
- * @template T extends object
+ * @template T of object
  *
  * @param class-string<T>|null $attributeClassName
  * @return (T is null ? list<object> : list<T>)

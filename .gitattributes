@@ -7,5 +7,7 @@ LICENSE       -export-ignore
 README.md     -export-ignore
 src/          -export-ignore
 src/**        -export-ignore
+bin/          -export-ignore
+bin/**        -export-ignore
 docs/         -export-ignore
 docs/**       -export-ignore
