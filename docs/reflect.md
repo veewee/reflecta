@@ -13,7 +13,7 @@ This package provides following functions for dealing with objects.
 
 Detects all attributes at the class level of the given className that match the optionally provided argument type (or super-type).
 If the class is not reflectable or there is an error instantiating any argument, an `UnreflectableException` exception is triggered!
-The result of this function is of type: `list<object>`. However, if you provide an argument name: psalm will know the type of the attribute.
+The result of this function is of type: `list<object>`. However, if you provide an argument name: psalm and mago will know the type of the attribute.
 
 ```php
 use function VeeWee\Reflecta\Reflect\class_attributes;
@@ -80,7 +80,7 @@ try {
 
 Detects all attributes at the class level of the given object that match the optionally provided argument type (or super-type).
 If the object is not reflectable or there is an error instantiating any argument, an `UnreflectableException` exception is triggered!
-The result of this function is of type: `list<object>`. However, if you provide an argument name: psalm will know the type of the attribute.
+The result of this function is of type: `list<object>`. However, if you provide an argument name: psalm and mago will know the type of the attribute.
 
 ```php
 use function VeeWee\Reflecta\Reflect\object_attributes;
@@ -199,7 +199,7 @@ The next time you call `properties_get` on the same object, the predicate knows 
 Detects the value of a property for a given object.
 The property could have any visibility.
 If the property is not available inside the object, an `UnreflectableException` exception is triggered!
-If all stars align, the result of this function gets inferred by psalm based on the provided named object and literal property.
+If all stars align, the result of this function gets inferred by psalm and mago based on the provided named object and literal property.
 
 
 ```php

@@ -4,6 +4,7 @@ namespace VeeWee\Reflecta\SaTests\Reflect;
 
 use Closure;
 use VeeWee\Reflecta\Reflect\Type\Visibility;
+use VeeWee\Reflecta\TestFixtures\ConcreteProperties;
 use VeeWee\Reflecta\TestFixtures\Dynamic;
 use VeeWee\Reflecta\TestFixtures\MultipleProperties;
 use VeeWee\Reflecta\TestFixtures\X;
@@ -78,4 +79,15 @@ function test_get_props_mixed_return_type_on_templated_object(): array
     $x = new X();
 
     return $curried()($x);
+}
+
+/**
+ * Inherited properties are collected too, private ones on the parent included,
+ * mirroring `ReflectedClass::properties()`.
+ *
+ * @return array{a: string, b: string, c: string, d: int}
+ */
+function test_get_inherited_props_return_type(): array
+{
+    return properties_get(new ConcreteProperties());
 }

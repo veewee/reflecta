@@ -18,17 +18,19 @@ final class PropertyValueType
     }
 
     /**
-     * Resolves the declared type of `$class::$$name`, falling back to the
-     * declared `mixed` when the property is unknown or untyped.
+     * Resolves the declared type of `$class::$$name`.
+     *
+     * Goes through the same collection as `properties_get()` rather than a targeted
+     * lookup: `ReflectedClass::property()` falls back to the parents, and a private
+     * parent property is not reachable through `getProperty()` on the child.
      */
     public static function infer(Codebase $codebase, string $class, string $name): ?Type
     {
-        $property = $codebase->getDeclaringProperty($class, '$' . $name)
-            ?? $codebase->getProperty($class, '$' . $name);
-        if ($property === null) {
+        $metadata = $codebase->getClassLike($class);
+        if ($metadata === null) {
             return null;
         }
 
-        return ($property->type ?? $property->declaredType)?->type;
+        return ClassProperties::collect($codebase, $metadata)[$name] ?? null;
     }
 }

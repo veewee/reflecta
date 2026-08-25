@@ -106,6 +106,7 @@ $newPerson = $personsHatColorLens->set($person, 'red');
 This function is able to compose multiple lenses into a new one.
 Check the chapter [composability](#composability) for more information.
 A psalm plugin is available that validates if the types of the lenses are composable.
+The mago extension infers the composed type as well, but does not validate the chain: a boundary mismatch is reported by psalm only.
 
 ```php
 use function VeeWee\Reflecta\Lens\compose;
