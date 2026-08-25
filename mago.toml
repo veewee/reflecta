@@ -12,10 +12,18 @@ plugins = ["psl"]
 # code carry an inline `@mago-expect` instead.
 ignore = [
     # Lens/Iso declare all four STAB templates `@template-covariant`, so `S` and `B`
-    # end up in parameter positions. Mago is right that this is variance-unsound;
-    # Psalm does not police it, and downstream consumers depend on the covariance.
-    # Making `S`/`B` invariant keeps this repo green but breaks php-soap/encoding
-    # (25-27 Psalm errors in `ObjectAccess` and `XmlEncoder`). Do not "fix" it here.
+    # end up in parameter positions. Mago is right: that is variance-unsound, and it
+    # is reachable - widen a `Lens<X, X, ...>` to `Lens<object, object, ...>` and its
+    # getter reflects on a property the argument does not have.
+    #
+    # Psalm has the same check but skips it for mutation-free methods
+    # (`TypeVisitor/TypeChecker.php`, the `$method_storage->mutation_free` branch), and
+    # `@psalm-immutable` marks every method mutation-free - so these two interfaces slip
+    # through. That carve-off only stops wrongly-typed *writes*, not reads.
+    #
+    # The covariance stays anyway: downstream depends on it. Making `S`/`B` invariant
+    # keeps this repo green but yields 25 Psalm errors in php-soap/encoding, and making
+    # everything invariant yields 27. Do not "fix" it here.
     { code = "invalid-template-parameter", in = ["src/Lens/LensInterface.php", "src/Iso/IsoInterface.php"] },
 
     # `Lens::readonly()` builds its setter from a closure that only throws, so mago
