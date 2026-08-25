@@ -11,26 +11,21 @@ plugins = ["psl"]
 # not a defect in this library. Things that are genuinely unverifiable about our own
 # code carry an inline `@mago-expect` instead.
 ignore = [
-    # Lens/Iso declare all four STAB templates `@template-covariant`, so `S` and `B`
-    # end up in parameter positions. Mago is right: that is variance-unsound, and it
-    # is reachable - widen a `Lens<X, X, ...>` to `Lens<object, object, ...>` and its
-    # getter reflects on a property the argument does not have.
+    # LensInterface/IsoInterface declare all four STAB templates `@template-covariant`
+    # (the concrete Lens/Iso are invariant), so `S` and `B` end up in parameter
+    # positions. Mago is right: that is variance-unsound, and it is reachable - widen a
+    # `Lens<X, X, ...>` to `Lens<object, object, ...>` and its getter reflects on a
+    # property the argument does not have.
     #
     # Psalm has the same check but skips it for mutation-free methods
     # (`TypeVisitor/TypeChecker.php`, the `$method_storage->mutation_free` branch), and
     # `@psalm-immutable` marks every method mutation-free - so these two interfaces slip
-    # through. That carve-off only stops wrongly-typed *writes*, not reads.
+    # through. That carve-out only stops wrongly-typed *writes*, not reads.
     #
     # The covariance stays anyway: downstream depends on it. Making `S`/`B` invariant
     # keeps this repo green but yields 25 Psalm errors in php-soap/encoding, and making
     # everything invariant yields 27. Do not "fix" it here.
     { code = "invalid-template-parameter", in = ["src/Lens/LensInterface.php", "src/Iso/IsoInterface.php"] },
-
-    # `Lens::readonly()` builds its setter from a closure that only throws, so mago
-    # infers `never` for `T` and calls the result less specific than `Lens<S2, S2, ...>`.
-    # Annotating the closure to return `S2` satisfies mago but makes Psalm report
-    # InvalidReturnType + NoValue, so neither side can be made happy in the source.
-    { code = "less-specific-nested-return-statement", in = ["src/Lens/Lens.php"] },
 
     # Mago's stub types `ReflectionAttribute::getName()` as `string`; Psalm types it as
     # `class-string`, which is what it actually returns. Drop once the stub is fixed.
