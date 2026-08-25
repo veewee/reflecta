@@ -46,12 +46,12 @@ final class Iso implements IsoInterface
         return new self(
             /**
              * @param I $s
-             * @returns I
+             * @return I
              */
             static fn ($s) => $s,
             /**
              * @param I $s
-             * @returns I
+             * @return I
              */
             static fn ($s) => $s
         );

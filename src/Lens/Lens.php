@@ -67,13 +67,13 @@ final class Lens implements LensInterface
         return new self(
             /**
              * @param I $s
-             * @returns I
+             * @return I
              */
             static fn ($s) => $s,
             /**
              * @param I $_
              * @param I $a
-             * @returns I
+             * @return I
              */
             static fn ($_, $a) => $a
         );
