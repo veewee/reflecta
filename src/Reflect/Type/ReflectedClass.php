@@ -172,7 +172,7 @@ final class ReflectedClass
     }
 
     /**
-     * @template Ta extends object
+     * @template Ta of object
      *
      * @param class-string<Ta>|null $attributeClassName
      *

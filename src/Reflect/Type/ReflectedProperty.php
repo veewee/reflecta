@@ -97,7 +97,7 @@ final class ReflectedProperty
     }
 
     /**
-     * @template T extends object
+     * @template T of object
      *
      * @param class-string<T>|null $attributeClassName
      *

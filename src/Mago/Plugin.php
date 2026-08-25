@@ -8,7 +8,6 @@ use Mago\Sdk\Analyzer\PluginDefinition;
 use Mago\Sdk\Analyzer\PluginRegistry;
 use VeeWee\Reflecta\Mago\Iso\Provider\ComposeProvider as IsoComposeProvider;
 use VeeWee\Reflecta\Mago\Lens\Provider\ComposeProvider as LensComposeProvider;
-use VeeWee\Reflecta\Mago\Reflect\Provider\ObjectAttributesProvider;
 use VeeWee\Reflecta\Mago\Reflect\Provider\PropertiesGetProvider;
 use VeeWee\Reflecta\Mago\Reflect\Provider\PropertyGetProvider;
 
@@ -28,7 +27,6 @@ final class Plugin implements PluginInterface
         $registry->registerFunctionReturnTypeProvider(new IsoComposeProvider());
         $registry->registerFunctionReturnTypeProvider(new LensComposeProvider());
         $registry->registerFunctionReturnTypeProvider(new PropertyGetProvider());
-        $registry->registerFunctionReturnTypeProvider(new ObjectAttributesProvider());
         $registry->registerFunctionReturnTypeProvider(new PropertiesGetProvider());
     }
 }
