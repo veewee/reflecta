@@ -97,7 +97,7 @@ final class ReflectedClass
     {
         // Dynamic props is a 80200 feature.
         // IN previous versions, all objects are dynamic (without any warning).
-        if (PHP_VERSION_ID < 80200) {
+        if (PHP_VERSION_ID < 80_200) {
             return true;
         }
 
@@ -121,7 +121,9 @@ final class ReflectedClass
 
     public function docComment(): string
     {
-        return $this->class->getDocComment();
+        $docComment = $this->class->getDocComment();
+
+        return $docComment === false ? '' : $docComment;
     }
 
     public function property(string $property): ReflectedProperty
@@ -130,7 +132,8 @@ final class ReflectedClass
             return new ReflectedProperty($this->class->getProperty($property));
         }
 
-        if ($parent = $this->parent()->unwrapOr(null)) {
+        $parent = $this->parent()->unwrapOr(null);
+        if ($parent !== null) {
             return $parent->property($property);
         }
 

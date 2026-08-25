@@ -27,6 +27,9 @@ jobs:
                   extensions: pcov, mbstring, posix
             - name: Install dependencies
               run: composer update --ignore-platform-req=php+ --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }}
-            - name: Run the tests
+            - name: Run psalm
               run: composer run psalm
+              continue-on-error: ${{ matrix.php-versions == '8.5' }} # Infection dependency is causing issues.
+            - name: Run mago
+              run: composer run mago
               continue-on-error: ${{ matrix.php-versions == '8.5' }} # Infection dependency is causing issues.

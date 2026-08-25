@@ -18,7 +18,7 @@ enum Visibility
         return match (true) {
             $property->isPrivate() => self::Private,
             $property->isProtected() => self::Protected,
-            $property->isPublic() => self::Public,
+            default => self::Public,
         };
     }
 }

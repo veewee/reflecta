@@ -57,6 +57,10 @@ function properties_set(object $object, array $values, Closure|null $predicate =
             );
         } catch (UnreflectableException $e) {
             if ($isDynamic) {
+                /**
+                 * @mago-expect analysis:string-member-selector
+                 * @mago-expect analysis:ambiguous-object-property-access
+                 */
                 $new->{$name} = $value;
             } else {
                 throw $e;

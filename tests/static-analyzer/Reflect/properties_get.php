@@ -13,7 +13,7 @@ use function VeeWee\Reflecta\Reflect\properties_get;
 /**
  * @return array{z: int|null}
  */
-function test_get_prop_return_type(): array
+function test_get_props_return_type(): array
 {
     $x = new X();
     $x->z = 123;
@@ -72,7 +72,7 @@ function test_get_optional_dynamic_props_return_type(): array
     return properties_get($x, property_visibility(Visibility::Private));
 }
 
-function test_get_mixed_return_type_on_templated_object(): array
+function test_get_props_mixed_return_type_on_templated_object(): array
 {
     $curried = static fn (): Closure => static fn (object $object): array => properties_get($object);
     $x = new X();

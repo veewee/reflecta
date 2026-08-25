@@ -1,0 +1,47 @@
+[source]
+paths = ["src", "tests/static-analyzer"]
+includes = ["vendor", "tests/fixtures"]
+# The Psalm plugin is only loaded by Psalm itself and targets Psalm's own API.
+excludes = ["src/Psalm"]
+
+[analyzer]
+plugins = ["psl"]
+
+# Every entry below is a mago limitation or a deliberate cross-analyzer trade-off,
+# not a defect in this library. Things that are genuinely unverifiable about our own
+# code carry an inline `@mago-expect` instead.
+ignore = [
+    # Lens/Iso declare all four STAB templates `@template-covariant`, so `S` and `B`
+    # end up in parameter positions. Mago is right that this is variance-unsound;
+    # Psalm does not police it, and downstream consumers depend on the covariance.
+    # Making `S`/`B` invariant keeps this repo green but breaks php-soap/encoding
+    # (25-27 Psalm errors in `ObjectAccess` and `XmlEncoder`). Do not "fix" it here.
+    { code = "invalid-template-parameter", in = ["src/Lens/LensInterface.php", "src/Iso/IsoInterface.php"] },
+
+    # `Lens::readonly()` builds its setter from a closure that only throws, so mago
+    # infers `never` for `T` and calls the result less specific than `Lens<S2, S2, ...>`.
+    # Annotating the closure to return `S2` satisfies mago but makes Psalm report
+    # InvalidReturnType + NoValue, so neither side can be made happy in the source.
+    { code = "less-specific-nested-return-statement", in = ["src/Lens/Lens.php"] },
+
+    # Mago's stub types `ReflectionAttribute::getName()` as `string`; Psalm types it as
+    # `class-string`, which is what it actually returns. Drop once the stub is fixed.
+    { code = "invalid-return-statement", in = ["src/Reflect/Type/ReflectedAttribute.php"] },
+]
+
+[linter]
+# php-cs-fixer owns this project's style; only rules that would fight it are off.
+[linter.rules]
+# The optics wrap closures that carry `@param`/`@return` docblocks Psalm needs to
+# infer through. First-class callables and arrow functions have nowhere to put them.
+prefer-first-class-callable = { enabled = false }
+prefer-arrow-function = { enabled = false }
+# Reflection wrappers mirror the surface of the Reflection* classes they wrap.
+too-many-methods = { enabled = false }
+no-else-clause = { enabled = false }
+# Static-analysis fixtures pass literals positionally on purpose; naming every
+# argument would bury what each case is actually asserting.
+literal-named-argument = { enabled = false }
+
+[extension-hosts.reflecta]
+command = ["php", "bin/mago-extension.php"]
