@@ -29,6 +29,14 @@ final class ComposedOpticType
             return null;
         }
 
+        foreach ($arguments as $argument) {
+            // A spread or a first-class-callable placeholder hides how many optics are
+            // really in the chain, so there is no boundary to read.
+            if ($argument->unpacked || $argument->placeholder) {
+                return null;
+            }
+        }
+
         $first = self::stabParameters($arguments[0]->type ?? null);
         $last = self::stabParameters($arguments[count($arguments) - 1]->type ?? null);
         if ($first === null || $last === null) {

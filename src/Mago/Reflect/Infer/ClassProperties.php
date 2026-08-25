@@ -37,19 +37,26 @@ final class ClassProperties
     }
 
     /**
+     * `ClassLikeMetadata::$properties` only lists the class' own declarations, so the
+     * ancestors have to be walked. One batched lookup rather than one per ancestor:
+     * every `Codebase` call crosses the worker protocol boundary.
+     *
      * @return list<MemberIdentifier>
      */
     private static function identifiers(Codebase $codebase, ClassLikeMetadata $metadata): array
     {
         // `parentClasses` runs from the closest ancestor upwards; reverse it so the
         // most-derived declaration is the one that ends up in the resulting map.
-        $classes = [...array_reverse($metadata->parentClasses), $metadata->name];
+        $names = [...array_reverse($metadata->parentClasses), $metadata->name];
 
         $identifiers = [];
-        foreach ($classes as $class) {
-            $classMetadata = $class === $metadata->name ? $metadata : $codebase->getClassLike($class);
-            foreach ($classMetadata->properties ?? [] as $property) {
-                $identifiers[] = new MemberIdentifier($class, $property);
+        foreach ($codebase->getMultipleClassLikes($names) as $index => $classLike) {
+            if ($classLike === null) {
+                continue;
+            }
+
+            foreach ($classLike->properties as $property) {
+                $identifiers[] = new MemberIdentifier($names[$index], $property);
             }
         }
 

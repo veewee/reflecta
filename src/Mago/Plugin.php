@@ -24,6 +24,10 @@ final class Plugin implements PluginInterface
 
     public function register(PluginRegistry $registry): void
     {
+        // Every provider below is a pure function of the invocation's argument types
+        // and the frozen codebase, so identical invocations can share a result.
+        $registry->enableProviderMemoization();
+
         $registry->registerFunctionReturnTypeProvider(new IsoComposeProvider());
         $registry->registerFunctionReturnTypeProvider(new LensComposeProvider());
         $registry->registerFunctionReturnTypeProvider(new PropertyGetProvider());
