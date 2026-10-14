@@ -1,0 +1,38 @@
+name: Benchmarks
+
+on: [pull_request]
+jobs:
+    run:
+        runs-on: ubuntu-latest
+        name: Performance regression check
+        steps:
+            - name: Checkout base branch
+              uses: actions/checkout@master
+              with:
+                  ref: ${{ github.base_ref }}
+            - name: Install PHP
+              uses: shivammathur/setup-php@master
+              with:
+                  php-version: '8.5'
+                  tools: 'composer:v2'
+                  extensions: mbstring, posix
+                  coverage: none
+            - name: Install dependencies (base)
+              run: composer update --prefer-dist --no-progress --no-suggest --ignore-platform-req=php+
+            - name: Benchmark baseline (base branch)
+              run: |
+                  vendor/bin/phpbench run \
+                    --tag=baseline \
+                    --store \
+                    --report=aggregate
+            - name: Checkout PR branch
+              uses: actions/checkout@master
+              with:
+                  clean: false
+            - name: Install dependencies (PR)
+              run: composer update --prefer-dist --no-progress --no-suggest --ignore-platform-req=php+
+            - name: Benchmark PR branch vs baseline
+              run: |
+                  vendor/bin/phpbench run \
+                    --ref=baseline \
+                    --report=aggregate
