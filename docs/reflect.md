@@ -272,4 +272,7 @@ use VeeWee\Reflecta\Reflect\Type\ReflectedProperty;
 
 $property = new ReflectedProperty(new \ReflectionProperty(Your::class, 'property'));
 $property = ReflectedClass::from(new Your())->property('property');
+
+// Returns null instead of throwing when neither the class nor its parents declare the property:
+$property = ReflectedClass::from(new Your())->findProperty('property');
 ```

@@ -51,17 +51,19 @@ function properties_set(object $object, array $values, Closure|null $predicate =
 
     /** @var mixed $value */
     foreach ($values as $name => $value) {
-        try {
-            $class->property($name)->apply(
+        $property = $class->findProperty($name);
+        if ($property) {
+            $property->apply(
                 static fn (ReflectionProperty $reflectionProperty) => $reflectionProperty->setValue($new, $value)
             );
-        } catch (UnreflectableException $e) {
-            if ($isDynamic) {
-                $new->{$name} = $value;
-            } else {
-                throw $e;
-            }
+            continue;
         }
+
+        if (!$isDynamic) {
+            throw UnreflectableException::unknownProperty($class->fullName(), $name);
+        }
+
+        $new->{$name} = $value;
     }
 
     return $new;

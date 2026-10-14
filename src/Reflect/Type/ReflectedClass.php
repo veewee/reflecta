@@ -124,17 +124,25 @@ final class ReflectedClass
         return $this->class->getDocComment();
     }
 
+    /**
+     * @throws UnreflectableException
+     */
     public function property(string $property): ReflectedProperty
     {
-        if ($this->class->hasProperty($property)) {
-            return new ReflectedProperty($this->class->getProperty($property));
-        }
+        return $this->findProperty($property)
+            ?? throw UnreflectableException::unknownProperty($this->fullName(), $property);
+    }
 
-        if ($parent = $this->parent()->unwrapOr(null)) {
-            return $parent->property($property);
-        }
+    public function findProperty(string $property): ?ReflectedProperty
+    {
+        $class = $this->class;
+        do {
+            if ($class->hasProperty($property)) {
+                return new ReflectedProperty($class->getProperty($property));
+            }
+        } while ($class = $class->getParentClass());
 
-        throw UnreflectableException::unknownProperty($this->fullName(), $property);
+        return null;
     }
 
     /**
