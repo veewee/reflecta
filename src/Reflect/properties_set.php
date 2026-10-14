@@ -52,7 +52,7 @@ function properties_set(object $object, array $values, Closure|null $predicate =
     /** @var mixed $value */
     foreach ($values as $name => $value) {
         $property = $class->findProperty($name);
-        if ($property) {
+        if ($property !== null) {
             $property->apply(
                 static fn (ReflectionProperty $reflectionProperty) => $reflectionProperty->setValue($new, $value)
             );

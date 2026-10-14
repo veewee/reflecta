@@ -171,6 +171,17 @@ final class ReflectedClassTest extends TestCase
         $class->property('unknown');
     }
 
+    public function test_it_names_the_requested_class_on_unknown_inherited_property(): void
+    {
+        $x = new class extends AbstractProperties {};
+        $class = ReflectedClass::fromObject($x);
+
+        $this->expectException(UnreflectableException::class);
+        $this->expectExceptionMessage('Unable to locate property '.$x::class.'::$unknown.');
+
+        $class->property('unknown');
+    }
+
     public function test_it_can_find_property_by_name(): void
     {
         $class = ReflectedClass::fromFullyQualifiedClassName(X::class);
