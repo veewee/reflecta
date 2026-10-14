@@ -113,6 +113,8 @@ $actualData = $itemData->to($item);
 assert($data === $actualData);
 ```
 
+For `stdClass` without a custom Lens, **from** casts the array straight to an object, which skips reflection entirely.
+
 Additionally, you can provide a custom Lens to the `object_data` function which will be used to read and write the data.
 This makes it possible to check property visibility or alternatively use getters and setters to access the data.
 
