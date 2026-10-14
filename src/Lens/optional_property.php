@@ -49,12 +49,12 @@ function optional_property(string $propertyName): Lens
                 return property_exists($subject, $propertyName) ? $subject->{$propertyName} : null;
             }
 
-            // An unset property falls back to __get, so only skip the read when there is none.
-            if (!$property->isInitialized($subject) && !method_exists($subject, '__get')) {
-                return null;
-            }
-
             try {
+                // An unset property falls back to __get, so only skip the read when there is none.
+                if (!$property->isInitialized($subject) && !method_exists($subject, '__get')) {
+                    return null;
+                }
+
                 return $property->getValue($subject);
             } catch (Throwable) {
                 return null;

@@ -9,7 +9,7 @@ use function is_array;
  * @return Lens<array|null, array|null, mixed, mixed>
  * @psalm-pure
  */
-function optional_index($index): Lens
+function optional_index(string|int $index): Lens
 {
     $optional = optional(index($index));
 

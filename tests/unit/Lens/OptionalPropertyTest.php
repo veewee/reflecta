@@ -5,6 +5,8 @@ namespace VeeWee\Reflecta\UnitTests\Lens;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use RuntimeException;
 use stdClass;
 use VeeWee\Reflecta\TestFixtures\Optional\DynamicSubject;
 use VeeWee\Reflecta\TestFixtures\Optional\HookedSubject;
@@ -98,6 +100,11 @@ final class OptionalPropertyTest extends TestCase
         yield 'magic unset' => [$magic, 'unset', 'magic:unset'];
         yield 'magic uninitialized' => [$magic, 'uninitialized', null];
         yield 'other stdClass absent' => [(object) ['b' => 1], 'a', null];
+        yield 'lazy ghost with failing initializer' => [
+            (new ReflectionClass(TypedSubject::class))->newLazyGhost(static fn () => throw new RuntimeException('Init failed')),
+            'public',
+            null,
+        ];
         yield 'null subject' => [null, 'a', null];
         yield 'array subject' => [['a' => 'A'], 'a', null];
     }
