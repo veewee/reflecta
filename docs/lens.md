@@ -181,6 +181,51 @@ Since this is a very common lens, a shortcut got added to any `Lens` instance in
 $optionalLens = $lens->optional();
 ```
 
+#### optional_index
+
+This function returns the same lens as `optional(index($index))`, with a `get` that never throws internally.
+Use it when misses are common, for example when reading many keys that may be absent: the optional composition pays for an exception on every miss.
+
+* **Get** will return the array item by key, or `null` if the key does not exist or the subject is not an array.
+* **Set** behaves like `optional(index($index))->set()`.
+
+```php
+use function VeeWee\Reflecta\Lens\optional_index;
+
+$lens = optional_index('b');
+
+$lens->get(['a' => 'Apple', 'b' => 'Blueberry']);
+// > "Blueberry"
+$lens->get(['a' => 'Apple']);
+// > null
+$lens->get(null);
+// > null
+```
+
+#### optional_property
+
+This function returns the same lens as `optional(property($propertyName))`, with a `get` that does not throw internally on a hit or a miss.
+The property is resolved once per class and cached inside the lens. Dynamic properties are looked up on the object itself, so one instance never influences another.
+
+* **Get** will return the value of the property (with any visibility), or `null` if the property does not exist, is not initialized, its get hook throws, or the subject is not an object.
+* **Set** behaves like `optional(property($propertyName))->set()`.
+
+```php
+use function VeeWee\Reflecta\Lens\optional_property;
+
+class Item {
+    public string $value = 'hello';
+    public string $uninitialized;
+}
+
+optional_property('value')->get(new Item());
+// > "hello"
+optional_property('uninitialized')->get(new Item());
+// > null
+optional_property('unknown')->get(new Item());
+// > null
+```
+
 #### properties
 
 This function will create a lens that can zoom in on an object's properties (with any visibility).
