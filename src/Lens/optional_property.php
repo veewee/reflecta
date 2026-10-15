@@ -28,10 +28,15 @@ function optional_property(string $propertyName): Lens
             }
 
             try {
+                // Dynamic properties are public, unhooked and always initialised. They are checked before the
+                // parents, because a dynamic property shadows a private parent property of the same name.
+                if (!property_exists($subject::class, $propertyName) && property_exists($subject, $propertyName)) {
+                    return $subject->{$propertyName};
+                }
+
                 $property = object_declared_property($subject, $propertyName);
                 if ($property === null) {
-                    // Dynamic properties are public, unhooked and always initialised.
-                    return property_exists($subject, $propertyName) ? $subject->{$propertyName} : null;
+                    return null;
                 }
 
                 // An unset property falls back to __get, so only skip the read when there is none.
