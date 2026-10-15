@@ -31,6 +31,7 @@
           "src/Reflect/properties_get.php",
           "src/Reflect/properties_set.php",
           "src/Reflect/property_get.php",
+          "src/Reflect/property_is_initialized.php",
           "src/Reflect/property_set.php",
           "src/Reflect/Predicate/property_visibility.php"
         ]
