@@ -226,6 +226,8 @@ optional_property('unknown')->get(new Item());
 // > null
 ```
 
+Both misses read as `null`. To tell a missing or uninitialized property apart from one that holds `null`, use [`property_is_initialized`](reflect.md#property_is_initialized).
+
 #### properties
 
 This function will create a lens that can zoom in on an object's properties (with any visibility).

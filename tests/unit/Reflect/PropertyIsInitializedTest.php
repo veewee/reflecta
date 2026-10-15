@@ -40,6 +40,7 @@ final class PropertyIsInitializedTest extends TestCase
 
     public function test_it_does_not_consult_magic_get(): void
     {
+        // optional_property reads through __get, but a value that __get makes up is not a property the object holds.
         $subject = new MagicSubject();
 
         static::assertFalse(property_is_initialized($subject, 'unset'));
