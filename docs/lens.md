@@ -205,7 +205,7 @@ $lens->get(null);
 #### optional_property
 
 This function returns the same lens as `optional(property($propertyName))`, with a `get` that does not throw internally on a hit or a miss.
-The lens is stateless: every `get` resolves the property on the given object through `object_declared_property()`, and falls back to the dynamic properties of that object.
+The lens is stateless. Every `get` resolves the name the way PHP does for `$object->{$name}`: a property the class itself declares, then a dynamic property of that object, then a property declared by a parent class (found through `class_find_property()`).
 
 * **Get** will return the value of the property (with any visibility), or `null` if the property does not exist, is not initialized, its get hook throws, or the subject is not an object.
 * **Set** behaves like `optional(property($propertyName))->set()`.

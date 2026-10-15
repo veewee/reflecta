@@ -6,7 +6,7 @@ use Throwable;
 use function is_object;
 use function method_exists;
 use function property_exists;
-use function VeeWee\Reflecta\Reflect\object_declared_property;
+use function VeeWee\Reflecta\Reflect\class_find_property;
 
 /**
  * @template S of object
@@ -28,13 +28,14 @@ function optional_property(string $propertyName): Lens
             }
 
             try {
-                // Dynamic properties are public, unhooked and always initialised. They are checked before the
-                // parents, because a dynamic property shadows a private parent property of the same name.
-                if (!property_exists($subject::class, $propertyName) && property_exists($subject, $propertyName)) {
+                // PHP resolves $subject->{$name} as: the class itself, then a dynamic property, then the parents.
+                // Dynamic properties are public, unhooked and always initialised, so they are read directly.
+                $className = $subject::class;
+                if (!property_exists($className, $propertyName) && property_exists($subject, $propertyName)) {
                     return $subject->{$propertyName};
                 }
 
-                $property = object_declared_property($subject, $propertyName);
+                $property = class_find_property($className, $propertyName);
                 if ($property === null) {
                     return null;
                 }

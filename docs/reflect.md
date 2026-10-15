@@ -27,6 +27,22 @@ try {
 }
 ```
 
+#### class_find_property
+
+Finds the `ReflectionProperty` that the given class, or its nearest parent, declares under the given name.
+A private property of a parent class is found as well.
+It works on the class only, so dynamic properties of an instance are never returned.
+The result is `null` when no class in the chain declares the name, and the function never throws.
+
+```php
+use function VeeWee\Reflecta\Reflect\class_find_property;
+
+$property = class_find_property(YourClass::class, $theProperty);
+if ($property !== null && $property->isInitialized($yourObject)) {
+    $value = $property->getValue($yourObject);
+}
+```
+
 #### class_has_attribute
 
 Checks if the class contains an attribute of given type (or super-type).
@@ -91,22 +107,6 @@ try {
     $allAttributesOfType = object_attributes($yourObject, \YourAbstractBaseType::class);
 } catch (UnreflectableException) {
     // Deal with it
-}
-```
-
-#### object_declared_property
-
-Finds the `ReflectionProperty` that the class of the given object, or the nearest parent, declares under the given name.
-A private property of a parent class is found as well, also when the object carries a dynamic property with the same name.
-Dynamic properties are not declared, so the result is `null` for those and for names that no class declares.
-This function never throws.
-
-```php
-use function VeeWee\Reflecta\Reflect\object_declared_property;
-
-$property = object_declared_property($yourObject, $theProperty);
-if ($property !== null && $property->isInitialized($yourObject)) {
-    $value = $property->getValue($yourObject);
 }
 ```
 
