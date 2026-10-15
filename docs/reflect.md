@@ -27,22 +27,6 @@ try {
 }
 ```
 
-#### class_find_property
-
-Finds the `ReflectionProperty` that the given class, or its nearest parent, declares under the given name.
-A private property of a parent class is found as well.
-It works on the class only, so dynamic properties of an instance are never returned.
-The result is `null` when no class in the chain declares the name, and the function never throws.
-
-```php
-use function VeeWee\Reflecta\Reflect\class_find_property;
-
-$property = class_find_property(YourClass::class, $theProperty);
-if ($property !== null && $property->isInitialized($yourObject)) {
-    $value = $property->getValue($yourObject);
-}
-```
-
 #### class_has_attribute
 
 Checks if the class contains an attribute of given type (or super-type).

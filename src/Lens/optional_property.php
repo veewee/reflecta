@@ -2,11 +2,12 @@
 
 namespace VeeWee\Reflecta\Lens;
 
+use ReflectionProperty;
 use Throwable;
+use function get_parent_class;
 use function is_object;
 use function method_exists;
 use function property_exists;
-use function VeeWee\Reflecta\Reflect\class_find_property;
 
 /**
  * @template S of object
@@ -35,7 +36,16 @@ function optional_property(string $propertyName): Lens
                     return $subject->{$propertyName};
                 }
 
-                $property = class_find_property($className, $propertyName);
+                // Walking the parents finds the private properties that the child class cannot see.
+                $property = null;
+                $class = $className;
+                do {
+                    if (property_exists($class, $propertyName)) {
+                        $property = new ReflectionProperty($class, $propertyName);
+                        break;
+                    }
+                } while ($class = get_parent_class($class));
+
                 if ($property === null) {
                     return null;
                 }
