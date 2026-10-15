@@ -2,11 +2,11 @@
 
 namespace VeeWee\Reflecta\Lens;
 
-use ReflectionProperty;
 use Throwable;
-use VeeWee\Reflecta\Reflect\Type\ReflectedClass;
 use function is_object;
 use function method_exists;
+use function property_exists;
+use function VeeWee\Reflecta\Reflect\object_declared_property;
 
 /**
  * @template S of object
@@ -28,16 +28,18 @@ function optional_property(string $propertyName): Lens
             }
 
             try {
-                return ReflectedClass::fromObject($subject)->findProperty($propertyName)?->apply(
-                    static function (ReflectionProperty $property) use ($subject): mixed {
-                        // An unset property falls back to __get, so only skip the read when there is none.
-                        if (!$property->isInitialized($subject) && !method_exists($subject, '__get')) {
-                            return null;
-                        }
+                $property = object_declared_property($subject, $propertyName);
+                if ($property === null) {
+                    // Dynamic properties are public, unhooked and always initialised.
+                    return property_exists($subject, $propertyName) ? $subject->{$propertyName} : null;
+                }
 
-                        return $property->getValue($subject);
-                    }
-                );
+                // An unset property falls back to __get, so only skip the read when there is none.
+                if (!$property->isInitialized($subject) && !method_exists($subject, '__get')) {
+                    return null;
+                }
+
+                return $property->getValue($subject);
             } catch (Throwable) {
                 return null;
             }

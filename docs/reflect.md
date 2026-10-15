@@ -94,6 +94,22 @@ try {
 }
 ```
 
+#### object_declared_property
+
+Finds the `ReflectionProperty` that the class of the given object, or the nearest parent, declares under the given name.
+A private property of a parent class is found as well, also when the object carries a dynamic property with the same name.
+Dynamic properties are not declared, so the result is `null` for those and for names that no class declares.
+This function never throws.
+
+```php
+use function VeeWee\Reflecta\Reflect\object_declared_property;
+
+$property = object_declared_property($yourObject, $theProperty);
+if ($property !== null && $property->isInitialized($yourObject)) {
+    $value = $property->getValue($yourObject);
+}
+```
+
 #### object_has_attribute
 
 Checks if the object contains an attribute of given type (or super-type).

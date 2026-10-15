@@ -26,6 +26,7 @@
           "src/Reflect/class_is_dynamic.php",
           "src/Reflect/instantiate.php",
           "src/Reflect/object_attributes.php",
+          "src/Reflect/object_declared_property.php",
           "src/Reflect/object_has_attribute.php",
           "src/Reflect/object_is_dynamic.php",
           "src/Reflect/properties_get.php",

@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use RuntimeException;
 use stdClass;
+use VeeWee\Reflecta\TestFixtures\Optional\DynamicSecretSubject;
 use VeeWee\Reflecta\TestFixtures\Optional\DynamicSubject;
 use VeeWee\Reflecta\TestFixtures\Optional\HookedSubject;
 use VeeWee\Reflecta\TestFixtures\Optional\MagicSubject;
@@ -90,11 +91,14 @@ final class OptionalPropertyTest extends TestCase
         $dynamic->{'extra'} = 'dynamic';
         $hooked = new HookedSubject();
         $magic = new MagicSubject();
+        $shadowed = new DynamicSecretSubject();
+        $shadowed->{'secret'} = 'dynamic';
 
         yield 'typed public' => [$typed, 'public', 'public'];
         yield 'typed protected' => [$typed, 'protected', 'protected'];
         yield 'typed private' => [$typed, 'private', 'private'];
         yield 'private in parent' => [$typed, 'secret', 'parent-private'];
+        yield 'private in parent shadowed by a dynamic property' => [$shadowed, 'secret', 'parent-private'];
         yield 'readonly' => [$typed, 'readonly', 'readonly'];
         yield 'nullable null' => [$typed, 'nullable', null];
         yield 'uninitialized' => [$typed, 'uninitialized', null];
