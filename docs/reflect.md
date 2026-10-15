@@ -163,7 +163,8 @@ try {
 
 Immutably saves the new values at the provided property locations inside a given object.
 The values is a `array<string, mixed>` that takes the name of the property as key and the new property value as value.
-If the property is not available on the object, an `UnreflectableException` will be thrown.
+On a dynamic class (`stdClass` or a class marked `#[AllowDynamicProperties]`), unknown properties are added to the object.
+On any other class, an unknown property throws an `UnreflectableException`.
 
 ```php
 use VeeWee\Reflecta\Exception\CloneException;
@@ -272,4 +273,7 @@ use VeeWee\Reflecta\Reflect\Type\ReflectedProperty;
 
 $property = new ReflectedProperty(new \ReflectionProperty(Your::class, 'property'));
 $property = ReflectedClass::from(new Your())->property('property');
+
+// Returns null instead of throwing when neither the class nor its parents declare the property:
+$property = ReflectedClass::from(new Your())->findProperty('property');
 ```

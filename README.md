@@ -51,6 +51,14 @@ This package provides following components:
 > `S`, `T`, `A`, `B` type parameters with worked examples.
 
 
+## Benchmarks
+
+The `benchmarks/` folder holds phpbench benchmarks for the hot paths. Run them with:
+
+```
+composer bench
+```
+
 ## Inspiration
 
 This library was inspired by the following projects:

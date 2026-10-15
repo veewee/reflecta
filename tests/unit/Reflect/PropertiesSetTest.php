@@ -5,6 +5,7 @@ namespace VeeWee\Reflecta\UnitTests\Reflect;
 
 use PHPUnit\Framework\TestCase;
 use stdClass;
+use VeeWee\Reflecta\Reflect\Exception\UnreflectableException;
 use VeeWee\Reflecta\Reflect\Type\ReflectedProperty;
 use VeeWee\Reflecta\TestFixtures\Dynamic;
 use VeeWee\Reflecta\TestFixtures\X;
@@ -34,6 +35,27 @@ final class PropertiesSetTest extends TestCase
         static::assertInstanceOf(Dynamic::class, $actual);
         static::assertSame($actual->x, '456');
         static::assertSame($actual->y, '123');
+    }
+
+    public function test_it_fails_on_unknown_property_on_non_dynamic_class(): void
+    {
+        $this->expectException(UnreflectableException::class);
+        $this->expectExceptionMessage('Unable to locate property '.X::class.'::$unknown.');
+
+        properties_set(new X(), ['z' => 123, 'unknown' => 'value']);
+    }
+
+    public function test_it_can_set_unknown_props_on_dynamic_class(): void
+    {
+        $x = new Dynamic();
+        $actual = properties_set($x, ['x' => 'x', 'foo' => 'foo', 'bar' => 'bar']);
+
+        static::assertNotSame($x, $actual);
+        static::assertInstanceOf(Dynamic::class, $actual);
+        static::assertFalse(isset($x->foo));
+        static::assertSame('x', $actual->x);
+        static::assertSame('foo', $actual->foo);
+        static::assertSame('bar', $actual->bar);
     }
 
     public function test_it_can_hydrate_new_props_on_std_class(): void

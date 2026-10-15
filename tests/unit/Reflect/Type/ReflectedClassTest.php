@@ -161,6 +161,63 @@ final class ReflectedClassTest extends TestCase
         static::assertSame('a', $property->name());
     }
 
+    public function test_it_fails_on_unknown_property_by_name(): void
+    {
+        $class = ReflectedClass::fromFullyQualifiedClassName(X::class);
+
+        $this->expectException(UnreflectableException::class);
+        $this->expectExceptionMessage('Unable to locate property '.X::class.'::$unknown.');
+
+        $class->property('unknown');
+    }
+
+    public function test_it_names_the_requested_class_on_unknown_inherited_property(): void
+    {
+        $x = new class extends AbstractProperties {};
+        $class = ReflectedClass::fromObject($x);
+
+        $this->expectException(UnreflectableException::class);
+        $this->expectExceptionMessage('Unable to locate property '.$x::class.'::$unknown.');
+
+        $class->property('unknown');
+    }
+
+    public function test_it_can_find_property_by_name(): void
+    {
+        $class = ReflectedClass::fromFullyQualifiedClassName(X::class);
+        $property = $class->findProperty('z');
+
+        static::assertSame('z', $property?->name());
+    }
+
+    public function test_it_can_find_inherited_private_property_by_name(): void
+    {
+        $x = new class extends AbstractProperties {};
+        $class = ReflectedClass::fromObject($x);
+        $property = $class->findProperty('a');
+
+        static::assertSame('a', $property?->name());
+        static::assertSame(AbstractProperties::class, $property?->declaringClass()->fullName());
+    }
+
+    public function test_it_can_find_dynamic_property_by_name(): void
+    {
+        $x = new stdClass();
+        $x->foo = 'foo';
+        $class = ReflectedClass::fromObject($x);
+        $property = $class->findProperty('foo');
+
+        static::assertSame('foo', $property?->name());
+    }
+
+    public function test_it_finds_none_for_unknown_property(): void
+    {
+        $x = new class extends AbstractProperties {};
+        $class = ReflectedClass::fromObject($x);
+
+        static::assertNull($class->findProperty('unknown'));
+    }
+
     public function test_it_can_list_all_properties(): void
     {
         $class = ReflectedClass::fromFullyQualifiedClassName(X::class);

@@ -2,6 +2,7 @@
 
 namespace VeeWee\Reflecta\Iso;
 
+use stdClass;
 use VeeWee\Reflecta\Lens\Lens;
 use function VeeWee\Reflecta\Lens\properties;
 use function VeeWee\Reflecta\Reflect\instantiate;
@@ -21,6 +22,7 @@ function object_data(string $className, ?Lens $accessor = null): Iso
 {
     /** @var Lens<S, S, A, A> $typedAccessor */
     $typedAccessor = $accessor ?? properties();
+    $isPlainStdClass = $accessor === null && $className === stdClass::class;
 
     return new Iso(
         /**
@@ -32,9 +34,13 @@ function object_data(string $className, ?Lens $accessor = null): Iso
          * @param A $properties
          * @return S
          */
-        static fn (array $properties): object => $typedAccessor->set(
-            instantiate($className),
-            $properties
-        ),
+        static function (array $properties) use ($isPlainStdClass, $typedAccessor, $className): object {
+            if ($isPlainStdClass) {
+                /** @var S */
+                return (object) $properties;
+            }
+
+            return $typedAccessor->set(instantiate($className), $properties);
+        },
     );
 }

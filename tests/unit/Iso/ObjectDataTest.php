@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace VeeWee\Reflecta\UnitTests\Iso;
 
 use PHPUnit\Framework\TestCase;
+use stdClass;
+use VeeWee\Reflecta\Lens\Lens;
 use VeeWee\Reflecta\Reflect\Type\Visibility;
 use VeeWee\Reflecta\TestFixtures\AbstractProperties;
 use VeeWee\Reflecta\TestFixtures\X;
@@ -76,5 +78,40 @@ final class ObjectDataTest extends TestCase
 
         static::assertEquals($expectedInstance, $instance);
         static::assertSame($expectedData, $actualData);
+    }
+
+    public function test_it_can_work_with_std_class_data(): void
+    {
+        $iso = object_data(stdClass::class);
+
+        $expectedData = ['foo' => 'foo', 'bar' => 'bar'];
+        $expectedInstance = new stdClass();
+        $expectedInstance->foo = 'foo';
+        $expectedInstance->bar = 'bar';
+
+        $instance = $iso->from($expectedData);
+        $actualData = $iso->to($instance);
+
+        static::assertEquals($expectedInstance, $instance);
+        static::assertSame($expectedData, $actualData);
+    }
+
+    public function test_it_uses_alternate_lens_on_std_class(): void
+    {
+        $lens = new Lens(
+            static fn (stdClass $object): array => (array) $object,
+            static function (stdClass $object, array $data): stdClass {
+                $new = clone $object;
+                $new->custom = $data['foo'];
+
+                return $new;
+            }
+        );
+        $iso = object_data(stdClass::class, $lens);
+
+        $expectedInstance = new stdClass();
+        $expectedInstance->custom = 'foo';
+
+        static::assertEquals($expectedInstance, $iso->from(['foo' => 'foo']));
     }
 }
