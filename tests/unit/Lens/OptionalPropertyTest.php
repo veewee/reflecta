@@ -51,6 +51,24 @@ final class OptionalPropertyTest extends TestCase
         static::assertNull($lens->get(new DynamicSubject()));
     }
 
+    public function test_it_resolves_every_subject_on_its_own(): void
+    {
+        $declared = optional_property('declared');
+        static::assertSame('declared', $declared->get(new DynamicSubject()));
+        static::assertNull($declared->get(new TypedSubject()));
+        static::assertSame('declared', $declared->get(new DynamicSubject()));
+
+        $unset = optional_property('unset');
+        static::assertNull($unset->get(new TypedSubject()));
+        static::assertSame('magic:unset', $unset->get(new MagicSubject()));
+        static::assertNull($unset->get(new TypedSubject()));
+
+        $b = optional_property('b');
+        static::assertNull($b->get((object) ['a' => 'A']));
+        static::assertSame('B', $b->get((object) ['b' => 'B']));
+        static::assertNull($b->get((object) ['a' => 'A']));
+    }
+
     #[DataProvider('provideSetSubjects')]
     public function test_it_sets_like_the_optional_property_composition(mixed $subject, string $name, mixed $expected): void
     {
@@ -103,6 +121,11 @@ final class OptionalPropertyTest extends TestCase
         yield 'lazy ghost with failing initializer' => [
             (new ReflectionClass(TypedSubject::class))->newLazyGhost(static fn () => throw new RuntimeException('Init failed')),
             'public',
+            null,
+        ];
+        yield 'lazy ghost absent with failing initializer' => [
+            (new ReflectionClass(TypedSubject::class))->newLazyGhost(static fn () => throw new RuntimeException('Init failed')),
+            'nope',
             null,
         ];
         yield 'null subject' => [null, 'a', null];
