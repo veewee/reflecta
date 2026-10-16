@@ -214,6 +214,24 @@ try {
 }
 ```
 
+#### property_is_initialized
+
+Checks if the object holds a value for the property, even when that value is `null`.
+This is the case for a declared property that is initialised and for a dynamic property that exists.
+A missing property, an uninitialised typed property or a declared property that was `unset()` returns `false`.
+The property is resolved the same way as `optional_property` does, including private properties of parent classes, but `__get` is never called.
+This function never throws: if PHP throws while checking, for example on a lazy object whose initializer fails, it returns `true`.
+
+```php
+use function VeeWee\Reflecta\Lens\optional_property;
+use function VeeWee\Reflecta\Reflect\property_is_initialized;
+
+$value = optional_property('name')->get($yourObject);
+if ($value === null && !property_is_initialized($yourObject, 'name')) {
+    // The property is absent or uninitialised, instead of holding null.
+}
+```
+
 #### property_set
 
 Immutably saves a new value at a specific property inside a given object.
