@@ -86,7 +86,7 @@ final class ReflectedProperty
 
     public function defaultValue(): mixed
     {
-        return $this->property->getDefaultValue();
+        return $this->property->hasDefaultValue() ? $this->property->getDefaultValue() : null;
     }
 
     public function hasDefaultValue(): bool
