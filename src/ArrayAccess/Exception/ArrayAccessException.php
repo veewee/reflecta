@@ -9,6 +9,8 @@ use function sprintf;
 final class ArrayAccessException extends RuntimeException
 {
     /**
+     * @psalm-pure
+     *
      * @param array-key $index
      */
     public static function cannotAccessIndex($index): self
