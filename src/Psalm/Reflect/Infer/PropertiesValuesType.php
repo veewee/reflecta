@@ -32,7 +32,7 @@ final class PropertiesValuesType
         $properties = $class->properties();
 
         return new Union([
-            new TKeyedArray(
+            TKeyedArray::make(
                 map(
                     $properties,
                     static fn (ReflectedProperty $prop) => Reflection::getPsalmTypeFromReflectionType($prop->apply(

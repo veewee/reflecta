@@ -13,6 +13,9 @@ namespace VeeWee\Reflecta\Lens;
  * @return Lens<S|null, T|null, A|null, B|null>
  *
  * @psalm-pure
+ *
+ * Null is passed on to the wrapped lens on purpose: a lens that cannot handle it fails, and that failure becomes null.
+ * @psalm-suppress PossiblyNullArgument
  */
 function optional(LensInterface $that): Lens
 {
